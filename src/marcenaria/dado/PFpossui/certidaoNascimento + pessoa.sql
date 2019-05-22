@@ -1,0 +1,1 @@
+select * from pessoa as p,certidaonascimento as cn where p.id= 1 and cn.idPessoa =p.id;

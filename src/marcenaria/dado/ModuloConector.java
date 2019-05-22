@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 package marcenaria.dado;
-
-import agil.Const.Messagem;
+   
 import java.sql.*;
+import marcenaria.Const.Messagem;
 
 /**
  *

@@ -16,9 +16,9 @@ import marcenaria.dado.ModuloConector;
 public class Corte {
 
     public static void main(String[] args) {
-        PecaParaCortar(220, 160, 220,
-                 160, true);
-        dividirCorte(0, 0, 0, 0, 0);
+        //PecaParaCortar(220, 160, 220,160, true);
+        dividirCorte(0, 220, 160, 110, 80);
+        planodeCorte();
     }
     static Connection conexao;
     static PreparedStatement pst;
@@ -39,7 +39,9 @@ public class Corte {
      *
      */
     public static void planodeCorte() {
-
+        for(int w =0;w<largCorte.length;w++){
+            System.out.println(getCompriCorte(w)+"X"+getLargCorte(w));
+        }
     }
 
     /**
@@ -218,13 +220,21 @@ public class Corte {
         setCompriCorte(pos, comprChapa, comprPeca);
         setLargCorte(pos, largChapa);
     }
-    public static void dividirCorte(int pos, double comprChapa, double comprPeca, double largChapa,double largPeca){
+    /**
+     * @param pos
+     * @param comprChapa
+     * @param comprPeca
+     * @param largChapa
+     * @param largPeca
+     */
+    public static void dividirCorte(int pos, double comprChapa,double largChapa, double comprPeca, double largPeca){
         for(int i=0;i<=1;i++){
             if(i==0){
-                verticalCorte(pos, comprChapa, comprPeca, largChapa);
+                verticalCorte(i, comprChapa, comprPeca, largChapa);
             }else{
-                horizontalCorte(pos, largChapa, largPeca, comprChapa);
+                horizontalCorte(i, largChapa, largPeca, comprChapa);
             }
         }
     }
+    
 }

@@ -17,7 +17,8 @@ public class Corte {
 
     public static void main(String[] args) {
         //PecaParaCortar(220, 160, 220,160, true);
-        dividirCorte(0, 220, 160, 110, 80);
+        cote(220, 160, c, l);
+        //dividirCorte(0, 220, 160, c, l);
         planodeCorte();
     }
     static Connection conexao;
@@ -27,6 +28,7 @@ public class Corte {
     private static final String TABELA = Corte.class.getSimpleName();
     private static double[] compriCorte = new double[2];
     private static double[] largCorte = new double[compriCorte.length];
+    static double c = 50, l = 180;
 
     /**
      * *
@@ -39,9 +41,10 @@ public class Corte {
      *
      */
     public static void planodeCorte() {
-        for(int w =0;w<largCorte.length;w++){
-            System.out.println(getCompriCorte(w)+"X"+getLargCorte(w));
+        for (int w = 0; w < largCorte.length; w++) {
+            System.out.println(getCompriCorte(w) + "X" + getLargCorte(w));
         }
+        System.out.println(c + "X" + l);
     }
 
     /**
@@ -100,9 +103,9 @@ public class Corte {
                             + "\ne Menor ou Iqual a Medida da Comprimento da Chapa: " + comprChapa;
                 }
                 JOptionPane.showMessageDialog(null, frase);
-            } else if(comprChapa==compPeca&&largChapa==largPeca){
-                
-            }else {
+            } else if (comprChapa == compPeca && largChapa == largPeca) {
+
+            } else {
                 setCompriCorte(i, comprChapa, compPeca);
                 setLargCorte(i, largChapa, largPeca);
                 String a = " c: " + getCompriCorte(i) + " l: " + getLargCorte(i);
@@ -220,21 +223,272 @@ public class Corte {
         setCompriCorte(pos, comprChapa, comprPeca);
         setLargCorte(pos, largChapa);
     }
+
     /**
+     * Testando
+     *
      * @param pos
      * @param comprChapa
      * @param comprPeca
      * @param largChapa
      * @param largPeca
      */
-    public static void dividirCorte(int pos, double comprChapa,double largChapa, double comprPeca, double largPeca){
-        for(int i=0;i<=1;i++){
-            if(i==0){
+    public static void dividirCorte(int pos, double comprChapa, double largChapa, double comprPeca, double largPeca) {
+        double larg, comp;
+        for (int i = 0; i <= 1; i++) {
+            if (i == 0) {
                 verticalCorte(i, comprChapa, comprPeca, largChapa);
-            }else{
+            } else {
                 horizontalCorte(i, largChapa, largPeca, comprChapa);
             }
         }
+        if ((getCompriCorte(0) / comprChapa) * (getLargCorte(0) / largChapa) * 100 < (getCompriCorte(1) / comprChapa) * (getLargCorte(1) / largChapa) * 100) {
+            larg = getLargCorte(0);
+            comp = getCompriCorte(0);
+            verticalCorte(0, comprChapa, comprPeca, largPeca);
+            System.out.println("v");
+        } else {
+            larg = getLargCorte(1);
+            comp = getCompriCorte(1);
+            horizontalCorte(1, largChapa, largPeca, comprPeca);
+        }
     }
-    
+
+    public static void cote(double cc, double lc, double cp, double lp) {
+        if (lc > lp) {
+            if (cc > cp) {
+                System.out.println(lc + ">" + lp + " " + cc + ">" + cp);
+            } else if (cc < cp) {
+                System.out.println(lc + ">" + lp + " " + cc + "<" + cp);
+                if (lc > cp) {
+                    if (cc > lp) {
+                        System.out.println("correcão\n" + lc + ">" + cp + " " + cc + ">" + lp);
+                    } else if (cc < lp) {
+                        System.out.println("correcão\n" + lc + ">" + cp + " " + cc + "<" + lp);
+                    } else if (cc == lp) {
+                        System.out.println("correcão\n" + lc + ">" + cp + " " + cc + "=" + lp);
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+                        System.out.println("correcão\n" + lc + "<" + cp + " " + cc + ">" + lp);
+                    } else if (cc < lp) {
+                        System.out.println("correcão\n" + lc + "<" + cp + " " + cc + "<" + lp);
+                    } else if (cc == lp) {
+                        System.out.println("correcão\n" + lc + "<" + cp + " " + cc + "=" + lp);
+                    }
+                } else if (lc == cp) {
+                    if (cc > lp) {
+                        System.out.println("correcão\n" + lc + "=" + cp + " " + cc + ">" + lp);
+                    } else if (cc < lp) {
+                        System.out.println("correcão\n" + lc + "=" + cp + " " + cc + "<" + lp);
+                    } else if (cc == lp) {
+                        System.out.println("correcão\n" + lc + "=" + cp + " " + cc + "=" + lp);
+                    }
+                }
+            } else if (cc == cp) {
+                System.out.println(lc + ">" + lp
+                        + cc + "=" + cp);
+            }
+        } else if (lc < lp) {
+            if (cc > cp) {
+                System.out.println(lc + "<" + lp
+                        + cc + ">" + cp);
+                if (lc > cp) {
+                    if (cc > lp) {
+                        System.out.println("correcão\n" + lc + ">" + cp + " " + cc + ">" + lp);
+                    } else if (cc < lp) {
+                        System.out.println("correcão\n" + lc + ">" + cp + " " + cc + "<" + lp);
+                    } else if (cc == lp) {
+                        System.out.println("correcão\n" + lc + ">" + cp + " " + cc + "=" + lp);
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+                        System.out.println("correcão\n" + lc + "<" + cp + " " + cc + ">" + lp);
+                    } else if (cc < lp) {
+                        System.out.println("correcão\n" + lc + "<" + cp + " " + cc + "<" + lp);
+                    } else if (cc == lp) {
+                        System.out.println("correcão\n" + lc + "<" + cp + " " + cc + "=" + lp);
+                    }
+                } else if (lc == cp) {
+                    if (cc > lp) {
+                        System.out.println("correcão\n" + lc + "=" + cp + " " + cc + ">" + lp);
+                    } else if (cc < lp) {
+                        System.out.println("correcão\n" + lc + "=" + cp + " " + cc + "<" + lp);
+                    } else if (cc == lp) {
+                        System.out.println("correcão\n" + lc + "=" + cp + " " + cc + "=" + lp);
+                    }
+                }
+            } else if (cc < cp) {
+                System.out.println(lc + "<" + lp
+                        + cc + "<" + cp);
+                if (lc > cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                }
+            } else if (cc == cp) {
+                System.out.println(lc + "<" + lp
+                        + cc + "<" + cp);
+                if (lc > cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                }
+            }
+        } else if (lc == lp) {
+            if (cc > cp) {
+                System.out.println(lc + "<" + lp
+                        + cc + ">" + cp);
+                if (lc > cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                }
+            } else if (cc < cp) {
+                System.out.println(lc + "=" + lp
+                        + cc + "<" + cp);
+                if (lc > cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                }
+            } else if (cc == cp) {
+                System.out.println(lc + "=" + lp
+                        + cc + "=" + cp);
+                if (lc > cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                } else if (lc < cp) {
+                    if (cc > lp) {
+
+                    } else if (cc < lp) {
+
+                    } else if (cc == lp) {
+
+                    }
+                }
+            }
+        }
+    }
+
+    public static void coteCorrecao(double cc, double lc, double cp, double lp) {
+        if (lc > cp) {
+            if (cc > lp) {
+                System.out.println("correcão\n" + lc + ">" + cp + " " + cc + ">" + lp);
+            } else if (cc < lp) {
+                System.out.println("correcão\n" + lc + ">" + cp + " " + cc + "<" + lp);
+            } else if (cc == lp) {
+                System.out.println("correcão\n" + lc + ">" + cp + " " + cc + "=" + lp);
+            }
+        } else if (lc < cp) {
+            if (cc > lp) {
+                System.out.println("correcão\n" + lc + "<" + cp + " " + cc + ">" + lp);
+            } else if (cc < lp) {
+                System.out.println("correcão\n" + lc + "<" + cp + " " + cc + "<" + lp);
+            } else if (cc == lp) {
+                System.out.println("correcão\n" + lc + "<" + cp + " " + cc + "=" + lp);
+            }
+        } else if (lc == cp) {
+            if (cc > lp) {
+                System.out.println("correcão\n" + lc + "=" + cp + " " + cc + ">" + lp);
+            } else if (cc < lp) {
+                System.out.println("correcão\n" + lc + "=" + cp + " " + cc + "<" + lp);
+            } else if (cc == lp) {
+                System.out.println("correcão\n" + lc + "=" + cp + " " + cc + "=" + lp);
+            }
+        }
+    }
 }

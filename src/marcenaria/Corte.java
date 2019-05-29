@@ -14,12 +14,18 @@ import marcenaria.dado.ModuloConector;
  * @author Carlos
  */
 public class Corte {
-    
+
     public static void main(String[] args) {
+        double[] CC = new double[2];
+        double[] LL = new double[CC.length];
+        CC[0] = 100;
+        CC[1] = 100;
+        LL[0] = 60;
+        LL[1] = 60;
         //PecaParaCortar(220, 160, 220,160, true);
-        cote(220, 160, c, l,s);
+        cote(220, 160, CC, LL, s);
         //dividirCorte(0, 220, 160, c, l);
-        planodeCorte();
+
     }
     static Connection conexao;
     static PreparedStatement pst;
@@ -28,7 +34,7 @@ public class Corte {
     private static final String TABELA = Corte.class.getSimpleName();
     private static double[] compriCorte = new double[2];
     private static double[] largCorte = new double[compriCorte.length];
-    static double c = 50, l = 160,s=0.5;
+    static double c = 50, l = 160, s = 0.5;
 
     /**
      * *
@@ -41,8 +47,12 @@ public class Corte {
      *
      */
     public static void planodeCorte() {
-        for (int w = 0; w < largCorte.length; w++) {
-            System.out.println(getCompriCorte(w) + "X" + getLargCorte(w));
+        for (int w = 0; w < getLargCorte().length; w++) {
+            if (getCompriCorte(w) != 0.0) {
+                if (getLargCorte(w) != 0.0) {
+                    System.out.println(getCompriCorte(w) + "X" + getLargCorte(w));
+                }
+            }
         }
         System.out.println(c + "X" + l);
     }
@@ -56,7 +66,7 @@ public class Corte {
      * @return
      */
     public static double precoPecaParaCortar(double comprChapa, double largChapa, double precChapa, double compPeca, double largPeca) {
-        
+
         double preco;
         if (precChapa < 0 || compPeca > comprChapa || largPeca > largChapa) {
             preco = 0;
@@ -104,7 +114,7 @@ public class Corte {
                 }
                 JOptionPane.showMessageDialog(null, frase);
             } else if (comprChapa == compPeca && largChapa == largPeca) {
-                
+
             } else {
                 setCompriCorte(i, comprChapa, compPeca);
                 setLargCorte(i, largChapa, largPeca);
@@ -134,6 +144,18 @@ public class Corte {
      */
     public static void setCompriCorte(double[] compriCorte) {
         Corte.compriCorte = compriCorte;
+    }
+
+    /**
+     * @param array
+     * @param multiplicado
+     */
+    public static void setCompriCorte(int array, int multiplicado) {
+        if (multiplicado > 0) {
+            Corte.compriCorte = new double[array * multiplicado];
+        } else {
+            JOptionPane.showMessageDialog(null, "O multiplicado é:" + multiplicado + " tem que ser maior que 0");
+        }
     }
 
     /**
@@ -189,6 +211,18 @@ public class Corte {
     }
 
     /**
+     * @param array
+     * @param multiplicado
+     */
+    public static void setLargCorte(int array, int multiplicado) {
+        if (multiplicado > 0) {
+            Corte.largCorte = new double[array * multiplicado];
+        } else {
+            JOptionPane.showMessageDialog(null, "O multiplicado é:" + multiplicado + " tem que ser maior que 0");
+        }
+    }
+
+    /**
      * @param pos
      * @param largChapa
      * @param largPeca
@@ -199,7 +233,6 @@ public class Corte {
         } else {
             Corte.largCorte[pos] = largChapa - largPeca;
         }
-        
     }
 
     /**
@@ -209,8 +242,11 @@ public class Corte {
      * @param comprChapa
      */
     public static void horizontalCorte(int pos, double largChapa, double largPeca, double comprChapa) {
-        setLargCorte(pos, largChapa, largPeca);
-        setCompriCorte(pos, comprChapa);
+        if (largChapa != 0 && comprChapa != 0) {
+            System.out.println("h");
+            setLargCorte(pos, largChapa, largPeca);
+            setCompriCorte(pos, comprChapa);
+        }
     }
 
     /**
@@ -220,8 +256,11 @@ public class Corte {
      * @param largChapa
      */
     public static void verticalCorte(int pos, double comprChapa, double comprPeca, double largChapa) {
-        setCompriCorte(pos, comprChapa, comprPeca);
-        setLargCorte(pos, largChapa);
+        if (largChapa != 0 && comprPeca != 0) {
+            System.out.println("v");
+            setCompriCorte(pos, comprChapa, comprPeca);
+            setLargCorte(pos, largChapa);
+        }
     }
 
     /**
@@ -232,63 +271,90 @@ public class Corte {
      * @param comprPeca
      * @param largChapa
      * @param largPeca
+     * @param serra
      */
     public static void dividirCorte(int pos, double comprChapa, double largChapa, double comprPeca, double largPeca, double serra) {
         double larg, comp;
         for (int i = 0; i <= 1; i++) {
             if (i == 0) {
-                verticalCorte(i, comprChapa, comprPeca+serra, largChapa);
+                verticalCorte(i, comprChapa, comprPeca + serra, largChapa);
             } else {
-                horizontalCorte(i, largChapa, largPeca+serra, comprChapa);
+                horizontalCorte(i, largChapa, largPeca + serra, comprChapa);
             }
         }
         if ((getCompriCorte(0) / comprChapa) * (getLargCorte(0) / largChapa) * 100 < (getCompriCorte(1) / comprChapa) * (getLargCorte(1) / largChapa) * 100) {
             larg = getLargCorte(0);
             comp = getCompriCorte(0);
-            verticalCorte(0, comprChapa, comprPeca+serra, largPeca);
+            verticalCorte(0, comprChapa, comprPeca + serra, largPeca);
         } else {
             larg = getLargCorte(1);
             comp = getCompriCorte(1);
-            horizontalCorte(1, largChapa, largPeca+serra, comprPeca);
+            horizontalCorte(1, largChapa, largPeca + serra, comprPeca);
         }
     }
-    
-    public static void cote(double cc, double lc, double cp, double lp,double serra) {
+
+    /**
+     * @param cc
+     * @param lc
+     * @param cp
+     * @param lp
+     * @param serra
+     */
+    public static void cote(double cc, double lc, double cp, double lp, double serra) {
         if (lc > lp) {
             if (cc > cp) {
-                System.out.println(lc + ">" + lp + " " + cc + ">" + cp);
-                dividirCorte(0, cp, lp, cp, lp,serra);
+                System.out.println("1) " + lc + ">" + lp + " " + cc + ">" + cp);
+                dividirCorte(0, cp, lp, cp, lp, serra);
             } else if (cc < cp) {
-                System.out.println(lc + ">" + lp + " " + cc + "<" + cp);
-                coteCorrecao(cc, lc, cp, lp,serra);
+                System.out.println("2) " + lc + ">" + lp + " " + cc + "<" + cp);
+                coteCorrecao(cc, lc, cp, lp, serra);
             } else if (cc == cp) {
-                System.out.println(lc + ">" + lp + cc + "=" + cp);
-                dividirCorte(0, cp, lp, cp-serra, lp,serra);
+                System.out.println("3) " + lc + ">" + lp + " " + cc + "=" + cp);
+                dividirCorte(0, cp, lp, cp - serra, lp, serra);
             }
         } else if (lc < lp) {
             if (cc > cp) {
-                System.out.println(lc + "<" + lp + cc + ">" + cp);
-                coteCorrecao(cc, lc, cp, lp,serra);
+                System.out.println("4) " + lc + "<" + lp + " " + cc + ">" + cp);
+                coteCorrecao(cc, lc, cp, lp, serra);
             } else if (cc < cp) {
-                System.out.println(lc + "<" + lp + cc + "<" + cp);
-                coteCorrecao(cc, lc, cp, lp,serra);
+                System.out.println("5) " + lc + "<" + lp + " " + cc + "<" + cp);
+                coteCorrecao(cc, lc, cp, lp, serra);
             } else if (cc == cp) {
-                System.out.println(lc + "<" + lp + cc + "=" + cp);
-                coteCorrecao(cc, lc, cp-serra, lp,serra);
+                System.out.println("6) " + lc + "<" + lp + " " + cc + "=" + cp);
+                coteCorrecao(cc, lc, cp - serra, lp, serra);
             }
         } else if (lc == lp) {
             if (cc > cp) {
-                System.out.println(lc + "=" + lp + cc + ">" + cp);
-                dividirCorte(0, cp, lp, cp, lp-serra,serra);
+                System.out.println("7) " + lc + "=" + lp + " " + cc + ">" + cp);
+                dividirCorte(0, cc, lc, cp, lp - serra, serra);
             } else if (cc < cp) {
-                System.out.println(lc + "=" + lp + cc + "<" + cp);
-                coteCorrecao(cc, lc, cp, lp,serra);
+                System.out.println("8) " + lc + "=" + lp + " " + cc + "<" + cp);
+                coteCorrecao(cc, lc, cp, lp, serra);
             } else if (cc == cp) {
-                System.out.println(lc + "=" + lp + cc + "=" + cp);
-                dividirCorte(0, cc, lc, cp-serra, lp-serra,serra);
+                System.out.println("9) " + lc + "=" + lp + " " + cc + "=" + cp);
+                dividirCorte(0, cc, lc, cp - serra, lp - serra, serra);
             }
         }
     }
+
+    /**
+     */
+    public static void cote(double cc, double lc, double[] cp, double[] lp, double serra) {
+        setCompriCorte(cp.length, 2);
+        setLargCorte(lp.length, 2);
+        for (int i = 0; i < getCompriCorte().length; i++) {
+            if (i == 0) {
+                cote(cc, lc, cp[i], lp[i], serra);
+                planodeCorte();
+            } else {
+                for (int j = 0;; j++) {
+                    cote(getCompriCorte(j), getLargCorte(j), cp[i], lp[i], serra);
+                    planodeCorte();
+                }
+            }
+        }
+    }
+
     /**
      * @param cc
      * @param lc
@@ -300,12 +366,12 @@ public class Corte {
         if (lc > cp) {
             if (cc > lp) {
                 System.out.println("1correcão\n" + lc + ">" + cp + " " + cc + ">" + lp);
-                dividirCorte(0, cc, lc, lp, cp,serra);
-            } else if (cc < lp+serra) {
+                dividirCorte(0, cc, lc, lp, cp, serra);
+            } else if (cc < lp + serra) {
                 System.out.println("2correcão\n" + lc + ">" + cp + " " + cc + "<" + lp);
             } else if (cc == lp) {
                 System.out.println("3correcão\n" + lc + ">" + cp + " " + cc + "=" + lp);
-                dividirCorte(0, cp, lp, cp, lp-serra,serra);
+                dividirCorte(0, cp, lp, cp, lp - serra, serra);
             }
         } else if (lc < cp) {
             if (cc > lp) {
@@ -318,12 +384,12 @@ public class Corte {
         } else if (lc == cp) {
             if (cc > lp) {
                 System.out.println("7correcão\n" + lc + "=" + cp + " " + cc + ">" + lp);
-                dividirCorte(0, cc, lc, lp, cp-serra,serra);
+                dividirCorte(0, cc, lc, lp, cp - serra, serra);
             } else if (cc < lp) {
                 System.out.println("8correcão\n" + lc + "=" + cp + " " + cc + "<" + lp);
             } else if (cc == lp) {
                 System.out.println("9correcão\n" + lc + "=" + cp + " " + cc + "=" + lp);
-                dividirCorte(0, cc, lc, lp-serra, cp-serra,serra);
+                dividirCorte(0, cc, lc, lp - serra, cp - serra, serra);
             }
         }
     }

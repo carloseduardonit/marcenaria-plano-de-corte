@@ -23,12 +23,13 @@ public class Chapa {
      */
     public static void main(String[] args) {
         deletadaChapa();
-        Peca.criadaPeca();
-        setComprChapa(220.0);
-        setLargChapa(110.0);
-        setEspesChapa(1.8);
-        setPrecoChapa(150.0);
-        inserirChapa();
+        criadaChapa();
+        //Peca.criadaPeca();
+       // setComprChapa(220.0);
+        ///setLargChapa(110.0);
+        //setEspesChapa(1.8);
+        //setPrecoChapa(150.0);
+        //inserirChapa();
         //
     }
 

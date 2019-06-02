@@ -18,8 +18,8 @@ public class Corte {
     public static void main(String[] args) {
         double[] CC = new double[2];
         double[] LL = new double[CC.length];
-        CC[0] = 100;
-        CC[1] = 100;
+        CC[0] = 80;
+        CC[1] = 80;
         LL[0] = 60;
         LL[1] = 60;
         //PecaParaCortar(220, 160, 220,160, true);
@@ -34,7 +34,7 @@ public class Corte {
     private static final String TABELA = Corte.class.getSimpleName();
     private static double[] compriCorte = new double[2];
     private static double[] largCorte = new double[compriCorte.length];
-    static double c = 50, l = 160, s = 0.5;
+    static double c = 0, l = 0, s = 0.5;
 
     /**
      * *
@@ -54,7 +54,8 @@ public class Corte {
                 }
             }
         }
-        System.out.println(c + "X" + l);
+        System.out.println("\n");
+        //System.out.println(c + "X" + l);
     }
 
     /**
@@ -304,13 +305,13 @@ public class Corte {
         if (lc > lp) {
             if (cc > cp) {
                 System.out.println("1) " + lc + ">" + lp + " " + cc + ">" + cp);
-                dividirCorte(0, cp, lp, cp, lp, serra);
+                dividirCorte(0, cc, lc, cp, lp, serra);
             } else if (cc < cp) {
                 System.out.println("2) " + lc + ">" + lp + " " + cc + "<" + cp);
                 coteCorrecao(cc, lc, cp, lp, serra);
             } else if (cc == cp) {
                 System.out.println("3) " + lc + ">" + lp + " " + cc + "=" + cp);
-                dividirCorte(0, cp, lp, cp - serra, lp, serra);
+                dividirCorte(0, cc, lc, cp - serra, lp, serra);
             }
         } else if (lc < lp) {
             if (cc > cp) {
@@ -335,9 +336,15 @@ public class Corte {
                 dividirCorte(0, cc, lc, cp - serra, lp - serra, serra);
             }
         }
+        planodeCorte();
     }
 
     /**
+     * @param cc
+     * @param lc
+     * @param cp
+     * @param lp
+     * @param serra
      */
     public static void cote(double cc, double lc, double[] cp, double[] lp, double serra) {
         setCompriCorte(cp.length, 2);
@@ -347,7 +354,10 @@ public class Corte {
                 cote(cc, lc, cp[i], lp[i], serra);
                 planodeCorte();
             } else {
-                for (int j = 0;; j++) {
+                for (int j = 0;j<2; j++) {
+                    if (getCompriCorte(j)>=cp[j]){
+                        
+                    }
                     cote(getCompriCorte(j), getLargCorte(j), cp[i], lp[i], serra);
                     planodeCorte();
                 }
@@ -362,7 +372,7 @@ public class Corte {
      * @param lp
      * @param serra
      */
-    public static void coteCorrecao(double cc, double lc, double cp, double lp, double serra) {
+    public static void coteCorrecao( double cc, double lc,double cp, double lp, double serra) {
         if (lc > cp) {
             if (cc > lp) {
                 System.out.println("1correcão\n" + lc + ">" + cp + " " + cc + ">" + lp);
@@ -390,6 +400,19 @@ public class Corte {
             } else if (cc == lp) {
                 System.out.println("9correcão\n" + lc + "=" + cp + " " + cc + "=" + lp);
                 dividirCorte(0, cc, lc, lp - serra, cp - serra, serra);
+            }
+        }
+    }
+    /**
+     * @param cc
+     * @param lc
+     * @param cp
+     * @param lp*/
+    public static void SomaPeça(double cc, double lc,double [] cp,double []lp,double serra){
+        double [][] peca = new double [cp.length+1][lp.length+1];
+        for(int i=0;i<peca.length;){
+            for(;;){
+                
             }
         }
     }

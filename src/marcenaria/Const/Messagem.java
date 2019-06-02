@@ -172,8 +172,11 @@ public class Messagem {
         chamarTelaConfirma(mens, title, opcao);
     }
 
-    /**
-     * @param tabela
+    /** 
+     * Como este metodo informar o titulo, a messagem e seta a opção
+     * 
+     * "Deseja Excluir a Tabela " + tabela + " !!", title = tabela;
+     * @param tabela  o informar  qual tabela sera excluida.
      */
     public static void deletadaTabela(String tabela) {
         String opcao = "deleta";

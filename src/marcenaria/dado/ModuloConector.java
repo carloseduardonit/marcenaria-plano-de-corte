@@ -5,6 +5,7 @@
  */
 package marcenaria.dado;
    
+import com.mysql.jdbc.CommunicationsException;
 import java.sql.*;
 import marcenaria.Const.Messagem;
 
@@ -29,12 +30,16 @@ public class ModuloConector {
         try {
             Class.forName(DRIVER);
             return conexao = DriverManager.getConnection(URLD, USER, PASS);
-        } catch (ClassNotFoundException cnfe) {
+        } //catch{        }
+        catch (ClassNotFoundException cnfe) {
             Messagem.chamarTela("O Servidor ultra-passou o limite de Conexão");
-        /*}  catch(){
+        }  catch(CommunicationsException e){
             Messagem.chamarTela("O banco de dados deve esta desligado");
-        */}catch (SQLException e) {
-            Messagem.chamarTela(e);
+        }catch (Exception e) {
+            CommunicationsException ce = null;
+            
+                Messagem.chamarTela("O banco de dados deve esta desligado");
+            
         }
         return conexao;
     }

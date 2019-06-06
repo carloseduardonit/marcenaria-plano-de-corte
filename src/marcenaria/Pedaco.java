@@ -35,7 +35,7 @@ public class Pedaco {
     }
 
     /**
-     * 
+     *
      */
     public static void criadoPedaco() {
         try {
@@ -47,6 +47,7 @@ public class Pedaco {
                     + "comp double not null,"
                     + "larg double not null,"
                     + "espe double not null, "
+                    + "incData Date,"
                     + "foreign key (idchapa) references Chapa(id), "
                     + "foreign key(idpeca) references peca(id))";
             stmt = conexao.createStatement();
@@ -60,14 +61,14 @@ public class Pedaco {
                 }
             }
         } catch (NullPointerException e) {
-            Messagem.chamarTela(TABELA);
+            Messagem.chamarTela("variavel nular");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
 
     /**
-     * 
+     *
      */
     public static void deletaPedaco() {
         try {
@@ -91,12 +92,16 @@ public class Pedaco {
     }
 
     /**
+     * @param idChapa
+     * @param idPeca
      * @param comp
      * @param larg
      * @param espe
+     * @param incData
      */
-    public static void adicionarPedaco(double comp, double larg, double espe) {
+    public static void adicionarPedaco(int idChapa, int idPeca, double comp, double larg, double espe, Date incData) {
         try {
+            Pedaco();
             String sql = "insert into from " + TABELA + " (comp,larg,espe) values (?,?,?)";
             pst = conexao.prepareStatement(sql);
             pst.setDouble(1, comp);
@@ -114,12 +119,16 @@ public class Pedaco {
     }
 
     /**
+     * @param idChapa
+     * @param idPeca
      * @param comp
      * @param larg
      * @param espe
+     * @param incData
      */
-    public static void editarPedaco(double comp, double larg, double espe) {
+    public static void editarPedaco(int idChapa, int idPeca, double comp, double larg, double espe, Date incData) {
         try {
+            Pedaco();
             String sql = "";
             pst = conexao.prepareStatement(sql);
             pst.setDouble(1, comp);
@@ -138,12 +147,16 @@ public class Pedaco {
     }
 
     /**
+     * @param idChapa
+     * @param idPeca
      * @param comp
      * @param larg
      * @param espe
+     * @param incData
      */
-    public static void excluirPedaco(double comp, double larg, double espe) {
+    public static void excluirPedaco(int idChapa, int idPeca, double comp, double larg, double espe, Date incData) {
         try {
+            Pedaco();
             String sql = "delete from " + TABELA + " where espe = ?";
             pst = conexao.prepareStatement(sql);
             pst.setDouble(1, espe);
@@ -160,18 +173,86 @@ public class Pedaco {
     }
 
     /**
+     * @param idChapa
+     * @param idPeca
      * @param comp
      * @param larg
      * @param espe
+     * @param incData
+     * @param ou
      */
-    public static void pesquisarPedaco(double comp, double larg, double espe) {
+    public static void pesquisarPedaco(int idChapa, int idPeca, double comp, double larg, double espe, Date incData,boolean ou) {
         try {
-            String sql = "select * from " + TABELA + " where espe = ?";
+            Pedaco();
+            int qt = 0, cqt, lqt, eqt;
+            boolean c, l, e;
+            String a;
+            if (ou ==false){
+                a = "and";
+            }else{
+                a = "or";
+            }
+            String sql = "select idchapa from " + TABELA + " where ";
+            if (String.valueOf(comp).equals(null) == false && !String.valueOf(espe).isEmpty()) {
+                if (qt == 0) {
+                    sql += "comp = ?";
+
+                } else {
+                    sql += a+" comp = ?";
+                }
+                qt++;
+                c = false;
+            } else {
+                c = false;
+            }
+            if (String.valueOf(larg).equals(null) == false && !String.valueOf(larg).isEmpty()) {
+                if (qt == 0) {
+                    sql += "larg = ?";
+                } else {
+                    sql += a+" larg = ?";
+                }
+                qt++;
+                l = false;
+            } else {
+                l = false;
+            }
+            if (String.valueOf(espe).equals(null) == false && !String.valueOf(espe).isEmpty()) {
+                if (qt == 0) {
+                    sql += "espe = ?";
+                } else {
+                    sql += a+" espe = ?";
+                }
+                qt++;
+                e = false;
+            } else {
+                e = false;
+            }
+
             pst = conexao.prepareStatement(sql);
-            pst.setDouble(1, espe);
+            for (int i = 1; i <= qt; i++) {
+                if (!String.valueOf(comp).isEmpty() && c == false) {
+                    cqt = i;
+                    pst.setDouble(cqt, comp);
+                    c = true;
+                } else if (!String.valueOf(larg).isEmpty() && l == false) {
+                    lqt = i;
+                    pst.setDouble(lqt, larg);
+                    l = true;
+                } else if (!String.valueOf(espe).isEmpty() && e == false) {
+                    eqt = i;
+                    pst.setDouble(eqt, espe);
+                    e = true;
+                }
+            }
             rs = pst.executeQuery();
             if (rs.next()) {
-
+                setIdChapa(rs.getInt(1));
+                setIdPeca(rs.getInt(2));
+                setComp(rs.getDouble(3));
+                setLarg(rs.getDouble(4));
+                setEspe(rs.getDouble(5));
+                setIncData(rs.getDate(6));
+                ModuloConector.fecharConexao(conexao, rs, pst, stmt);
             }
         } catch (NullPointerException e) {
             Messagem.chamarTela(e);
@@ -179,7 +260,8 @@ public class Pedaco {
             Messagem.chamarTela(e);
         }
     }
- // Gets e Sets
+    // Gets e Sets
+
     /**
      * @return
      */

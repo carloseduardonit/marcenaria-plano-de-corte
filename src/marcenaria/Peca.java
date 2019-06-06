@@ -84,7 +84,19 @@ public class Peca {
     public static void pesquisarPeca() {
 
     }
-
+/**soma as peça
+    Se 109,5X79,5*/
+    public static void SomarPeca(){
+        double somar;
+        if(getLargura()==0){
+            
+        }                
+    }
+    public static void QuantPeca(){
+        
+    }
+    
+    //Sets e Gets
     /**
      * @return
      */

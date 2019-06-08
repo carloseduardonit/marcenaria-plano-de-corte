@@ -8,6 +8,7 @@ package marcenaria;
 import java.awt.HeadlessException;
 import java.sql.*;
 import javax.swing.JOptionPane;
+import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
 
 /**
@@ -127,10 +128,10 @@ public class Material {
             Material();
             String sql = "";
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                if(!tipoMaterial.isEmpty()&&!String.valueOf(espessura).isEmpty()){
-                sql = "drop table " + Tabela + "where tipoMaterial =? and espessura =?";
-                } else if(!tipoMaterial.isEmpty()){
-                     sql = "drop table " + Tabela + "where ";
+                if (!tipoMaterial.isEmpty() && !String.valueOf(espessura).isEmpty()) {
+                    sql = "drop table " + Tabela + "where tipoMaterial =? and espessura =?";
+                } else if (!tipoMaterial.isEmpty()) {
+                    sql = "drop table " + Tabela + "where ";
                 }
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
                 sql = "drop table " + Tabela + "(quantidade,comprimento,largura,espessura,preco,id" + Chapa.getTABELA() + ") values (?,?,?,?,?,?,?)";
@@ -163,15 +164,15 @@ public class Material {
      * @param espessura
      * @param preco
      */
-    public static void pesquisarMaterial(String Tabela, String tipoMaterial,int quantidade, double comprimento, double largura, double espessura, double preco) {
+    public static void pesquisarMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento, double largura, double espessura, double preco) {
         try {
             Material();
             String sql = "";
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                if(!tipoMaterial.isEmpty()){
+                if (!tipoMaterial.isEmpty()) {
                     sql = "select * from " + Tabela + " where id" + Tabela + " =?";
                 }
-                
+
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
                 sql = "select * from " + Tabela + " where id" + Tabela + " =?";
             }
@@ -263,67 +264,116 @@ public class Material {
         } catch (SQLIntegrityConstraintViolationException e) {
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
                 // Primeiro deleta a Tabela Peca depois a Tabela Chapa
+                Pedaco.deletaPedaco();
                 deletarMaterial(Peca.getTABELA());
-                deletarMaterial(Chapa.getTABELA());
+                deletarMaterial(Tabela);
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
+                Pedaco.deletaPedaco();
+                deletarMaterial(Tabela);
+            } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
+                deletarMaterial(Tabela);
+            } else {
+                Messagem.chamarTela(Tabela + " esta  não foi criada o elseif");
             }
         } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
 
+    /**
+     * @return
+     */
     public static String getTipoMaterial() {
         return tipoMaterial;
     }
 
+    /**
+     * @param tipoMaterial
+     */
     public static void setTipoMaterial(String tipoMaterial) {
         Material.tipoMaterial = tipoMaterial;
     }
 
+    /**
+     * @return
+     */
     public static int getQuantMaterial() {
         return quantMaterial;
     }
 
+    /**
+     * @param quantMaterial
+     */
     public static void setQuantMaterial(int quantMaterial) {
         Material.quantMaterial = quantMaterial;
     }
 
+    /**
+     * @return
+     */
     public static int getIdMaterial() {
         return idMaterial;
     }
 
+    /**
+     * @param idMaterial
+     */
     public static void setIdMaterial(int idMaterial) {
         Material.idMaterial = idMaterial;
     }
 
+    /**
+     * @return
+     */
     public static double getComprMaterial() {
         return comprMaterial;
     }
 
+    /**
+     * @param comprMaterial
+     */
     public static void setComprMaterial(double comprMaterial) {
         Material.comprMaterial = comprMaterial;
     }
 
+    /**
+     * @return
+     */
     public static double getLargMarterial() {
         return largMarterial;
     }
 
+    /**
+     * @param largMarterial
+     */
     public static void setLargMarterial(double largMarterial) {
         Material.largMarterial = largMarterial;
     }
 
+    /**
+     * @return
+     */
     public static double getEspesMaterial() {
         return espesMaterial;
     }
 
+    /**
+     * @param espesMaterial
+     */
     public static void setEspesMaterial(double espesMaterial) {
         Material.espesMaterial = espesMaterial;
     }
 
+    /**
+     * @return
+     */
     public static double getPrecMaterial() {
         return precMaterial;
     }
 
+    /**
+     * @param precMaterial
+     */
     public static void setPrecMaterial(double precMaterial) {
         Material.precMaterial = precMaterial;
     }

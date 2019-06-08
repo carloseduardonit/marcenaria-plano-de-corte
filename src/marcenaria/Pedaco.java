@@ -29,7 +29,7 @@ public class Pedaco {
         criadoPedaco();
         deletaPedaco();
     }
-
+/***/
     private static void Pedaco() {
         conexao = ModuloConector.getConecction();
     }
@@ -38,18 +38,19 @@ public class Pedaco {
      *
      */
     public static void criadoPedaco() {
+        String sql ="";
         try {
             Pedaco();
-            String sql = "create table if not exists " + TABELA + "("
+            sql = "create table if not exists " + TABELA + "("
                     + "id int auto_increment primary key,"
-                    + "idchapa int default '0',"
-                    + "idpeca int default 0,"
+                    + "id"+Chapa.getTABELA()+" int default '0',"
+                    + "id"+Peca.getTABELA()+" int default 0,"
                     + "comp double not null,"
                     + "larg double not null,"
                     + "espe double not null, "
-                    + "incData Date,"
-                    + "foreign key (idchapa) references Chapa(id), "
-                    + "foreign key(idpeca) references peca(id))";
+                    + "incData Timestamp,"
+                    + "foreign key (id"+Chapa.getTABELA()+") references " + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), "
+                    + "foreign key (id"+Peca.getTABELA()+") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
             stmt = conexao.createStatement();
             Messagem.criadoTabela(TABELA);
             int criada = Messagem.getCriada();
@@ -61,7 +62,15 @@ public class Pedaco {
                 }
             }
         } catch (NullPointerException e) {
-            Messagem.chamarTela("variavel nular");
+            Messagem.chamarTela("variavel nular");  
+        } catch (SQLSyntaxErrorException ssee) {
+            Messagem.chamarTela(ssee);
+            Messagem.chamarTela(sql);
+            Chapa.criadaChapa();
+            Peca.criadaPeca();
+            Pedaco.criadoPedaco();
+        } catch (SQLException se) {
+            Messagem.chamarTela(se);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -71,24 +80,7 @@ public class Pedaco {
      *
      */
     public static void deletaPedaco() {
-        try {
-            Pedaco();
-            String sql = "drop if exists " + TABELA;
-            stmt = conexao.createStatement();
-            Messagem.deletadaTabela(TABELA);
-            int deleta = Messagem.getDeleta();
-            if (deleta == JOptionPane.OK_OPTION) {
-                int deletado = stmt.executeUpdate(sql);
-                if (deletado == 0) {
-                    ModuloConector.fecharConexao(conexao, rs, pst, stmt);
-                    Messagem.chamarTela(Messagem.tabelaDeletada(TABELA));
-                }
-            }
-        } catch (NullPointerException e) {
-            Messagem.chamarTela(e);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+            Material.deletarMaterial(TABELA);
     }
 
     /**
@@ -181,15 +173,15 @@ public class Pedaco {
      * @param incData
      * @param ou
      */
-    public static void pesquisarPedaco(int idChapa, int idPeca, double comp, double larg, double espe, Date incData,boolean ou) {
+    public static void pesquisarPedaco(int idChapa, int idPeca, double comp, double larg, double espe, Date incData, boolean ou) {
         try {
             Pedaco();
             int qt = 0, cqt, lqt, eqt;
             boolean c, l, e;
             String a;
-            if (ou ==false){
+            if (ou == false) {
                 a = "and";
-            }else{
+            } else {
                 a = "or";
             }
             String sql = "select idchapa from " + TABELA + " where ";
@@ -198,7 +190,7 @@ public class Pedaco {
                     sql += "comp = ?";
 
                 } else {
-                    sql += a+" comp = ?";
+                    sql += a + " comp = ?";
                 }
                 qt++;
                 c = false;
@@ -209,7 +201,7 @@ public class Pedaco {
                 if (qt == 0) {
                     sql += "larg = ?";
                 } else {
-                    sql += a+" larg = ?";
+                    sql += a + " larg = ?";
                 }
                 qt++;
                 l = false;
@@ -220,7 +212,7 @@ public class Pedaco {
                 if (qt == 0) {
                     sql += "espe = ?";
                 } else {
-                    sql += a+" espe = ?";
+                    sql += a + " espe = ?";
                 }
                 qt++;
                 e = false;
@@ -360,4 +352,9 @@ public class Pedaco {
         Pedaco.incData = incData;
     }
 
+    public static String getTABELA() {
+        return TABELA;
+    }
+
+    
 }

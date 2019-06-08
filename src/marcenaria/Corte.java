@@ -23,9 +23,12 @@ public class Corte {
         LL[0] = 79.5;
         LL[1] = 79.5;
         //PecaParaCortar(220, 160, 220,160, true);
-        cote(220, 160, 1.8, CC, LL, s);
+       // cote(220, 160, 1.8, CC, LL, s);
         //dividirCorte(0, 220, 160, c, l);
 
+Pedaco.deletaPedaco();
+
+Pedaco.criadoPedaco();
     }
     static Connection conexao;
     static PreparedStatement pst;

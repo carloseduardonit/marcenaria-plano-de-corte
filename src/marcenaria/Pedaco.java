@@ -28,7 +28,7 @@ public class Pedaco {
 
     /**
      *
-     * @param args
+     * @param args Metodo de teste
      */
 
     public static void main(String[] args) {
@@ -37,7 +37,7 @@ public class Pedaco {
     }
 
     /**
-     * 
+     * Abre a conexão com o banco de dado
      */
     private static void Pedaco() {
         conexao = ModuloConector.getConecction();
@@ -93,21 +93,21 @@ public class Pedaco {
     }
 
     /**
-     * @param idChapa
-     * @param idPeca
-     * @param comp
-     * @param larg
-     * @param espe
-     * @param incData
+     * @param idChapa Informar um valor inteiro do Id da Chapa
+     * @param idPeca Informar um valor inteiro do Id da Peca
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço
+     * @param largPedaco Informar um valor double da largura da Pedaço
+     * @param espePedaco Informar um valor double da espessura do Pedaço
+     * @param incData Informar um valor Date do dia da Inclusão
      */
-    public static void adicionarPedaco(int idChapa, int idPeca, double comp, double larg, double espe, Date incData) {
+    public static void adicionarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData) {
         try {
             Pedaco();
             String sql = "insert into from " + TABELA + " (comp,larg,espe) values (?,?,?)";
             pst = conexao.prepareStatement(sql);
-            pst.setDouble(1, comp);
-            pst.setDouble(2, larg);
-            pst.setDouble(3, espe);
+            pst.setDouble(1, compPedaco);
+            pst.setDouble(2, largPedaco);
+            pst.setDouble(3, espePedaco);
             int adicionar = pst.executeUpdate();
             if (adicionar == 0) {
                 Messagem.chamarTela(Messagem.ADICIONADO(sql));
@@ -120,21 +120,21 @@ public class Pedaco {
     }
 
     /**
-     * @param idChapa
-     * @param idPeca
-     * @param comp
-     * @param larg
-     * @param espe
-     * @param incData
+     * @param idChapa Informar um valor inteiro do Id da Chapa
+     * @param idPeca Informar um valor inteiro do Id da Peca
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço
+     * @param largPedaco Informar um valor double da largura da Pedaço
+     * @param espePedaco Informar um valor double da espessura do Pedaço
+     * @param incData Informar um valor Date do dia da Inclusão
      */
-    public static void editarPedaco(int idChapa, int idPeca, double comp, double larg, double espe, Date incData) {
+    public static void editarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData) {
         try {
             Pedaco();
             String sql = "";
             pst = conexao.prepareStatement(sql);
-            pst.setDouble(1, comp);
-            pst.setDouble(2, larg);
-            pst.setDouble(3, espe);
+            pst.setDouble(1, compPedaco);
+            pst.setDouble(2, largPedaco);
+            pst.setDouble(3, espePedaco);
             int editar = pst.executeUpdate();
             if (editar == 0) {
                 ModuloConector.fecharConexao(conexao, rs, pst, stmt);
@@ -148,19 +148,19 @@ public class Pedaco {
     }
 
     /**
-     * @param idChapa
-     * @param idPeca
-     * @param comp
-     * @param larg
-     * @param espe
-     * @param incData
+     * @param idChapa Informar um valor inteiro do Id da Chapa
+     * @param idPeca Informar um valor inteiro do Id da Peca
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço
+     * @param largPedaco Informar um valor double da largura da Pedaço
+     * @param espePedaco Informar um valor double da espessura do Pedaço
+     * @param incData Informar um valor Date do dia da Inclusão
      */
-    public static void excluirPedaco(int idChapa, int idPeca, double comp, double larg, double espe, Date incData) {
+    public static void excluirPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData) {
         try {
             Pedaco();
             String sql = "delete from " + TABELA + " where espe = ?";
             pst = conexao.prepareStatement(sql);
-            pst.setDouble(1, espe);
+            pst.setDouble(1, espePedaco);
             int excluir = pst.executeUpdate();
             if (excluir == 0) {
                 ModuloConector.fecharConexao(conexao, rs, pst, stmt);
@@ -174,15 +174,15 @@ public class Pedaco {
     }
 
     /**
-     * @param idChapa
-     * @param idPeca
-     * @param comp
-     * @param larg
-     * @param espe
-     * @param incData
+     * @param idChapa Informar um valor inteiro do Id da Chapa
+     * @param idPeca Informar um valor inteiro do Id da Peca
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço
+     * @param largPedaco Informar um valor double da largura da Pedaço
+     * @param espePedaco Informar um valor double da espessura do Pedaço
+     * @param incData Informar um valor Date do dia da Inclusão
      * @param ou
      */
-    public static void pesquisarPedaco(int idChapa, int idPeca, double comp, double larg, double espe, Date incData, boolean ou) {
+    public static void pesquisarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData, boolean ou) {
         try {
             Pedaco();
             int qt = 0, cqt, lqt, eqt;
@@ -194,7 +194,7 @@ public class Pedaco {
                 a = "or";
             }
             String sql = "select idchapa from " + TABELA + " where ";
-            if (String.valueOf(comp).equals(null) == false && !String.valueOf(espe).isEmpty()) {
+            if (String.valueOf(compPedaco).equals(null) == false && !String.valueOf(espePedaco).isEmpty()) {
                 if (qt == 0) {
                     sql += "comp = ?";
 
@@ -206,7 +206,7 @@ public class Pedaco {
             } else {
                 c = false;
             }
-            if (String.valueOf(larg).equals(null) == false && !String.valueOf(larg).isEmpty()) {
+            if (String.valueOf(largPedaco).equals(null) == false && !String.valueOf(largPedaco).isEmpty()) {
                 if (qt == 0) {
                     sql += "larg = ?";
                 } else {
@@ -217,7 +217,7 @@ public class Pedaco {
             } else {
                 l = false;
             }
-            if (String.valueOf(espe).equals(null) == false && !String.valueOf(espe).isEmpty()) {
+            if (String.valueOf(espePedaco).equals(null) == false && !String.valueOf(espePedaco).isEmpty()) {
                 if (qt == 0) {
                     sql += "espe = ?";
                 } else {
@@ -231,17 +231,17 @@ public class Pedaco {
 
             pst = conexao.prepareStatement(sql);
             for (int i = 1; i <= qt; i++) {
-                if (!String.valueOf(comp).isEmpty() && c == false) {
+                if (!String.valueOf(compPedaco).isEmpty() && c == false) {
                     cqt = i;
-                    pst.setDouble(cqt, comp);
+                    pst.setDouble(cqt, compPedaco);
                     c = true;
-                } else if (!String.valueOf(larg).isEmpty() && l == false) {
+                } else if (!String.valueOf(largPedaco).isEmpty() && l == false) {
                     lqt = i;
-                    pst.setDouble(lqt, larg);
+                    pst.setDouble(lqt, largPedaco);
                     l = true;
-                } else if (!String.valueOf(espe).isEmpty() && e == false) {
+                } else if (!String.valueOf(espePedaco).isEmpty() && e == false) {
                     eqt = i;
-                    pst.setDouble(eqt, espe);
+                    pst.setDouble(eqt, espePedaco);
                     e = true;
                 }
             }
@@ -264,105 +264,105 @@ public class Pedaco {
     // Gets e Sets
 
     /**
-     * @return
+     * @return Retonar um valor inteiro do Id da Chapa
      */
     public static int getIdChapa() {
         return idChapa;
     }
 
     /**
-     * @param idChapa
+     * @param idChapa Informar um valor inteiro do Id da Chapa
      */
     public static void setIdChapa(int idChapa) {
         Pedaco.idChapa = idChapa;
     }
 
     /**
-     * @return
+     * @return Retornar um valor inteiro do Id da Peca
      */
     public static int getIdPeca() {
         return idPeca;
     }
 
     /**
-     * @param idPeca
+     * @param idPeca Informar um valor inteiro do Id da Peca
      */
     public static void setIdPeca(int idPeca) {
         Pedaco.idPeca = idPeca;
     }
 
     /**
-     * @return
+     * @return Retornar um valor double da Comprimento da Pedaço
      */
     public static double getComp() {
         return comp;
     }
 
     /**
-     * @param comp
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço
      */
-    public static void setComp(double comp) {
+    public static void setComp(double compPedaco) {
         Pedaco.comp = comp;
     }
 
     /**
-     * @return
+     * @return Retornar um valor double da largura da Pedaço
      */
     public static double getLarg() {
         return larg;
     }
 
     /**
-     * @param larg
+     * @param largPedaco Informar um valor double da largura da Pedaço
      */
-    public static void setLarg(double larg) {
-        Pedaco.larg = larg;
+    public static void setLarg(double largPedaco) {
+        Pedaco.larg = largPedaco;
     }
 
     /**
-     * @return
+     * @return Retornar um valor double da espessura do Pedaço
      */
     public static double getEspe() {
         return espe;
     }
 
     /**
-     * @param espe
+     * @param espePedaco Informar um valor double da espessura do Pedaço
      */
-    public static void setEspe(double espe) {
-        Pedaco.espe = espe;
+    public static void setEspe(double espePedaco) {
+        Pedaco.espe = espePedaco;
     }
 
     /**
-     * @return
+     * @return Retornar um valor double da Preco do Pedaço
      */
     public static double getPrec() {
         return prec;
     }
 
     /**
-     * @param prec
+     * @param precPedaco Informar um valor double da Preco do Pedaço
      */
-    public static void setPrec(double prec) {
-        Pedaco.prec = prec;
+    public static void setPrec(double precPedaco) {
+        Pedaco.prec = precPedaco;
     }
 
     /**
-     * @return
+     * @return Retornar um valor Date do dia da Inclusão.
      */
     public static Date getIncData() {
         return incData;
     }
 
     /**
-     * @param incData
+     * @param incData Informar um valor Date do dia da Inclusão.
      */
     public static void setIncData(Date incData) {
         Pedaco.incData = incData;
     }
 
     /**
-     * @return
+     * @return Retornar uma String com nome da tabela
      */
     public static String getTABELA() {
         return TABELA;

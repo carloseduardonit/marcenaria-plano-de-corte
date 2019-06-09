@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Carlos
- * @since
+ * @since 20/10/2018
  */
 public class Messagem {
 
@@ -18,7 +18,8 @@ public class Messagem {
     private String[] vazia = new String[1];
 //input
 
-    /**
+    /**Este metodo retornar um texto:\n
+     * "ad Foi adicionado com sucesso !!!"
      * @param ad Informar um valor String na Messagem Adicionar.
      * @return Retornar a Messagem (ad Foi adicionado com sucesso !!!)
      */
@@ -27,7 +28,8 @@ public class Messagem {
         return mens;
     }
 
-    /**
+    /**Este metodo retornar um texto:\n
+     * "cr Foi criada com sucesso !!!"
      * @param cr Informar um valor String na Messagem Criar.
      * @return Retornar a Messagem (cr Foi criada com sucesso !!!)
      */
@@ -36,7 +38,8 @@ public class Messagem {
         return mens;
     }
 
-    /**
+    /**Este metodo retornar um texto:\n
+     * "ed Foi editada com sucesso !!!"
      * @param ed Informar um valor String na Messagem Editada.
      * @return Retornar a Messagem (ed Foi editada com sucesso !!!)
      */
@@ -45,7 +48,8 @@ public class Messagem {
         return mens;
     }
 
-    /**
+    /**Este metodo retornar um texto:\n
+     * "ex Foi excluido com sucesso !!!"
      * @param ex Informar um valor String na Messagem Excluido.
      * @return Retornar a Messagem (ex Foi excluido com sucesso !!!)
      */
@@ -54,7 +58,8 @@ public class Messagem {
         return mens;
     }
 
-    /**
+    /**Este metodo retornar um texto:\n
+     * "im Foi imprimido com sucesso !!!"
      * @param im Informar um valor String na Messagem Imprimido.
      * @return Retornar a Messagem (im Foi imprimido com sucesso !!!)
      */
@@ -63,7 +68,8 @@ public class Messagem {
         return mens;
     }
 
-    /**
+    /** Este Metodo retornar  um texto:\n
+	* "Campo va esta vazio"
      * @param va Informar um valor String na Messagem Vazio.
      * @return Retornar a Messagem (Campo va esta vazio);
      */
@@ -73,8 +79,8 @@ public class Messagem {
     }
 
     /**
-     * @param va
-     * @return
+     * @param va Informar um Array String na Messagem Vazio.
+     * @return Retornar a Messagem (Campos vazios: Array de va);
      */
     public static final String VAZIO(String[] va) {
         String mens = "Campos vazios:\n";
@@ -89,17 +95,18 @@ public class Messagem {
     }
 //Tabela
 
-    /**
-     * @param tabela
-     * @return
+    /** Este metodo Retornar um texto:
+     * "Tabela tabela Criada com sucesso !!!"
+     * @param tabela Informar um valor String com nome da Tabela.
+     * @return Retornar (Tabela tabela Criada com sucesso !!!).
      */
     public static final String tabelaCriada(String tabela) {
         return "Tabela " + tabela + " Criada com sucesso !!!";
     }
 
     /**
-     * @param tabela
-     * @return
+     * @param tabela Informar um valor String com nome da Tabela
+     * @return Retornar (Tabela tabela Deletada com sucesso !!!).
      */
     public static final String tabelaDeletada(String tabela) {
         return "Tabela " + tabela + " Deletada com sucesso !!!";
@@ -107,7 +114,7 @@ public class Messagem {
 
 //Tela
     /**
-     * @param o
+     * @param o Informar um valor de Class na Messagem da Tela
      *
      */
     public static void chamarTela(Class o) {
@@ -115,23 +122,25 @@ public class Messagem {
     }
 
     /**
-     * @param o
+     * @param o Informar um Valor de Objeto na Messagem da Tela.
      */
     public static void chamarTela(Object o) {
         JOptionPane.showMessageDialog(null, o);
     }
 
     /**
-     * @param o
+     * @param o Informar um valor String na Messagem da Tela
      */
     public static void chamarTela(String o) {
         JOptionPane.showMessageDialog(null, o);
     }
 
     /**
-     * @param mens
-     * @param title
-     * @param opcao
+     * @param mens Informar um valor String para Messagem.
+     * @param title Informar um valor String para Titulo.
+     * @param opcao Informar um valor String para Opção: deleta ou Deleta -
+     * Utilizar um metodo Auxiliar setDeleta(int deleta) ou criada ou Criada -
+     * Utilizar um metodo Auxiliar setCriada(int criada)
      */
     public static void chamarTelaConfirma(String mens, String title, String opcao) {
         int ver = JOptionPane.showConfirmDialog(null, mens, title, JOptionPane.OK_CANCEL_OPTION);
@@ -172,7 +181,10 @@ public class Messagem {
     }
 
     /**
-     * @param tabela
+     * Este metodo Pergunta ser desejar Criar uma tabela, utilizar um metodo
+     * auxiliar chamarTelaConfirma(mens,title,opcao)
+     *
+     * @param tabela Informar um valor String com nome da Tabela
      */
     public static void criadoTabela(String tabela) {
         String opcao = "criada";
@@ -181,11 +193,10 @@ public class Messagem {
     }
 
     /**
-     * Como este metodo informar o titulo, a messagem e seta a opção
+     * Este metodo pergunta ser desejar Deletar uma tabela, utilizar um metodo
+     * auxiliar chamarTelaConfirma(mens,title,opcao)
      *
-     * "Deseja Excluir a Tabela " + tabela + " !!", title = tabela;
-     *
-     * @param tabela o informar qual tabela sera excluida.
+     * @param tabela Informar um valor String com nome da Tabela
      */
     public static void deletadaTabela(String tabela) {
         String opcao = "deleta";
@@ -193,15 +204,7 @@ public class Messagem {
         chamarTelaConfirma(mens, title, opcao);
     }
 
-    /**
-     * *
-     * @param res
-     * @return
-     */
-    public static int deletar(int res) {
-        return res;
-    }
-
+    
     /**
      * @return Retornar um valor inteiro na Variavel de Controle de Deletação.
      */

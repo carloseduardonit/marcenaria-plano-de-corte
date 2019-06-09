@@ -168,7 +168,7 @@ public class Chapa {
 
     /**
      *
-     * @param quantChapa Informar um valor inteiro
+     * @param quantChapa Informar um valor inteiro na quantidade da Chapa
      */
     public static void setQuantChapa(int quantChapa) {
         Chapa.quantChapa = quantChapa;

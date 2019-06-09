@@ -15,7 +15,7 @@ public class Quadrado {
 
     /**
      * 
-     * @return 
+     * @return Retornar um valor double do lado
      */
     public static double getLado() {
         return lado;
@@ -23,7 +23,7 @@ public class Quadrado {
 
     /**
      * 
-     * @param lado
+     * @param lado Informar um valor double no lado.
      */
     public void setLado(double lado) {
         this.lado = lado;
@@ -31,7 +31,7 @@ public class Quadrado {
 
     /**
      * 
-     * @param area
+     * @param area  Informar um valor double na area
      */
     public static void setLadodeArea(double area) {
         Quadrado.lado = area / 2;
@@ -39,7 +39,7 @@ public class Quadrado {
 
     /**
      * 
-     * @param area
+     * @param area Informar um valor double na area
      */
     public static void setLadodePerimetro(double area) {
         Quadrado.lado = area / 2;
@@ -47,7 +47,7 @@ public class Quadrado {
 
     /**
      * 
-     * @return 
+     * @return Retornar um valor double da area
      */
     public static double getArea() {
         return area;
@@ -55,7 +55,7 @@ public class Quadrado {
 
     /**
      * 
-     * @param area
+     * @param area Informar um valor double na area
      */
     public static void setArea(double area) {
         Quadrado.area = area;
@@ -63,7 +63,7 @@ public class Quadrado {
 
     /**
      * 
-     * @param perimetro
+     * @param perimetro Informar um valor double no perimetro.
      */
     public static void setAreadePerimetro(double perimetro) {
         Quadrado.area = area;
@@ -71,7 +71,7 @@ public class Quadrado {
 
     /**
      * 
-     * @param lado
+     * @param lado Informar um valor double no lado.
      */
     public static void setAreadeLado(double lado) {
         Quadrado.area = area;
@@ -79,7 +79,7 @@ public class Quadrado {
 
     /**
      * 
-     * @return 
+     * @return Retornar um valor double  do perimetro
      */
     public static double getPerimetro() {
         return perimetro;
@@ -87,23 +87,23 @@ public class Quadrado {
 
     /**
      * 
-     * @param perimetro
+     * @param perimetro Informar um valor double no perimetro.
      */
     public static void setPerimetro(double perimetro) {
         Quadrado.perimetro = perimetro;
     }
 
     /**
-     * 
-     * @param lado
+     * Tem que Fazer
+     * @param lado Informar um valor double no lado.
      */
     public static void setPerimetrodeLado(double lado) {
         Quadrado.perimetro = Math.pow(lado, 4);
     }
 
     /**
-     * 
-     * @param area
+     * Tem que Fazer
+     * @param area Informar um valor double na area
      */
     public static void setPerimetrodeArea(double area) {
         Quadrado.perimetro = perimetro;

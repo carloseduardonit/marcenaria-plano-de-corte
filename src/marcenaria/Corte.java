@@ -15,6 +15,9 @@ import marcenaria.dado.ModuloConector;
  */
 public class Corte {
 
+    /**
+     * @param args argumento de teste
+     */
     public static void main(String[] args) {
         double[] CC = new double[2];
         double[] LL = new double[CC.length];
@@ -23,12 +26,12 @@ public class Corte {
         LL[0] = 79.5;
         LL[1] = 79.5;
         //PecaParaCortar(220, 160, 220,160, true);
-       // cote(220, 160, 1.8, CC, LL, s);
+        // cote(220, 160, 1.8, CC, LL, s);
         //dividirCorte(0, 220, 160, c, l);
 
-Pedaco.deletaPedaco();
+        Pedaco.deletaPedaco();
 
-Pedaco.criadoPedaco();
+        Pedaco.criadoPedaco();
     }
     static Connection conexao;
     static PreparedStatement pst;
@@ -41,14 +44,14 @@ Pedaco.criadoPedaco();
     static double c = 109.5, l = 79.5, s = 0.5;
 
     /**
-     * *
+     * Abre a conexão com o banco de dado
      */
     public static void Corte() {
         conexao = ModuloConector.getConecction();
     }
 
     /**
-     *
+     * Imprimir as sobrar do material
      */
     public static void planodeCorte() {
         for (int w = 0; w < getLargCorte().length; w++) {
@@ -63,29 +66,35 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @param comprChapa
-     * @param largChapa
-     * @param precomprChapa
-     * @param compPeca
-     * @param largPeca
-     * @return
+     * Este metodo Precificar o peca de Corte
+     *
+     * @param comprChapa Valor integral do comprimento da Chapa
+     * @param largChapa Valor integral do largura da Chapa
+     * @param precoChapa Valor integral do preço da Chapa
+     * @param compPeca Valor integral do comprimento da Peça
+     * @param largPeca Valor integral do comprimento da Peça
+     * @return retorna um valor double do preço da peça \n\n Se precoChapa for
+     * MENOR ou IQUAL do que "0" OU compPeca for MAIOR do que comprChapa OU
+     * largPeca for MAIOR do que largChapa retorna 0
+     *
      */
-    public static double precoPecaParaCortar(double comprChapa, double largChapa, double precomprChapa, double compPeca, double largPeca) {
+    public static double precoPecaParaCortar(double comprChapa, double largChapa, double precoChapa, double compPeca, double largPeca) {
         double preco;
-        if (precomprChapa < 0 || compPeca > comprChapa || largPeca > largChapa) {
+        if (precoChapa <= 0 || compPeca > comprChapa || largPeca > largChapa) {
             preco = 0;
         } else {
-            preco = precomprChapa * (compPeca / comprChapa) * (largPeca / largChapa);
+            preco = precoChapa * (compPeca / comprChapa) * (largPeca / largChapa);
         }
         return preco;
     }
 
     /**
-     * @param comprChapa
-     * @param largChapa
-     * @param compPeca
-     * @param largPeca
-     * @param rot
+     * @param comprChapa Informar um valor double do comprimento da Chapa
+     * @param largChapa Informar um valor double da largura da Chapa
+     * @param compPeca Informar um valor double do comprimento da Peça
+     * @param largPeca Informar um valor double da largura da Peça
+     * @param rot Informar um valor boolean aonde: true = roda a Peça, false =
+     * não roda a Peça.
      */
     public static void PecaParaCortar(double comprChapa, double largChapa, double compPeca, double largPeca, boolean rot) {
         for (int i = 0; i < getCompriCorte().length; i++) {
@@ -132,30 +141,36 @@ Pedaco.criadoPedaco();
      * -- Inico do Sets e Gets
      */
     /**
-     * @return
+     * @return Retornar uma Array de double Comprimento do Corte
      */
     public static double[] getCompriCorte() {
         return compriCorte;
     }
 
     /**
-     * @param pos
-     * @return
+     * @param pos Informar um valor inteiro no index do Array do Comprimento do
+     * Corte
+     * @return Retornar um valor double do Array do Comprimento do Corte
      */
     public static double getCompriCorte(int pos) {
         return compriCorte[pos];
     }
 
     /**
-     * @param compriCorte
+     * @param compriCorte Informar um Array no Array double Comprimento do Corte
      */
     public static void setCompriCorte(double[] compriCorte) {
         Corte.compriCorte = compriCorte;
     }
 
     /**
-     * @param array
-     * @param multiplicado
+     * Comprimento
+     *
+     * @param array Informar um valor inteiro a tamanho do Array
+     * @param multiplicado Informar um valor inteiro multiplicado Se
+     * multiplicado for MAIOR do que ZERO(0) o tamanho do Array de Comprimento
+     * receber a multiplicação do parametro array e do parametro multiplicado ;
+     * Senão messagem de erro.
      */
     public static void setCompriCorte(int array, int multiplicado) {
         if (multiplicado > 0) {
@@ -166,8 +181,8 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @param pos
-     * @param compriCorte
+     * @param pos Informar um valor inteiro no index do Array do comprimento de corte 
+     * @param compriCorte Informar um valor double do comprimento de corte
      */
     public static void setCompriCorte(int pos, double compriCorte) {
         if (compriCorte < 0) {
@@ -179,9 +194,9 @@ Pedaco.criadoPedaco();
 
     /**
      *
-     * @param pos
-     * @param comprChapa
-     * @param comprPeca
+     * @param pos Informar um valor inteiro no index do Array do
+     * @param comprChapa Informar um valor double da Comprimento da Chapa
+     * @param comprPeca Informar um valor double da Comprimento da Peça
      */
     public static void setCompriCorte(int pos, double comprChapa, double comprPeca) {
         if (comprPeca > comprChapa || comprPeca <= 0 || comprChapa <= 0) {
@@ -192,38 +207,38 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @return
+     * @return Retornar uma Array  de double da largura de Corte
      */
     public static double[] getLargCorte() {
         return largCorte;
     }
 
     /**
-     * @param pos
-     * @return
+     * @param pos Informar um valor inteiro no index do Array da largura de Corte
+     * @return Retornar um valor double da Array da largura de Corte
      */
     public static double getLargCorte(int pos) {
         return largCorte[pos];
     }
 
     /**
-     * @param largCorte
+     * @param largCorte Informar um Array de largura de Corte
      */
     public static void setLargCorte(double[] largCorte) {
         Corte.largCorte = largCorte;
     }
 
     /**
-     * @param pos
-     * @param largCorte
+     * @param pos Informar um valor inteiro no index do Array do largura de Corte
+     * @param largCorte Informar um valor double no Array de largura de Corte
      */
     public static void setLargCorte(int pos, double largCorte) {
         Corte.largCorte[pos] = largCorte;
     }
 
     /**
-     * @param array
-     * @param multiplicado
+     * @param array Informar um valor inteiro a tamanho do Array
+     * @param multiplicado Informar um valor inteiro multiplicado Se Informar um valor inteiro multiplicado Se Informar um valor inteiro multiplicado Se
      */
     public static void setLargCorte(int array, int multiplicado) {
         if (multiplicado > 0) {
@@ -234,9 +249,9 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @param pos
-     * @param largChapa
-     * @param largPeca
+     * @param pos Informar um valor inteiro no index do Array do
+     * @param largChapa Informar um valor double da largura da Chapa
+     * @param largPeca Informar um valor double da largura da Peça
      */
     public static void setLargCorte(int pos, double largChapa, double largPeca) {
         if (largPeca > largChapa || largPeca <= 0 || largChapa <= 0) {
@@ -247,30 +262,30 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @return
+     * @return Retornar uma Array do Espessura de Corte
      */
     public static double[] getEspeCorte() {
         return espeCorte;
     }
 
     /**
-     * @param pos
-     * @return
+     * @param pos Informar um valor inteiro no index do Array do  Espessura de Corte
+     * @return Retornar um valor double do  Array do  Espessura de Corte
      */
     public static double getEspeCorte(int pos) {
         return espeCorte[pos];
     }
 
     /**
-     * @param espeCorte
+     * @param espeCorte Informar uma Array do Espessura de Corte
      */
-    public static void setespeChapapeCorte(double[] espeCorte) {
+    public static void setEspeCorte(double[] espeCorte) {
         Corte.espeCorte = espeCorte;
     }
 
     /**
-     * @param pos
-     * @param espeCorte
+     * @param pos Informar um valor inteiro no index do Array do Espessura de Corte
+     * @param espeCorte Informar um valor double da Espessura de Corte
      */
     public static void setEspeCorte(int pos, double espeCorte) {
         if (espeCorte <= 0) {
@@ -281,8 +296,8 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @param array
-     * @param multiplicado
+     * @param array Informar um valor inteiro a tamanho do Array
+     * @param multiplicado Informar um valor inteiro multiplicado Se Informar um valor inteiro multiplicado Se
      */
     public static void setEspeCorte(int array, int multiplicado) {
         if (multiplicado > 0) {
@@ -293,9 +308,9 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @param pos
-     * @param espeChapa
-     * @param espePeca
+     * @param pos Informar um valor inteiro no index do Array do
+     * @param espeChapa Informar um valor double da espessura da Chapa
+     * @param espePeca Informar um valor double da espessura da Peça
      */
     public static void setEspeCorte(int pos, double espeChapa, double espePeca) {
         if (espePeca > espeChapa || espePeca <= 0 || espeChapa <= 0) {
@@ -309,11 +324,11 @@ Pedaco.criadoPedaco();
      * --Fim do Sets e gets--
      */
     /**
-     * @param pos
-     * @param largChapa
-     * @param largPeca
-     * @param espeChapa
-     * @param comprChapa
+     * @param pos Informar um valor inteiro no index do Array do
+     * @param largChapa Informar um valor double da largura da Chapa
+     * @param largPeca Informar um valor double da largura da Peça
+     * @param espeChapa Informar um valor double da espessura da Chapa
+     * @param comprChapa Informar um valor double da Comprimento da Chapa
      */
     public static void horizontalCorte(int pos, double largChapa, double largPeca, double espeChapa, double comprChapa) {
         if (largChapa != 0 && comprChapa != 0) {
@@ -325,11 +340,11 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @param pos
-     * @param comprChapa
-     * @param comprPeca
-     * @param espeChapa
-     * @param largChapa
+     * @param pos Informar um valor inteiro no index do Array do
+     * @param comprChapa Informar um valor double da Comprimento da Chapa
+     * @param comprPeca Informar um valor double da Comprimento da Peça
+     * @param espeChapa Informar um valor double da espessura da Chapa
+     * @param largChapa Informar um valor double da largura da Chapa
      */
     public static void verticalargChapaorte(int pos, double comprChapa, double comprPeca, double espeChapa, double largChapa) {
         if (largChapa != 0 && comprPeca != 0) {
@@ -343,12 +358,12 @@ Pedaco.criadoPedaco();
     /**
      * TespeChapatando
      *
-     * @param pos
-     * @param comprChapa
-     * @param comprPeca
-     * @param espeChapa
-     * @param largChapa
-     * @param largPeca
+     * @param pos Informar um valor inteiro no index do Array do
+     * @param comprChapa Informar um valor double da Comprimento da Chapa
+     * @param comprPeca Informar um valor double da Comprimento da Peça 
+     * @param espeChapa Informar um valor double da espessura da Chapa
+     * @param largChapa Informar um valor double da largura da Chapa
+     * @param largPeca Informar um valor double da largura da Peça
      */
     public static void dividirCorte(int pos, double comprChapa, double largChapa, double espeChapa, double comprPeca, double largPeca) {
         double larg, comp;
@@ -371,12 +386,12 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @param comprChapa
-     * @param largChapa
-     * @param espeChapa
-     * @param comprPeca
-     * @param largPeca
-     * @param serra
+     * @param comprChapa Informar um valor double da Comprimento da Chapa
+     * @param largChapa Informar um valor double da largura da Chapa
+     * @param espeChapa Informar um valor double da espessura da Chapa
+     * @param comprPeca Informar um valor double da Comprimento da Peça
+     * @param largPeca Informar um valor double da largura da Peça
+     * @param serra Informar um valor double da medida da Serra
      */
     public static void cote(double comprChapa, double largChapa, double espeChapa, double comprPeca, double largPeca, double serra) {
         if (largChapa >= largPeca + serra) {
@@ -391,7 +406,7 @@ Pedaco.criadoPedaco();
                 dividirCorte(0, comprChapa, largChapa, espeChapa, comprPeca, largPeca);
             }
         } else if (largChapa < largPeca) {
-            if (comprChapa >= comprPeca+serra) {
+            if (comprChapa >= comprPeca + serra) {
                 System.out.println("4) " + largChapa + "<" + largPeca + " " + comprChapa + ">" + comprPeca);
                 coteCorrecao(comprChapa, largChapa, espeChapa, comprPeca, largPeca, serra);
             } else if (comprChapa < comprPeca) {
@@ -417,12 +432,12 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @param comprChapa
-     * @param largChapa
-     * @param espeChapa
-     * @param comprPeca
-     * @param largPeca
-     * @param serra
+     * @param comprChapa Informar um valor double da Comprimento da Chapa
+     * @param largChapa Informar um valor double da largura da Chapa
+     * @param espeChapa Informar um valor double da espessura da Chapa
+     * @param comprPeca Informar um valor double da Comprimento da Peça
+     * @param largPeca Informar um valor double da largura da Peça
+     * @param serra Informar um valor double da medida da Serra
      */
     public static void cote(double comprChapa, double largChapa, double espeChapa, double[] comprPeca, double[] largPeca, double serra) {
         setCompriCorte(comprPeca.length, 1);
@@ -433,7 +448,7 @@ Pedaco.criadoPedaco();
             } else {
                 if ((comprChapa / getCompriCorte(0) * largChapa / getLargCorte(0)) >= (comprChapa / getCompriCorte(1) * largChapa / getLargCorte(1))) {
                     System.out.println("0");
-                    cote(getCompriCorte(0), getLargCorte(0), espeChapa, comprPeca[i], largPeca[i],serra);
+                    cote(getCompriCorte(0), getLargCorte(0), espeChapa, comprPeca[i], largPeca[i], serra);
                     planodeCorte();
                 } else {
                     System.out.println("1");
@@ -446,12 +461,12 @@ Pedaco.criadoPedaco();
     /**
      * PARCIALMENTE PRONTO
      *
-     * @param comprChapa
-     * @param largChapa
-     * @param comprPeca
-     * @param espeChapa
-     * @param largPeca
-     * @param serra
+     * @param comprChapa Informar um valor double da Comprimento da Chapa
+     * @param largChapa Informar um valor double da largura da Chapa
+     * @param comprPeca Informar um valor double da Comprimento da Peça
+     * @param espeChapa Informar um valor double da espessura da Chapa
+     * @param largPeca Informar um valor double da largura da Peça
+     * @param serra Informar um valor double da medida da Serra
      */
     public static void coteCorrecao(double comprChapa, double largChapa, double comprPeca, double espeChapa, double largPeca, double serra) {
         if (largChapa >= comprPeca + serra) {
@@ -486,12 +501,12 @@ Pedaco.criadoPedaco();
     }
 
     /**
-     * @param comprChapa
-     * @param largChapa
-     * @param espeChapa
-     * @param comprPeca
-     * @param largPeca
-     * @param serra
+     * @param comprChapa Informar um valor double da Comprimento da Chapa
+     * @param largChapa Informar um valor double da largura da Chapa
+     * @param espeChapa Informar um valor double da espessura da Chapa
+     * @param comprPeca Informar um valor double da Comprimento da Peça
+     * @param largPeca Informar um valor double da largura da Peça
+     * @param serra Informar um valor double da medida da Serra
      */
     public static void SomaPeça(double comprChapa, double largChapa, double espeChapa, double[] comprPeca, double[] largPeca, double serra) {
         double[][] peca = new double[comprPeca.length + 1][largPeca.length + 1];

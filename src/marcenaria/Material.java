@@ -34,15 +34,16 @@ public class Material {
     }
 
     /**
-     * FAZENDO
+     *  Este metodo Adicionar informações em uma determinada Tabela conforme o paramentro Tabela
      *
-     * @param Tabela
-     * @param tipoMaterial
-     * @param quantidade
-     * @param comprimento
-     * @param largura
-     * @param espessura
-     * @param preco
+     * @param Tabela Informar um valor String para tabela de Material
+     * @param tipoMaterial Informar um valor inteiro do Tipo do Material.
+     * @param quantidade Informar um valor inteiro da quantidade do Material.
+     * @param comprimento Informar um valor double do comprimento do Material.
+     * @param largura Informar um valor double da largura do Material.
+     * @param espessura Informar um valor double da espessura do Material.
+     * @param preco Informar um valor double do preço do Material.
+     * 
      */
     public static void adicionarMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento, double largura, double espessura, double preco) {
         try {
@@ -67,21 +68,21 @@ public class Material {
             if (inserido == 0) {
                 JOptionPane.showMessageDialog(null, "Foi inserido n Tabela " + Tabela + "" + quantidade + "" + comprimento + "X" + largura + "X" + espessura);
             }
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
 
-    /**
-     * FAZENDO
-     *
-     * @param Tabela
-     * @param tipoMaterial
-     * @param quantidade
-     * @param comprimento
-     * @param largura
-     * @param espessura
-     * @param preco
+    /**FAZENDO-
+     * Este metodo Editar informações em uma determinada Tabela conforme o paramentro Tabela
+     * 
+     * @param Tabela Informar um valor String para tabela de Material
+     * @param tipoMaterial Informar um valor inteiro do Tipo do Material.
+     * @param quantidade Informar um valor inteiro da quantidade do Material.
+     * @param comprimento Informar um valor double do comprimento do Material.
+     * @param largura Informar um valor double da largura do Material.
+     * @param espessura Informar um valor double da espessura do Material.
+     * @param preco Informar um valor double do preço do Material.
      */
     public static void editarMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento, double largura, double espessura, double preco) {
         try {
@@ -114,14 +115,13 @@ public class Material {
     /**
      * FAZENDO
      *
-     * @param Tabela
-     * @param tipoMaterial
-     *
-     * @param quantidade
-     * @param comprimento
-     * @param largura
-     * @param espessura
-     * @param preco
+     * @param Tabela Informar um valor String para tabela de Material
+     * @param tipoMaterial Informar um valor inteiro do Tipo do Material.
+     * @param quantidade Informar um valor inteiro da quantidade do Material.
+     * @param comprimento Informar um valor double do comprimento do Material.
+     * @param largura Informar um valor double da largura do Material.
+     * @param espessura Informar um valor double da espessura do Material.
+     * @param preco Informar um valor double do preço do Material.
      */
     public static void excluirMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento, double largura, double espessura, double preco) {
         try {
@@ -157,12 +157,13 @@ public class Material {
     /**
      * FAZENDO
      *
-     * @param Tabela
-     * @param quantidade
-     * @param comprimento
-     * @param largura
-     * @param espessura
-     * @param preco
+     * @param Tabela Informar um valor String para tabela de Material
+     * @param tipoMaterial Informar um valor inteiro do Tipo do Material.
+     * @param quantidade Informar um valor inteiro da quantidade do Material.
+     * @param comprimento Informar um valor double do comprimento do Material.
+     * @param largura Informar um valor double da largura do Material.
+     * @param espessura Informar um valor double da espessura do Material.
+     * @param preco Informar um valor double do preço do Material.
      */
     public static void pesquisarMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento, double largura, double espessura, double preco) {
         try {
@@ -196,7 +197,7 @@ public class Material {
     /**
      * TESTADO E OK
      *
-     * @param Tabela
+     * @param Tabela Informar um valor String para tabela de Material
      */
     public static void criarMaterial(String Tabela) {
         try {
@@ -244,7 +245,7 @@ public class Material {
     /**
      * TESTADO E OK
      *
-     * @param Tabela
+     * @param Tabela Informar um valor String para tabela de Material
      */
     public static void deletarMaterial(String Tabela) {
         try {
@@ -281,98 +282,98 @@ public class Material {
     }
 
     /**
-     * @return
+     * @return Retornar um valor inteiro do Tipo do Material.
      */
     public static String getTipoMaterial() {
         return tipoMaterial;
     }
 
     /**
-     * @param tipoMaterial
+     * @param tipoMaterial Informar um valor inteiro do Tipo do Material.
      */
     public static void setTipoMaterial(String tipoMaterial) {
         Material.tipoMaterial = tipoMaterial;
     }
 
     /**
-     * @return
+     * @return Retornar um valor inteiro da quantidade do Material.
      */
     public static int getQuantMaterial() {
         return quantMaterial;
     }
 
     /**
-     * @param quantMaterial
+     * @param quantMaterial Informar um valor inteiro da quantidade do Material.
      */
     public static void setQuantMaterial(int quantMaterial) {
         Material.quantMaterial = quantMaterial;
     }
 
     /**
-     * @return
+     * @return Retornar um valor inteiro do id do Material.
      */
     public static int getIdMaterial() {
         return idMaterial;
     }
 
     /**
-     * @param idMaterial
+     * @param idMaterial Informar um valor inteiro do id do Material.
      */
     public static void setIdMaterial(int idMaterial) {
         Material.idMaterial = idMaterial;
     }
 
     /**
-     * @return
+     * @return Retornar um valor double do comprimento do Material.
      */
     public static double getComprMaterial() {
         return comprMaterial;
     }
 
     /**
-     * @param comprMaterial
+     * @param comprMaterial Informar um valor double do comprimento do Material.
      */
     public static void setComprMaterial(double comprMaterial) {
         Material.comprMaterial = comprMaterial;
     }
 
     /**
-     * @return
+     * @return Retornar um valor double da largura do Material.
      */
     public static double getLargMarterial() {
         return largMarterial;
     }
 
     /**
-     * @param largMarterial
+     * @param largMarterial Informar um valor double da largura do Material.
      */
     public static void setLargMarterial(double largMarterial) {
         Material.largMarterial = largMarterial;
     }
 
     /**
-     * @return
+     * @return Retornar um valor double da espessura do Material.
      */
     public static double getEspesMaterial() {
         return espesMaterial;
     }
 
     /**
-     * @param espesMaterial
+     * @param espesMaterial Informar um valor double da espessura do Material.
      */
     public static void setEspesMaterial(double espesMaterial) {
         Material.espesMaterial = espesMaterial;
     }
 
     /**
-     * @return
+     * @return Retornar um valor double do preço do Material.
      */
     public static double getPrecMaterial() {
         return precMaterial;
     }
 
     /**
-     * @param precMaterial
+     * @param precMaterial Informar um valor double do preço do Material.
      */
     public static void setPrecMaterial(double precMaterial) {
         Material.precMaterial = precMaterial;

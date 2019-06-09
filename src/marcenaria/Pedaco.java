@@ -24,12 +24,21 @@ public class Pedaco {
     static PreparedStatement pst;
     static ResultSet rs;
     static Statement stmt;
+/**/
+
+    /**
+     *
+     * @param args
+     */
 
     public static void main(String[] args) {
         criadoPedaco();
         deletaPedaco();
     }
-/***/
+
+    /**
+     * 
+     */
     private static void Pedaco() {
         conexao = ModuloConector.getConecction();
     }
@@ -38,19 +47,19 @@ public class Pedaco {
      *
      */
     public static void criadoPedaco() {
-        String sql ="";
+        String sql = "";
         try {
             Pedaco();
             sql = "create table if not exists " + TABELA + "("
                     + "id int auto_increment primary key,"
-                    + "id"+Chapa.getTABELA()+" int default '0',"
-                    + "id"+Peca.getTABELA()+" int default 0,"
+                    + "id" + Chapa.getTABELA() + " int default '0',"
+                    + "id" + Peca.getTABELA() + " int default 0,"
                     + "comp double not null,"
                     + "larg double not null,"
                     + "espe double not null, "
                     + "incData Timestamp,"
-                    + "foreign key (id"+Chapa.getTABELA()+") references " + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), "
-                    + "foreign key (id"+Peca.getTABELA()+") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
+                    + "foreign key (id" + Chapa.getTABELA() + ") references " + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), "
+                    + "foreign key (id" + Peca.getTABELA() + ") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
             stmt = conexao.createStatement();
             Messagem.criadoTabela(TABELA);
             int criada = Messagem.getCriada();
@@ -62,7 +71,7 @@ public class Pedaco {
                 }
             }
         } catch (NullPointerException e) {
-            Messagem.chamarTela("variavel nular");  
+            Messagem.chamarTela("variavel nular");
         } catch (SQLSyntaxErrorException ssee) {
             Messagem.chamarTela(ssee);
             Messagem.chamarTela(sql);
@@ -80,7 +89,7 @@ public class Pedaco {
      *
      */
     public static void deletaPedaco() {
-            Material.deletarMaterial(TABELA);
+        Material.deletarMaterial(TABELA);
     }
 
     /**
@@ -352,9 +361,11 @@ public class Pedaco {
         Pedaco.incData = incData;
     }
 
+    /**
+     * @return
+     */
     public static String getTABELA() {
         return TABELA;
     }
 
-    
 }

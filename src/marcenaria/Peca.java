@@ -22,7 +22,7 @@ public class Peca {
     private static String[] tipoMateria = new String[2];
 
     /**
-     * @param args
+     * @param args Informar um valor String para tabela de Material
      */
     public static void main(String[] args) {
         /* Scanner ler  = new Scanner(System.in);

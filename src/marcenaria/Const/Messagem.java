@@ -15,12 +15,12 @@ import javax.swing.JOptionPane;
 public class Messagem {
 
     private static int deleta = 3, criada = 3;
-    private String [] vazia = new String [1];
+    private String[] vazia = new String[1];
 //input
 
     /**
-     * @param ad
-     * @return
+     * @param ad Informar um valor String na Messagem Adicionar.
+     * @return Retornar a Messagem (ad Foi adicionado com sucesso !!!)
      */
     public static final String ADICIONADO(String ad) {
         String mens = ad + " Foi Adicionado com sucesso !!!";
@@ -28,8 +28,8 @@ public class Messagem {
     }
 
     /**
-     * @param cr
-     * @return
+     * @param cr Informar um valor String na Messagem Criar.
+     * @return Retornar a Messagem (cr Foi criada com sucesso !!!)
      */
     public static final String CRIADO(String cr) {
         String mens = cr + " Foi Criada com sucesso !!!";
@@ -37,8 +37,8 @@ public class Messagem {
     }
 
     /**
-     * @param ed
-     * @return
+     * @param ed Informar um valor String na Messagem Editada.
+     * @return Retornar a Messagem (ed Foi editada com sucesso !!!)
      */
     public static final String EDITADO(String ed) {
         String mens = ed + " Foi Editado com sucesso !!!";
@@ -46,8 +46,8 @@ public class Messagem {
     }
 
     /**
-     * @param ex
-     * @return
+     * @param ex Informar um valor String na Messagem Excluido.
+     * @return Retornar a Messagem (ex Foi excluido com sucesso !!!)
      */
     public static final String EXCLUIDO(String ex) {
         String mens = ex + " Foi Excluido com sucesso !!!";
@@ -55,8 +55,8 @@ public class Messagem {
     }
 
     /**
-     * @param im
-     * @return
+     * @param im Informar um valor String na Messagem Imprimido.
+     * @return Retornar a Messagem (im Foi imprimido com sucesso !!!)
      */
     public static final String IMPRIMIDO(String im) {
         String mens = im + " Foi Imprimido com Sucesso !!!";
@@ -64,8 +64,8 @@ public class Messagem {
     }
 
     /**
-     * @param va
-     * @return
+     * @param va Informar um valor String na Messagem Vazio.
+     * @return Retornar a Messagem (Campo va esta vazio);
      */
     public static final String VAZIO(String va) {
         String mens = "Campo " + va + " esta vazio";
@@ -89,12 +89,20 @@ public class Messagem {
     }
 //Tabela
 
+    /**
+     * @param tabela
+     * @return
+     */
     public static final String tabelaCriada(String tabela) {
-        return "Tabela "+tabela+" Criada com sucesso !!!";
+        return "Tabela " + tabela + " Criada com sucesso !!!";
     }
 
+    /**
+     * @param tabela
+     * @return
+     */
     public static final String tabelaDeletada(String tabela) {
-        return "Tabela "+tabela+" Deletada com sucesso !!!";
+        return "Tabela " + tabela + " Deletada com sucesso !!!";
     }
 
 //Tela
@@ -172,11 +180,12 @@ public class Messagem {
         chamarTelaConfirma(mens, title, opcao);
     }
 
-    /** 
+    /**
      * Como este metodo informar o titulo, a messagem e seta a opção
-     * 
+     *
      * "Deseja Excluir a Tabela " + tabela + " !!", title = tabela;
-     * @param tabela  o informar  qual tabela sera excluida.
+     *
+     * @param tabela o informar qual tabela sera excluida.
      */
     public static void deletadaTabela(String tabela) {
         String opcao = "deleta";
@@ -194,28 +203,30 @@ public class Messagem {
     }
 
     /**
-     * @return
+     * @return Retornar um valor inteiro na Variavel de Controle de Deletação.
      */
     public static int getDeleta() {
         return deleta;
     }
 
     /**
-     * @param deleta
+     * @param deleta Informar um valor inteiro na Variavel de Controle de
+     * Deletação.
      */
     public static void setDeleta(int deleta) {
         Messagem.deleta = deleta;
     }
 
     /**
-     * @return
+     * @return Retornar um valor inteiro na Variavel de Controle de Criação.
      */
     public static int getCriada() {
         return criada;
     }
 
     /**
-     * @param criada
+     * @param criada Informar um valor inteiro na Variavel de Controle de
+     * Criação.
      */
     public static void setCriada(int criada) {
         Messagem.criada = criada;

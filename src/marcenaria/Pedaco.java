@@ -12,7 +12,8 @@ import marcenaria.dado.ModuloConector;
 
 /**
  *
- * @author Carlos
+ * @author Carlos Eduardo dos Santos Figueiredo
+ *
  */
 public class Pedaco {
 
@@ -24,27 +25,27 @@ public class Pedaco {
     static PreparedStatement pst;
     static ResultSet rs;
     static Statement stmt;
-/**/
 
+    /**/
     /**
+     * <b>Este metodo e para utilização para teste.</b>
      *
      * @param args Metodo de teste
      */
-
     public static void main(String[] args) {
         criadoPedaco();
         deletaPedaco();
     }
 
     /**
-     * Abre a conexão com o banco de dado
+     * <b>Abre a conexão com o banco de dado.</b>
      */
     private static void Pedaco() {
         conexao = ModuloConector.getConecction();
     }
 
     /**
-     *
+     * <b> Este Metodo faz a criação da tabela Pedaço no banco.</b>
      */
     public static void criadoPedaco() {
         String sql = "";
@@ -86,19 +87,25 @@ public class Pedaco {
     }
 
     /**
-     *
+     * <b>Este metodo faz a deletação a tabela Pedaço no banco.</b>
+     * <p>
+     * utilizando um metodo da Classe Material do Metodo deletarMaterial(String
+     * Tabela).
+     * </p>
      */
     public static void deletaPedaco() {
         Material.deletarMaterial(TABELA);
     }
 
     /**
-     * @param idChapa Informar um valor inteiro do Id da Chapa
-     * @param idPeca Informar um valor inteiro do Id da Peca
-     * @param compPedaco Informar um valor double da Comprimento da Pedaço
-     * @param largPedaco Informar um valor double da largura da Pedaço
-     * @param espePedaco Informar um valor double da espessura do Pedaço
-     * @param incData Informar um valor Date do dia da Inclusão
+     * <b>Este Metodo adicionar informação na tabela Pedaço no banco.</b>
+     *
+     * @param idChapa Informar um valor inteiro do Id da Chapa.
+     * @param idPeca Informar um valor inteiro do Id da Peca.
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço.
+     * @param largPedaco Informar um valor double da largura da Pedaço.
+     * @param espePedaco Informar um valor double da espessura do Pedaço.
+     * @param incData Informar um valor Date do dia da Inclusão.
      */
     public static void adicionarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData) {
         try {
@@ -120,12 +127,14 @@ public class Pedaco {
     }
 
     /**
-     * @param idChapa Informar um valor inteiro do Id da Chapa
-     * @param idPeca Informar um valor inteiro do Id da Peca
-     * @param compPedaco Informar um valor double da Comprimento da Pedaço
-     * @param largPedaco Informar um valor double da largura da Pedaço
-     * @param espePedaco Informar um valor double da espessura do Pedaço
-     * @param incData Informar um valor Date do dia da Inclusão
+     * <b>Este Metodo Editar informação na tabela pedaço no banco.</b>
+     *
+     * @param idChapa Informar um valor inteiro do Id da Chapa.
+     * @param idPeca Informar um valor inteiro do Id da Peca.
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço.
+     * @param largPedaco Informar um valor double da largura da Pedaço.
+     * @param espePedaco Informar um valor double da espessura do Pedaço.
+     * @param incData Informar um valor Date do dia da Inclusão do Pedaço.
      */
     public static void editarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData) {
         try {
@@ -148,12 +157,14 @@ public class Pedaco {
     }
 
     /**
-     * @param idChapa Informar um valor inteiro do Id da Chapa
-     * @param idPeca Informar um valor inteiro do Id da Peca
-     * @param compPedaco Informar um valor double da Comprimento da Pedaço
-     * @param largPedaco Informar um valor double da largura da Pedaço
-     * @param espePedaco Informar um valor double da espessura do Pedaço
-     * @param incData Informar um valor Date do dia da Inclusão
+     * <b>Este metodo excluir informaçao na tabela pedaço no banco.</b>
+     *
+     * @param idChapa Informar um valor inteiro do Id da Chapa.
+     * @param idPeca Informar um valor inteiro do Id da Peca.
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço.
+     * @param largPedaco Informar um valor double da largura da Pedaço.
+     * @param espePedaco Informar um valor double da espessura do Pedaço.
+     * @param incData Informar um valor Date do dia da Inclusão do Pedaço.
      */
     public static void excluirPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData) {
         try {
@@ -174,13 +185,22 @@ public class Pedaco {
     }
 
     /**
-     * @param idChapa Informar um valor inteiro do Id da Chapa
-     * @param idPeca Informar um valor inteiro do Id da Peca
-     * @param compPedaco Informar um valor double da Comprimento da Pedaço
-     * @param largPedaco Informar um valor double da largura da Pedaço
-     * @param espePedaco Informar um valor double da espessura do Pedaço
-     * @param incData Informar um valor Date do dia da Inclusão
-     * @param ou
+     * <b>Este metodo pesquisar informação na tabela pedaço no banco.</b>
+     * <p>
+     * Se os paramentos forem diferentes de null ou vazio.</p>
+     *
+     * @param idChapa Informar um valor inteiro do Id da Chapa.
+     * @param idPeca Informar um valor inteiro do Id da Peca.
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço.
+     * @param largPedaco Informar um valor double da largura da Pedaço.
+     * @param espePedaco Informar um valor double da espessura do Pedaço.
+     * @param incData Informar um valor Date do dia da Inclusão do Pedaço.
+     * @param ou Informar um valor boolean:
+     * <p>
+     * Se <b>ou</b> for <b>true</b>: adicionar na String interna a expresão
+     * ="or";</p>
+     * <p>
+     * senão adicionar na String interna a expresão ="and".</p>
      */
     public static void pesquisarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData, boolean ou) {
         try {
@@ -256,113 +276,128 @@ public class Pedaco {
                 ModuloConector.fecharConexao(conexao, rs, pst, stmt);
             }
         } catch (NullPointerException e) {
-            Messagem.chamarTela(e);
-        } catch (Exception e) {
+            Messagem.chamarTela("Nulo");
+        } catch (SQLException e) {
             Messagem.chamarTela(e);
         }
     }
     // Gets e Sets
 
-    /**
-     * @return Retonar um valor inteiro do Id da Chapa
+    /** <b>Este Metodo retornar o ID da Chapa.</b>
+     *
+     * @return Retonar um valor inteiro do Id da Chapa.
      */
     public static int getIdChapa() {
         return idChapa;
     }
 
-    /**
-     * @param idChapa Informar um valor inteiro do Id da Chapa
+    /** <b>Este Metodo setar a informação mo ID da Chapa.</b>
+     *
+     * @param idChapa Informar um valor inteiro do Id da Chapa.
      */
     public static void setIdChapa(int idChapa) {
         Pedaco.idChapa = idChapa;
     }
 
-    /**
-     * @return Retornar um valor inteiro do Id da Peca
+    /** <b>Este Metodo Retornar a informação O ID da Peça.</b>
+     *
+     * @return Retornar um valor inteiro do Id da Peça.
      */
     public static int getIdPeca() {
         return idPeca;
     }
 
-    /**
-     * @param idPeca Informar um valor inteiro do Id da Peca
+    /** <b>Este Metodo setar a informação do ID da Peça.</b>
+     *
+     * @param idPeca Informar um valor inteiro do Id da Peca.
      */
     public static void setIdPeca(int idPeca) {
         Pedaco.idPeca = idPeca;
     }
 
-    /**
-     * @return Retornar um valor double da Comprimento da Pedaço
+    /** <b>Este Metodo Retornar a informação do comprimento do Pedaço.</b>
+     *
+     * @return Retornar um valor double da Comprimento da Pedaço.
      */
     public static double getComp() {
         return comp;
     }
 
-    /**
-     * @param compPedaco Informar um valor double da Comprimento da Pedaço
+    /** <b>Este Metodo setar a informação do Comprimento da Pedaço.</b>
+     *
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço.
      */
     public static void setComp(double compPedaco) {
         Pedaco.comp = comp;
     }
 
-    /**
-     * @return Retornar um valor double da largura da Pedaço
+    /** <b>Este Metodo Retornar a informação do largura do pedaço.</b>
+     *
+     * @return Retornar um valor double da largura da Pedaço.
      */
     public static double getLarg() {
         return larg;
     }
 
-    /**
-     * @param largPedaco Informar um valor double da largura da Pedaço
+    /** <b>Este Metodo setar a informação da largura do Pedaço.</b>
+     *
+     * @param largPedaco Informar um valor double da largura do Pedaço.
      */
     public static void setLarg(double largPedaco) {
         Pedaco.larg = largPedaco;
     }
 
-    /**
-     * @return Retornar um valor double da espessura do Pedaço
+    /** <b>Este Metodo Retornar a informação da Espessura do Pedaço.</b>
+     *
+     * @return Retornar um valor double da espessura do Pedaço.
      */
     public static double getEspe() {
         return espe;
     }
 
-    /**
-     * @param espePedaco Informar um valor double da espessura do Pedaço
+    /** <b>Este Metodo setar a informação da Espessura do Pedaço.</b>
+     *
+     * @param espePedaco Informar um valor double da Espessura do Pedaço.
      */
     public static void setEspe(double espePedaco) {
         Pedaco.espe = espePedaco;
     }
 
-    /**
-     * @return Retornar um valor double da Preco do Pedaço
+    /** <b>Este Metodo Retornar a informação da Preço do Pedaço.</b>
+     *
+     * @return Retornar um valor double da Preco do Pedaço.
      */
     public static double getPrec() {
         return prec;
     }
 
-    /**
-     * @param precPedaco Informar um valor double da Preco do Pedaço
+    /** <b>Este Metodo setar a informação da Preço do Pedaço.</b>
+     *
+     * @param precPedaco Informar um valor double da Preco do Pedaço.
      */
     public static void setPrec(double precPedaco) {
         Pedaco.prec = precPedaco;
     }
 
-    /**
-     * @return Retornar um valor Date do dia da Inclusão.
+    /** <b>Este Metodo Retornar a informação do dia da Inclusão do Pedaço.</b>
+     *
+     * @return Retornar um valor Date do dia da Inclusão do Pedaço.
      */
     public static Date getIncData() {
         return incData;
     }
 
-    /**
-     * @param incData Informar um valor Date do dia da Inclusão.
+    /** <b>Este Metodo setar a informação da dia da inclusão do Pedaço.</b>
+     *
+     * @param incData Informar um valor Date do dia da Inclusão do Pedaço.
      */
     public static void setIncData(Date incData) {
         Pedaco.incData = incData;
     }
 
-    /**
-     * @return Retornar uma String com nome da tabela
+    /** <b>Este Metodo Retornar o nome da classe Pedaço.</b>
+     *
+     * @return Retornar uma String com nome da tabela.
      */
     public static String getTABELA() {
         return TABELA;

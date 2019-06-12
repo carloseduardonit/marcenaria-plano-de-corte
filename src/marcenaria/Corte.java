@@ -88,13 +88,13 @@ public class Corte {
         return preco;
     }
 
-    /**
+    /** <b>Este metodo</b>
      * @param comprChapa Informar um valor double do comprimento da Chapa
      * @param largChapa Informar um valor double da largura da Chapa
      * @param compPeca Informar um valor double do comprimento da Peça
      * @param largPeca Informar um valor double da largura da Peça
-     * @param rot Informar um valor boolean aonde: true = roda a Peça, false =
-     * não roda a Peça.
+     * @param rot Informar um valor boolean aonde: <p>true = roda a Peça,</p> <p>false =
+     * não roda a Peça.</p>
      */
     public static void PecaParaCortar(double comprChapa, double largChapa, double compPeca, double largPeca, boolean rot) {
         for (int i = 0; i < getCompriCorte().length; i++) {

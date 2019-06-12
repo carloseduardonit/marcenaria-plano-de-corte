@@ -18,8 +18,8 @@ public class Messagem {
     private String[] vazia = new String[1];
 //input
 
-    /**Este metodo retornar um texto:\n
-     * "ad Foi adicionado com sucesso !!!"
+    /**Este metodo retornar um texto:<p><b>
+     * "ad Foi adicionado com sucesso !!!"</b>
      * @param ad Informar um valor String na Messagem Adicionar.
      * @return Retornar a Messagem (ad Foi adicionado com sucesso !!!)
      */
@@ -28,8 +28,8 @@ public class Messagem {
         return mens;
     }
 
-    /**Este metodo retornar um texto:\n
-     * "cr Foi criada com sucesso !!!"
+    /**<h1>Este metodo retornar um texto:</h1><p><b>
+     * "cr Foi criada com sucesso !!!"</b></p>
      * @param cr Informar um valor String na Messagem Criar.
      * @return Retornar a Messagem (cr Foi criada com sucesso !!!)
      */

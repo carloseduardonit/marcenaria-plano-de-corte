@@ -18,7 +18,7 @@ public class Chapa {
     static String[] tipoMateria = new String[2];
 
     /**
-     *
+     *<b>Este metodo e para utilização para teste.</b>
      * @param args para teste
      */
     public static void main(String[] args) {
@@ -33,7 +33,7 @@ public class Chapa {
         //
     }
 
-    /**OK
+    /**<b>Este Metodo faz Criação da Tabela Chapa</b> 
      *
      */
     public static void criadaChapa() {
@@ -201,8 +201,8 @@ public class Chapa {
 
     /**
      * Setar um array de String sendo:
-     * 0 iqual a Compensado
-     * 1 iqual a MDF
+     * <p><b>0</b> iqual a Compensado</p>
+     * <p><b>1</b> iqual a MDF</p>
      */
     public static void setTipoMateria() {
         Chapa.tipoMateria[0] = "Compensado";

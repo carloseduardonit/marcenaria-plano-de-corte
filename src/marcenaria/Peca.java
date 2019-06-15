@@ -41,8 +41,10 @@ public class Peca {
                 validaComprimento =true;
             }
         } while (!validaComprimento);*/
-        criadaPeca();
-        deletadaPeca();
+        //criadaPeca();
+        //deletadaPeca();
+        SomarVerticalPeca(220, 160, 109, 79, 1);
+        System.out.println(getComprimento()+"X"+getLargura());
 
     }
 
@@ -117,15 +119,16 @@ public class Peca {
      * @param compChapa
      * @param largChapa
      * @param compPeca
+     * @param largPeca
      * @param serra
      */
-    public static void SomarVerticalPeca(double compChapa, double largChapa, double compPeca, double serra) {
+    public static void SomarVerticalPeca(double compChapa, double largChapa, double compPeca, double largPeca, double serra) {
         double somar;
         String erro = "";
-        if ((getLargura() <= 0 || getComprimento() <= 0)) {
-            if ((getLargura() <= 0 && getComprimento() > 0)) {
+        if ((largPeca <= 0 || compPeca <= 0)) {
+            if ((largPeca <= 0 && compPeca > 0)) {
                 erro = "largura menor ou Igual a Zero(0).";
-            } else if ((getLargura() > 0 && getComprimento() <= 0)) {
+            } else if ((largPeca > 0 && compPeca <= 0)) {
                 erro = "comprimento menor ou Igual a Zero(0).";
             } else {
                 erro = "comprimento e largura menor ou Igual a Zero(0).";
@@ -134,6 +137,7 @@ public class Peca {
         } else {
             if (compChapa <= getComprimento() + compPeca + serra && largChapa <= getLargura()) {
                 setComprimento(getComprimento() + compPeca + serra);
+                
             } else {
                 setComprimento(getComprimento() + compPeca + serra);
                 //Sobra(compChapa, largChapa, 0, 0, 0);
@@ -146,26 +150,29 @@ public class Peca {
      *
      * @param compChapa
      * @param largChapa
+     * @param compPeca
      * @param largPeca
      * @param serra
      */
-    public static void SomarhorizontalPeca(double compChapa, double largChapa, double largPeca, double serra) {
+    public static void SomarhorizontalPeca(double compChapa, double largChapa, double compPeca, double largPeca, double serra) {
         double somar;
         String erro = "";
-        if ((getLargura() <= 0 || getComprimento() <= 0)) {
-            if ((getLargura() <= 0 && getComprimento() > 0)) {
+        if ((largPeca <= 0 || compPeca <= 0)) {
+            if ((largPeca <= 0 && compPeca > 0)) {
                 erro = "largura menor ou Igual a Zero(0).";
-            } else if ((getLargura() > 0 && getComprimento() <= 0)) {
+            } else if ((largPeca > 0 && compPeca <= 0)) {
                 erro = "comprimento menor ou Igual a Zero(0).";
             } else {
                 erro = "comprimento e largura menor ou Igual a Zero(0).";
             }
             Messagem.chamarTela(erro);
         } else {
-            if (compChapa <= getComprimento() && largChapa <= getLargura() + largPeca + serra) {
+            if (getSobra(0, 0) <= compPeca + serra && getSobra(0, 0) <= largPeca + serra) {
+            } else if (compChapa <= getComprimento() && largChapa <= getLargura() + largPeca + serra) {
                 setLargura(getLargura() + largPeca + serra);
             } else {
                 setLargura(getLargura() + largPeca + serra);
+
             }
         }
     }
@@ -381,6 +388,37 @@ public class Peca {
      */
     public static double getSobra(int pos, int pos1) {
         return sobra[pos][pos1];
+    }
+
+     /**
+     * <b> Este metodo Retornar um com valor double da sobra do peça  referente a comprimento.</b>
+     * <p>
+     * double[pos][0],</p>
+     * <p>
+     * pos = linha.</p>
+     *
+     * @param pos Informar um valor inteiro do index do Array da posição linha e
+     * deve começa em <b>ZERO(0)</b>.
+     *
+     * @return Retornar um valor double da sobra.
+     */
+    public static double getSobraC(int pos) {
+        return sobra[pos][0];
+    }
+    /**
+     * <b> Este metodo Retornar um com valor double da sobra do peça referente a largura.</b>
+     * <p>
+     * double[pos][1],</p>
+     * <p>
+     * pos = linha,</p>
+     
+     * @param pos Informar um valor inteiro do index do Array da posição linha e
+     * deve começa em <b>ZERO(0)</b>.
+     *
+     * @return Retornar um valor double da sobra.
+     */
+    public static double getSobraL(int pos) {
+        return sobra[pos][1];
     }
 
     /** <b>Este metodo Setar informar um Array double na Sobra</b>.

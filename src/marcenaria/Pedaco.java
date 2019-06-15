@@ -6,7 +6,6 @@
 package marcenaria;
 
 import java.sql.*;
-import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
 
@@ -34,7 +33,7 @@ public class Pedaco {
      */
     public static void main(String[] args) {
         criadoPedaco();
-        deletaPedaco();
+        Chapa.deletadaChapa();
     }
 
     /**
@@ -48,42 +47,7 @@ public class Pedaco {
      * <b> Este Metodo faz a criação da tabela Pedaço no banco.</b>
      */
     public static void criadoPedaco() {
-        String sql = "";
-        try {
-            Pedaco();
-            sql = "create table if not exists " + TABELA + "("
-                    + "id int auto_increment primary key,"
-                    + "id" + Chapa.getTABELA() + " int default '0',"
-                    + "id" + Peca.getTABELA() + " int default 0,"
-                    + "comp double not null,"
-                    + "larg double not null,"
-                    + "espe double not null, "
-                    + "incData Timestamp,"
-                    + "foreign key (id" + Chapa.getTABELA() + ") references " + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), "
-                    + "foreign key (id" + Peca.getTABELA() + ") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
-            stmt = conexao.createStatement();
-            Messagem.criadoTabela(TABELA);
-            int criada = Messagem.getCriada();
-            if (criada == JOptionPane.OK_OPTION) {
-                int criado = stmt.executeUpdate(sql);
-                if (criado == 0) {
-                    ModuloConector.fecharConexao(conexao, rs, pst, stmt);
-                    Messagem.chamarTela(Messagem.tabelaCriada(TABELA));
-                }
-            }
-        } catch (NullPointerException e) {
-            Messagem.chamarTela("variavel nular");
-        } catch (SQLSyntaxErrorException ssee) {
-            Messagem.chamarTela(ssee);
-            Messagem.chamarTela(sql);
-            Chapa.criadaChapa();
-            Peca.criadaPeca();
-            Pedaco.criadoPedaco();
-        } catch (SQLException se) {
-            Messagem.chamarTela(se);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+       Material.criarMaterial(getTABELA());              
     }
 
     /**
@@ -140,6 +104,7 @@ public class Pedaco {
         try {
             Pedaco();
             String sql = "";
+            
             pst = conexao.prepareStatement(sql);
             pst.setDouble(1, compPedaco);
             pst.setDouble(2, largPedaco);

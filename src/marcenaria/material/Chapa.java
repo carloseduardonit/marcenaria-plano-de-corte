@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package marcenaria;
+package marcenaria.material;
+
+import java.sql.*;
+import marcenaria.dado.ModuloConector;
 
 /**
  * 16/05/2019
@@ -16,47 +19,72 @@ public class Chapa {
     private static int idChapa, quantChapa;
     private static final String TABELA = Chapa.class.getSimpleName();
     static String[] tipoMateria = new String[2];
+    static Connection conexao;
+    static ResultSet rs;
+    static PreparedStatement pst;
+    static Statement stmt;
+
+    public static void Chapa() {
+        conexao = ModuloConector.getConecction();
+    }
 
     /**
-     *<b>Este metodo e para utilização para teste.</b>
+     * <b>Este metodo e para utilização para teste.</b>
+     *
      * @param args para teste
      */
     public static void main(String[] args) {
         deletadaChapa();
         criadaChapa();
         //Peca.criadaPeca();
-       // setComprChapa(220.0);
+        // setComprChapa(220.0);
         ///setLargChapa(110.0);
         //setEspesChapa(1.8);
         //setPrecoChapa(150.0);
         //inserirChapa();
         //
+        adicionarChapa(5, 220, 160, 0.18, 280, "MDF");
     }
 
-    /**<b>Este Metodo faz Criação da Tabela Chapa</b> 
+    /** <b>Este Metodo faz Criação da Tabela Chapa</b>
      *
      */
     public static void criadaChapa() {
         Material.criarMaterial(TABELA);
     }
 
-    /**OK
+    /**
+     * OK
      *
      */
     public static void deletadaChapa() {
         Material.deletarMaterial(TABELA);
     }
 
-    /**Testa
+    /**
+     * Testa
      *
+     * @param tipoMateria
      */
-    public static void inserirChapa() {
-        setTipoMateria();
-        Material.adicionarMaterial(getTABELA(), getTipoMateria(1), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa());
-
+    public static void adicionarChapa(String tipoMateria) {
+        Material.adicionarMaterial(getTABELA(), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa(), tipoMateria);
+    }
+    /**
+     * Testa
+     *
+     * @param quantChapa
+     * @param compChapa
+     * @param largChapa
+     * @param espeChapa
+     * @param precChapa
+     * @param tipoMaterial
+     */
+    public static void adicionarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial){
+        Material.adicionarMaterial(getTABELA(), quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial);
     }
 
-    /**testa
+    /**
+     * testa
      *
      */
     public static void editarChapa() {
@@ -64,23 +92,29 @@ public class Chapa {
         Material.editarMaterial(getTABELA(), getTipoMateria(0), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa());
     }
 
-    /**testa
+    /**
+     * testa
      *
      */
     public static void excluirChapa() {
         Material.excluirMaterial(TABELA, TABELA, quantChapa, 0, 0, 0, 0);
     }
 
-    /** testa
+    /**
+     * testa
      *
      */
     public static void pesquisarChapa() {
 
     }
 
+    public static int obterIdChapa(String tipoMaterial, double espessura) {
+        return Material.obterIdMaterial(getTABELA(), tipoMaterial, espessura);
+    }
+
     /**
      *
-     * @return Retornar uma valor double  da largura da Chapa
+     * @return Retornar uma valor double da largura da Chapa
      */
     public static Double getLargChapa() {
         return largChapa;
@@ -88,7 +122,7 @@ public class Chapa {
 
     /**
      *
-     * @param largChapa Informar uma valor double  da largura da Chapa
+     * @param largChapa Informar uma valor double da largura da Chapa
      */
     public static void setLargChapa(Double largChapa) {
         Chapa.largChapa = largChapa;
@@ -104,7 +138,7 @@ public class Chapa {
 
     /**
      *
-     * @param comprChapa Informar um valor double  do Comprimento da Chapa
+     * @param comprChapa Informar um valor double do Comprimento da Chapa
      */
     public static void setComprChapa(Double comprChapa) {
         Chapa.comprChapa = comprChapa;
@@ -128,7 +162,7 @@ public class Chapa {
 
     /**
      *
-     * @return Retorna um valor double  do preco da Chapa
+     * @return Retorna um valor double do preco da Chapa
      */
     public static Double getPrecoChapa() {
         return precoChapa;
@@ -136,7 +170,7 @@ public class Chapa {
 
     /**
      *
-     * @param precoChapa  Informar um valor double  do preco da Chapa
+     * @param precoChapa Informar um valor double do preco da Chapa
      */
     public static void setPrecoChapa(Double precoChapa) {
         Chapa.precoChapa = precoChapa;
@@ -144,7 +178,7 @@ public class Chapa {
 
     /**
      *
-     * @return Retornar um valor inteiro  do id da Chapa
+     * @return Retornar um valor inteiro do id da Chapa
      */
     public static int getIdChapa() {
         return idChapa;
@@ -152,7 +186,7 @@ public class Chapa {
 
     /**
      *
-     * @param idChapa Informar um valor inteiro  do id da Chapa
+     * @param idChapa Informar um valor inteiro do id da Chapa
      */
     public static void setIdChapa(int idChapa) {
         Chapa.idChapa = idChapa;
@@ -192,8 +226,9 @@ public class Chapa {
 
     /**
      *
-     * @param pos Informar um valor inteiro do index  do Array e deve começa em ZERO(0)
-     * @return Retornar uma String 
+     * @param pos Informar um valor inteiro do index do Array e deve começa em
+     * ZERO(0)
+     * @return Retornar uma String
      */
     public static String getTipoMateria(int pos) {
         return tipoMateria[pos];
@@ -201,8 +236,10 @@ public class Chapa {
 
     /**
      * Setar um array de String sendo:
-     * <p><b>0</b> iqual a Compensado</p>
-     * <p><b>1</b> iqual a MDF</p>
+     * <p>
+     * <b>0</b> iqual a Compensado</p>
+     * <p>
+     * <b>1</b> iqual a MDF</p>
      */
     public static void setTipoMateria() {
         Chapa.tipoMateria[0] = "Compensado";
@@ -211,7 +248,7 @@ public class Chapa {
 
     /**
      *
-     * @param tipoMateria Informar uma String de Array 
+     * @param tipoMateria Informar uma String de Array
      */
     public static void setTipoMateria(String[] tipoMateria) {
         Chapa.tipoMateria = tipoMateria;
@@ -219,8 +256,10 @@ public class Chapa {
 
     /**
      *
-     * @param tipoMateria Informar um valor do tipo String para setar no campo do Array
-     * @param pos Informar um valor inteiro do index  do Array e deve começa em ZERO(0)
+     * @param tipoMateria Informar um valor do tipo String para setar no campo
+     * do Array
+     * @param pos Informar um valor inteiro do index do Array e deve começa em
+     * ZERO(0)
      */
     public static void setTipoMateria(String tipoMateria, int pos) {
         Chapa.tipoMateria[pos] = tipoMateria;

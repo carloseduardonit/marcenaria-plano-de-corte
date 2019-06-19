@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package marcenaria;
+package marcenaria.material;
 
 import java.sql.*;
 import marcenaria.Const.Messagem;
@@ -36,21 +36,23 @@ public class Pedaco {
         Chapa.deletadaChapa();
     }
 
-    /**
-     * <b>Abre a conexão com o banco de dado.</b>
+    /** <b>Este Metodo abre a conexão com o bano de dados.</b>
+     *
      */
     private static void Pedaco() {
         conexao = ModuloConector.getConecction();
     }
 
     /**
+     * OK
      * <b> Este Metodo faz a criação da tabela Pedaço no banco.</b>
      */
     public static void criadoPedaco() {
-       Material.criarMaterial(getTABELA());              
+        Material.criarMaterial(getTABELA());
     }
 
     /**
+     * OK
      * <b>Este metodo faz a deletação a tabela Pedaço no banco.</b>
      * <p>
      * utilizando um metodo da Classe Material do Metodo deletarMaterial(String
@@ -64,30 +66,18 @@ public class Pedaco {
     /**
      * <b>Este Metodo adicionar informação na tabela Pedaço no banco.</b>
      *
+     * @param quantPeca
      * @param idChapa Informar um valor inteiro do Id da Chapa.
      * @param idPeca Informar um valor inteiro do Id da Peca.
      * @param compPedaco Informar um valor double da Comprimento da Pedaço.
+     * @param precPedaco
+     * @param tipoMaterial
      * @param largPedaco Informar um valor double da largura da Pedaço.
      * @param espePedaco Informar um valor double da espessura do Pedaço.
      * @param incData Informar um valor Date do dia da Inclusão.
      */
-    public static void adicionarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData) {
-        try {
-            Pedaco();
-            String sql = "insert into from " + TABELA + " (comp,larg,espe) values (?,?,?)";
-            pst = conexao.prepareStatement(sql);
-            pst.setDouble(1, compPedaco);
-            pst.setDouble(2, largPedaco);
-            pst.setDouble(3, espePedaco);
-            int adicionar = pst.executeUpdate();
-            if (adicionar == 0) {
-                Messagem.chamarTela(Messagem.ADICIONADO(sql));
-            }
-        } catch (NullPointerException e) {
-            Messagem.chamarTela(e);
-        } catch (Exception e) {
-            Messagem.chamarTela(e);
-        }
+    public static void adicionarPedaco(int quantPeca, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial) {
+        Material.adicionarMaterial(getTABELA(), quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial);
     }
 
     /**
@@ -104,7 +94,7 @@ public class Pedaco {
         try {
             Pedaco();
             String sql = "";
-            
+
             pst = conexao.prepareStatement(sql);
             pst.setDouble(1, compPedaco);
             pst.setDouble(2, largPedaco);
@@ -246,7 +236,11 @@ public class Pedaco {
             Messagem.chamarTela(e);
         }
     }
-    // Gets e Sets
+
+    public static int obterIdPedaco(String tipoMaterial, double espessura) {
+        return Material.obterIdMaterial(getTABELA(), tipoMaterial, espessura);
+    }
+// Gets e Sets
 
     /** <b>Este Metodo retornar o ID da Chapa.</b>
      *

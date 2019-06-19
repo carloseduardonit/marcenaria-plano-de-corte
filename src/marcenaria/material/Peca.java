@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package marcenaria;
+package marcenaria.material;
 
+import java.sql.*;
 import marcenaria.Const.Messagem;
 
 /**
@@ -24,28 +25,18 @@ public class Peca {
     private static final String TABELA = Peca.class.getSimpleName();
     private static String[] tipoMateria = new String[2];
     private static double[][] sobra = new double[10][2];
+    static Connection conexao;
+    static PreparedStatement pst;
+    static ResultSet rs;
+    static Statement stmt;
 
     /** <b>Este metodo e para utilização para teste.</b>
      *
      * @param args Informar um valor String para tabela de Material
      */
     public static void main(String[] args) {
-        /* Scanner ler  = new Scanner(System.in);
-        Boolean validaComprimento = false;
-        do {
-            setComprimento(0.0);
-            if (getComprimento()<=0) {
-                System.out.println("erro");
-            }else{
-                
-                validaComprimento =true;
-            }
-        } while (!validaComprimento);*/
-        //criadaPeca();
-        //deletadaPeca();
-        SomarVerticalPeca(220, 160, 109, 79, 1);
-        System.out.println(getComprimento()+"X"+getLargura());
-
+       
+        adicionarPeca(5, 220, 160, 0.18, 280.50, "MDF");
     }
 
     /**
@@ -73,13 +64,32 @@ public class Peca {
     /** <b>Este metodo faz adição na tabela Peça.</b>
      * <p>
      * Utilizar um metodo da classe Material como Metodo auxiliar o metodo
-     * inserirMaterial((String Tabela, String tipoMaterial, int quantidade,
-     * double comprimento, double largura, double espessura, double preco).</p>
+     * adicionarMaterial((String Tabelaterial, int quantidade, double
+     * comprimento, double largura, double espessura, double preco, String
+     * tipoMa).</p>
      *
      */
     public static void adicionarPeca() {
         setTipoMateria();
-        Material.adicionarMaterial(getTABELA(), getTipoMateria(0), getQuantPeca(), getComprimento(), getLargura(), getEspessura(), getPreco());
+        Material.adicionarMaterial(getTABELA(), getQuantPeca(), getComprimento(), getLargura(), getEspessura(), getPreco(), getTipoMateria(0));
+    }
+
+    /** <b>Este metodo faz adição na tabela Peça.</b>
+     * <p>
+     * Utilizar um metodo da classe Material como Metodo auxiliar o metodo
+     * adicionarMaterial((String Tabela, int quantidade, double comprimento,
+     * double largura, double espessura, double preco, String tipoMaterial).</p>
+     *
+     * @param Tabela
+     * @param quanPeca
+     * @param compPeca
+     * @param largPeca
+     * @param espePeca
+     * @param precPeca
+     * @param tipoMaterial
+     */
+    public static void adicionarPeca(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial) {
+        Material.adicionarMaterial(getTABELA(), quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial);
     }
 
     /**
@@ -113,6 +123,10 @@ public class Peca {
 
     }
 
+    public static int obterIdPeca(String tipoMaterial, double espessura) {
+        return Material.obterIdMaterial(Peca.getTABELA(), tipoMaterial, espessura);
+    }
+
     /**
      * Estou preparando soma as peça Se 109,5X79,5
      *
@@ -137,7 +151,7 @@ public class Peca {
         } else {
             if (compChapa <= getComprimento() + compPeca + serra && largChapa <= getLargura()) {
                 setComprimento(getComprimento() + compPeca + serra);
-                
+
             } else {
                 setComprimento(getComprimento() + compPeca + serra);
                 //Sobra(compChapa, largChapa, 0, 0, 0);
@@ -390,8 +404,9 @@ public class Peca {
         return sobra[pos][pos1];
     }
 
-     /**
-     * <b> Este metodo Retornar um com valor double da sobra do peça  referente a comprimento.</b>
+    /**
+     * <b> Este metodo Retornar um com valor double da sobra do peça referente a
+     * comprimento.</b>
      * <p>
      * double[pos][0],</p>
      * <p>
@@ -405,13 +420,15 @@ public class Peca {
     public static double getSobraC(int pos) {
         return sobra[pos][0];
     }
+
     /**
-     * <b> Este metodo Retornar um com valor double da sobra do peça referente a largura.</b>
+     * <b> Este metodo Retornar um com valor double da sobra do peça referente a
+     * largura.</b>
      * <p>
      * double[pos][1],</p>
      * <p>
      * pos = linha,</p>
-     
+     *
      * @param pos Informar um valor inteiro do index do Array da posição linha e
      * deve começa em <b>ZERO(0)</b>.
      *

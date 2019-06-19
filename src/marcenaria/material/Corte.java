@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | TemplatespeChapa
  * and open the template in the editor.
  */
-package marcenaria;
+package marcenaria.material;
 
 import java.sql.*;
 import javax.swing.JOptionPane;

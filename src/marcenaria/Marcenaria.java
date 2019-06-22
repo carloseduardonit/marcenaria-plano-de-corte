@@ -5,6 +5,7 @@
  */
 package marcenaria;
 
+import java.awt.Dimension;
 import marcenaria.tela.pessoa.TelaCliente;
 import marcenaria.tela.pessoa.TelaFornecedor;
 
@@ -14,10 +15,14 @@ import marcenaria.tela.pessoa.TelaFornecedor;
  */
 public class Marcenaria extends javax.swing.JFrame {
 
+    private static final long serialVersionUID = 1L;
+ private TelaCliente tc = new TelaCliente();
+ private TelaFornecedor tf = new TelaFornecedor();
     /**
      * Creates new form Marcenaria
      */
     public Marcenaria() {
+       
         initComponents();
     }
 
@@ -35,6 +40,7 @@ public class Marcenaria extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         miCliente = new javax.swing.JMenuItem();
         miFornecedor = new javax.swing.JMenuItem();
+        miProduto = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -68,6 +74,14 @@ public class Marcenaria extends javax.swing.JFrame {
         });
         jMenu1.add(miFornecedor);
 
+        miProduto.setText("Produto");
+        miProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miProdutoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(miProduto);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -95,17 +109,26 @@ public class Marcenaria extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void miClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miClienteActionPerformed
-        TelaCliente tc = new TelaCliente();
-        tc.setVisible(true);
-        dpMarcenaria.add(tc);
+        
+        getTf().setVisible(false);
+        dpMarcenaria.remove(getTf());
+        
+        getTc().setVisible(true);
+        dpMarcenaria.add(getTc());
     }//GEN-LAST:event_miClienteActionPerformed
 
     private void miFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miFornecedorActionPerformed
-       TelaFornecedor tf = new TelaFornecedor();
-       tf.setVisible(true);
-       dpMarcenaria.add(tf);
+        getTc().dispose();  
+        getTf().setVisible(true);
+       dpMarcenaria.add(getTf());
     }//GEN-LAST:event_miFornecedorActionPerformed
 
+    private void miProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miProdutoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_miProdutoActionPerformed
+
+    private static Dimension Minimo,Maximo,pefil;
+    
     /**
      * @param args the command line arguments
      */
@@ -149,5 +172,64 @@ public class Marcenaria extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem miCliente;
     private javax.swing.JMenuItem miFornecedor;
+    private javax.swing.JMenuItem miProduto;
     // End of variables declaration//GEN-END:variables
+
+    public   Dimension getMinimo() {
+        setMinimo();
+        return Minimo;
+    }
+
+    public void setMinimo() {
+        Marcenaria.Minimo = dpMarcenaria.getMinimumSize();
+    }
+
+    public  Dimension getMaximo() {
+        setMaximo();
+        return Maximo;
+    }
+
+    public void setMaximo() {
+        Marcenaria.Maximo = dpMarcenaria.getMaximumSize();
+    }
+
+    public Dimension getPefil() {
+        setPefil();
+        return pefil;
+    }
+
+    public void setPefil() {
+        Marcenaria.pefil = dpMarcenaria.getPreferredSize();
+    }
+
+    /**
+     * @return the tc
+     */
+    public TelaCliente getTc() {
+        return tc;
+    }
+
+    /**
+     * @param tc the tc to set
+     */
+    public void setTc(TelaCliente tc) {
+        this.tc = tc;
+    }
+
+    /**
+     * @return the tf
+     */
+    public TelaFornecedor getTf() {
+        return tf;
+    }
+
+    /**
+     * @param tf the tf to set
+     */
+    public void setTf(TelaFornecedor tf) {
+        this.tf = tf;
+    }
+
+   
+    
 }

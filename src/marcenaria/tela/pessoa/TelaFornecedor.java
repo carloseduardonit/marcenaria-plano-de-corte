@@ -6,14 +6,15 @@
 package marcenaria.tela.pessoa;
 
 import java.awt.Color;
-import marcenaria.Pessoa.Fornecedor;
+import marcenaria.Marcenaria;
+import marcenaria.pessoa.Fornecedor;
 
 /**
  *
  * @author Carlos
  */
 public class TelaFornecedor extends javax.swing.JInternalFrame {
-
+Marcenaria m = new Marcenaria();
     /**
      * Creates new form TelaFornecedor
      */
@@ -51,6 +52,9 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle(Fornecedor.getTABELA());
+        setMaximumSize(m.getMaximo());
+        setMinimumSize(m.getMinimo());
+        setPreferredSize(m.getPefil());
 
         cbTipoPessoa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NI", "PF", "PJ" }));
         cbTipoPessoa.addActionListener(new java.awt.event.ActionListener() {
@@ -84,14 +88,9 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
         lblNome.setText("Nome:");
 
-        txtConfSenha1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtConfSenha1ActionPerformed(evt);
-            }
-        });
         txtConfSenha1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtConfSenha1KeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtConfSenha1KeyReleased(evt);
             }
         });
 
@@ -204,10 +203,6 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cbTipoPessoaActionPerformed
 
-    private void txtConfSenha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtConfSenha1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtConfSenha1ActionPerformed
-
     private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnADDActionPerformed
         if (txtConfSenha1.getText().equalsIgnoreCase(txtSenha.getText()) && txtSenha.getText().length() >= 7 && txtConfSenha1.getText().length() >= 7) {
         Fornecedor.adicionarFornecedor(txtLogin.getText(), txtSenha.getText(), txtConfSenha1.getText(), cbTipoPessoa.getSelectedItem().toString(), txtNome.getText(), txtDocumento.getText());
@@ -232,7 +227,7 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
         Fornecedor.excluirFornecedor(txtLogin.getText(), txtSenha.getText(), txtConfSenha1.getText(), cbTipoPessoa.getSelectedItem().toString(), txtNome.getText(), txtDocumento.getText());
     }//GEN-LAST:event_btnDELETEActionPerformed
 
-    private void txtConfSenha1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConfSenha1KeyPressed
+    private void txtConfSenha1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConfSenha1KeyReleased
         if (txtConfSenha1.getText().equalsIgnoreCase(txtSenha.getText()) && txtSenha.getText().length() >= 7 && txtConfSenha1.getText().length() >= 7) {
             txtConfSenha1.setBackground(Color.GREEN);
             txtSenha.setBackground(Color.GREEN);
@@ -240,7 +235,7 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
             txtConfSenha1.setBackground(Color.red);
             txtSenha.setBackground(Color.red);
         }
-    }//GEN-LAST:event_txtConfSenha1KeyPressed
+    }//GEN-LAST:event_txtConfSenha1KeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

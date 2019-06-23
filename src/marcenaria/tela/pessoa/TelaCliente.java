@@ -5,10 +5,10 @@
  */
 package marcenaria.tela.pessoa;
 
-import java.awt.Color;
-import marcenaria.Const.Messagem;
 import marcenaria.Marcenaria;
-import marcenaria.pessoa.*;
+import marcenaria.pessoa1.Cliente;
+import marcenaria.pessoa1.Layout;
+
 
 /**
  *
@@ -17,15 +17,16 @@ import marcenaria.pessoa.*;
 public class TelaCliente extends javax.swing.JInternalFrame {
 
     private static final long serialVersionUID = 1L;
-
-    int tcs = 7;
-    Marcenaria m = new Marcenaria();
+Marcenaria m = new Marcenaria();
+    
 
     /**
      * Creates new form TelaFornecedor
      */
-    public TelaCliente() {
+    public TelaCliente() { 
+        Cliente.criarCliente();
         initComponents();
+       
     }
 
     /**
@@ -58,9 +59,9 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle(Cliente.getTABELA());
-        setMaximumSize(m.getMinimo());
-        setMinimumSize(m.getMinimo());
-        setPreferredSize(m.getPefil());
+        setMaximumSize(Layout.getMaximo());
+        setMinimumSize(Layout.getMinimo());
+        setPreferredSize(Layout.getPerfil());
 
         cbTipoPessoa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NI", "PF", "PJ" }));
         cbTipoPessoa.addActionListener(new java.awt.event.ActionListener() {
@@ -94,15 +95,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         lblNome.setText("Nome:");
 
-        txtConfSenha1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtConfSenha1ActionPerformed(evt);
-            }
-        });
         txtConfSenha1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtConfSenha1KeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtConfSenha1KeyReleased(evt);
             }
@@ -203,97 +196,34 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/**
-     * 
-     */
+
     private void cbTipoPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoPessoaActionPerformed
-        if (cbTipoPessoa.getSelectedItem().toString().equalsIgnoreCase("pf")) {
-            lblDocumento.setText("n° CPF:");
-            txtDocumento.setEnabled(true);
-        } else if (cbTipoPessoa.getSelectedItem().toString().equalsIgnoreCase("pj")) {
-            lblDocumento.setText("n° CNPJ:");
-            txtDocumento.setEnabled(true);
-        } else {
-            lblDocumento.setText("Documento:");
-            txtDocumento.setEnabled(false);
-        }
+        Control.DesabilitaeMudaDoc(cbTipoPessoa, lblDocumento, txtDocumento);
     }//GEN-LAST:event_cbTipoPessoaActionPerformed
-    /**
-     * 
-     */
-    private void txtConfSenha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtConfSenha1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtConfSenha1ActionPerformed
-    /**
-     * 
-     */
+
     private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnADDActionPerformed
-        if (Cliente.campoDiferente(txtSenha.getText(), txtConfSenha1.getText(), 7)) {
-            Cliente.adicionarCliente(txtLogin.getText(), txtSenha.getText(), txtConfSenha1.getText(), cbTipoPessoa.getSelectedItem().toString(), txtNome.getText(), txtDocumento.getText());
-        } else {
-            Messagem.chamarTela(Cliente.CampoDiferente(txtSenha.getText(), txtConfSenha1.getText(), getTcs()));
-        }
+        Control.ADDCliente(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btnADDActionPerformed
-    /**
-     * 
-     */
+ 
     private void btnEDITActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEDITActionPerformed
-        if (Cliente.campoDiferente(txtSenha.getText(), txtConfSenha1.getText(), getTcs())) {
-            Cliente.editarCliente(txtLogin.getText(), title, txtSenha.getText(), txtConfSenha1.getText(), cbTipoPessoa.getSelectedItem().toString(), txtNome.getText(), txtDocumento.getText());
-        } else {
-            Messagem.chamarTela(Cliente.CampoDiferente(txtSenha.getText(), txtConfSenha1.getText(), getTcs()));
-        }
+        Control.EDITCliente(txtLogin,txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btnEDITActionPerformed
-    /**
-     * 
-     */
+ 
     private void btmSEACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmSEACHActionPerformed
-        if (Cliente.campoDiferente(txtSenha.getText(), txtConfSenha1.getText(), getTcs())) {
-            Cliente.pesquisarCliente(txtLogin.getText(), txtSenha.getText(), txtConfSenha1.getText(), cbTipoPessoa.getSelectedItem().toString(), txtNome.getText(), txtDocumento.getText());
-        } else {
-            Messagem.chamarTela(Cliente.CampoDiferente(txtSenha.getText(), txtConfSenha1.getText(), getTcs()));
-        }
+        Control.SEACHCliente(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        Control.SetarCliente(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btmSEACHActionPerformed
-    /**
-     * 
-     */
+  
     private void btnDELETEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDELETEActionPerformed
-        if (Cliente.campoDiferente(txtSenha.getText(), txtConfSenha1.getText(), 7)) {
-            Cliente.excluirCliente(txtLogin.getText(), txtSenha.getText(), txtConfSenha1.getText(), cbTipoPessoa.getSelectedItem().toString(), txtNome.getText(), txtDocumento.getText());
-        } else {
-            Messagem.chamarTela(Cliente.CampoDiferente(txtSenha.getText(), txtConfSenha1.getText(), getTcs()));
-        }
+        Control.DELETEFornecedor(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btnDELETEActionPerformed
 
-    private void txtConfSenha1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConfSenha1KeyPressed
-
-    }//GEN-LAST:event_txtConfSenha1KeyPressed
-    /**
-     * 
-     */
     private void txtConfSenha1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConfSenha1KeyReleased
-        if (txtConfSenha1.getText().equalsIgnoreCase(txtSenha.getText()) && txtSenha.getText().length() >= 7 && txtConfSenha1.getText().length() >= 7) {
-            txtConfSenha1.setBackground(Color.GREEN);
-            txtSenha.setBackground(Color.GREEN);
-        } else {
-            txtConfSenha1.setBackground(Color.red);
-            txtSenha.setBackground(Color.red);
-        }
+        Control.MudarCor(txtConfSenha1, txtSenha);    
     }//GEN-LAST:event_txtConfSenha1KeyReleased
-    /**
-     * @return
-     */
-    public int getTcs() {
-        return tcs;
-    }
-
-    /**
-     * @param tcs
-     */
-    public void setTcs(int tcs) {
-        this.tcs = tcs;
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btmSEACH;

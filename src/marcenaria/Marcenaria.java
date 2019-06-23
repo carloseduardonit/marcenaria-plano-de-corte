@@ -5,7 +5,7 @@
  */
 package marcenaria;
 
-import java.awt.Dimension;
+import marcenaria.pessoa1.Layout;
 import marcenaria.tela.pessoa.TelaCliente;
 import marcenaria.tela.pessoa.TelaFornecedor;
 
@@ -16,14 +16,15 @@ import marcenaria.tela.pessoa.TelaFornecedor;
 public class Marcenaria extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
- private TelaCliente tc = new TelaCliente();
- private TelaFornecedor tf = new TelaFornecedor();
+ static TelaCliente  tc = new TelaCliente();
+   static TelaFornecedor tf  = new TelaFornecedor();
     /**
      * Creates new form Marcenaria
      */
     public Marcenaria() {
-       
+      
         initComponents();
+        Layout.setMaximo(dpMarcenaria.getMaximumSize());
     }
 
     /**
@@ -110,24 +111,23 @@ public class Marcenaria extends javax.swing.JFrame {
 
     private void miClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miClienteActionPerformed
         
-        getTf().setVisible(false);
-        dpMarcenaria.remove(getTf());
+        tf.setVisible(false);
+        dpMarcenaria.remove(tf);
         
-        getTc().setVisible(true);
-        dpMarcenaria.add(getTc());
+        tc.setVisible(true);
+        dpMarcenaria.add(tc);
     }//GEN-LAST:event_miClienteActionPerformed
 
     private void miFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miFornecedorActionPerformed
-        getTc().dispose();  
-        getTf().setVisible(true);
-       dpMarcenaria.add(getTf());
+         
+        tf.setVisible(true);
+       dpMarcenaria.add(tf);
     }//GEN-LAST:event_miFornecedorActionPerformed
 
     private void miProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miProdutoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_miProdutoActionPerformed
 
-    private static Dimension Minimo,Maximo,pefil;
     
     /**
      * @param args the command line arguments
@@ -174,62 +174,5 @@ public class Marcenaria extends javax.swing.JFrame {
     private javax.swing.JMenuItem miFornecedor;
     private javax.swing.JMenuItem miProduto;
     // End of variables declaration//GEN-END:variables
-
-    public   Dimension getMinimo() {
-        setMinimo();
-        return Minimo;
-    }
-
-    public void setMinimo() {
-        Marcenaria.Minimo = dpMarcenaria.getMinimumSize();
-    }
-
-    public  Dimension getMaximo() {
-        setMaximo();
-        return Maximo;
-    }
-
-    public void setMaximo() {
-        Marcenaria.Maximo = dpMarcenaria.getMaximumSize();
-    }
-
-    public Dimension getPefil() {
-        setPefil();
-        return pefil;
-    }
-
-    public void setPefil() {
-        Marcenaria.pefil = dpMarcenaria.getPreferredSize();
-    }
-
-    /**
-     * @return the tc
-     */
-    public TelaCliente getTc() {
-        return tc;
-    }
-
-    /**
-     * @param tc the tc to set
-     */
-    public void setTc(TelaCliente tc) {
-        this.tc = tc;
-    }
-
-    /**
-     * @return the tf
-     */
-    public TelaFornecedor getTf() {
-        return tf;
-    }
-
-    /**
-     * @param tf the tf to set
-     */
-    public void setTf(TelaFornecedor tf) {
-        this.tf = tf;
-    }
-
-   
     
 }

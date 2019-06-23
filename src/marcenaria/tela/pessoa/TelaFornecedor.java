@@ -5,9 +5,9 @@
  */
 package marcenaria.tela.pessoa;
 
-import java.awt.Color;
 import marcenaria.Marcenaria;
-import marcenaria.pessoa.Fornecedor;
+import marcenaria.pessoa1.Fornecedor;
+import marcenaria.pessoa1.Layout;
 
 /**
  *
@@ -19,6 +19,7 @@ Marcenaria m = new Marcenaria();
      * Creates new form TelaFornecedor
      */
     public TelaFornecedor() {
+        Fornecedor.criarFornecedor();
         initComponents();
     }
 
@@ -52,9 +53,9 @@ Marcenaria m = new Marcenaria();
         setIconifiable(true);
         setMaximizable(true);
         setTitle(Fornecedor.getTABELA());
-        setMaximumSize(m.getMaximo());
-        setMinimumSize(m.getMinimo());
-        setPreferredSize(m.getPefil());
+        setMaximumSize(Layout.getMaximo());
+        setMinimumSize(Layout.getMinimo());
+        setPreferredSize(Layout.getPerfil());
 
         cbTipoPessoa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NI", "PF", "PJ" }));
         cbTipoPessoa.addActionListener(new java.awt.event.ActionListener() {
@@ -191,50 +192,31 @@ Marcenaria m = new Marcenaria();
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbTipoPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoPessoaActionPerformed
-        if (cbTipoPessoa.getSelectedItem().toString().equalsIgnoreCase("pf")) {
-            lblDocumento.setText("n° CPF:");
-            txtDocumento.setEnabled(true);
-        } else if (cbTipoPessoa.getSelectedItem().toString().equalsIgnoreCase("pj")) {
-            lblDocumento.setText("n° CNPJ:");
-            txtDocumento.setEnabled(true);
-        } else {
-            lblDocumento.setText("Documento:");
-            txtDocumento.setEnabled(false);
-        }
+       Control.DesabilitaeMudaDoc(cbTipoPessoa, lblDocumento, txtDocumento);
     }//GEN-LAST:event_cbTipoPessoaActionPerformed
 
     private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnADDActionPerformed
-        if (txtConfSenha1.getText().equalsIgnoreCase(txtSenha.getText()) && txtSenha.getText().length() >= 7 && txtConfSenha1.getText().length() >= 7) {
-        Fornecedor.adicionarFornecedor(txtLogin.getText(), txtSenha.getText(), txtConfSenha1.getText(), cbTipoPessoa.getSelectedItem().toString(), txtNome.getText(), txtDocumento.getText());
-        }else{
-            
-        }
+        Control.ADDFornecedor(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btnADDActionPerformed
 
     private void btnEDITActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEDITActionPerformed
-        if (txtConfSenha1.getText().equalsIgnoreCase(txtSenha.getText()) && txtSenha.getText().length() >= 7 && txtConfSenha1.getText().length() >= 7) {
-        Fornecedor.editarFornecedor(txtLogin.getText(), title, txtSenha.getText(), txtConfSenha1.getText(), cbTipoPessoa.getSelectedItem().toString(), txtNome.getText(), txtDocumento.getText());
-        }else{
-            
-        }
+     Control.EDITFornecedor(txtLogin, txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+     Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btnEDITActionPerformed
 
     private void btmSEACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmSEACHActionPerformed
-        Fornecedor.pesquisarFornecedor(txtLogin.getText(), txtSenha.getText(), txtConfSenha1.getText(), cbTipoPessoa.getSelectedItem().toString(), txtNome.getText(), txtDocumento.getText());
+       Control.SEACHFornecedor(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        Control.SetarFornecedor(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btmSEACHActionPerformed
 
     private void btnDELETEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDELETEActionPerformed
-        Fornecedor.excluirFornecedor(txtLogin.getText(), txtSenha.getText(), txtConfSenha1.getText(), cbTipoPessoa.getSelectedItem().toString(), txtNome.getText(), txtDocumento.getText());
+        Control.DELETEFornecedor(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);      
     }//GEN-LAST:event_btnDELETEActionPerformed
 
     private void txtConfSenha1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConfSenha1KeyReleased
-        if (txtConfSenha1.getText().equalsIgnoreCase(txtSenha.getText()) && txtSenha.getText().length() >= 7 && txtConfSenha1.getText().length() >= 7) {
-            txtConfSenha1.setBackground(Color.GREEN);
-            txtSenha.setBackground(Color.GREEN);
-        } else {
-            txtConfSenha1.setBackground(Color.red);
-            txtSenha.setBackground(Color.red);
-        }
+        Control.MudarCor(txtConfSenha1, txtSenha);
     }//GEN-LAST:event_txtConfSenha1KeyReleased
 
 

@@ -13,7 +13,7 @@ public class Cliente extends Pessoa {
 
     private static final String TABELA = Cliente.class.getSimpleName();
     private static int cpf, idCliente;
-    private static String tipoPessoa;
+    private static String tipoPessoa,docum;
 
     /**
      * Este metodo inserer informação na tabela Cliente utilizado um metodo
@@ -96,8 +96,8 @@ public class Cliente extends Pessoa {
      * infornação for de 11 digito, senão <b>PJ</b> so poderá anexa a infornação
      * for de 14 digito
      */
-    public static void excluirCliente(String logCliente, String senCliente, String conSenCliente, String tipoPessoa, String nomeCliente, String documCliente) {
-        Pessoa.excluirPessoa(getTABELA(), logCliente, senCliente, conSenCliente, tipoPessoa, nomeCliente, documCliente);
+    public static void excluirCliente(String logCliente) {
+        Pessoa.excluirPessoa(Cliente.getTABELA(), logCliente);
     }
 
     /**
@@ -118,8 +118,8 @@ public class Cliente extends Pessoa {
      * infornação for de 11 digito, senão <b>PJ</b> so poderá anexa a infornação
      * for de 14 digito
      */
-    public static void pesquisarCliente(String logCliente, String senCliente, String conSenCliente, String tipoPessoa, String nomeCliente, String documCliente) {
-        Pessoa.pesquisarPessoa(getTABELA(), logCliente, senCliente, conSenCliente, tipoPessoa, nomeCliente, documCliente);
+    public static void pesquisarCliente(String logCliente) {
+        Pessoa.pesquisarPessoa(getTABELA(), logCliente);
     }
 
     /**
@@ -189,6 +189,14 @@ public class Cliente extends Pessoa {
      */
     public static String getTABELA() {
         return TABELA;
+    }
+
+    public static String getDocum() {
+        return docum;
+    }
+
+    public static void setDocum(String docum) {
+        Cliente.docum = docum;
     }
 
 }

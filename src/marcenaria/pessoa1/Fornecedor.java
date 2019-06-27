@@ -13,7 +13,7 @@ package marcenaria.pessoa1;
 public class Fornecedor extends Pessoa {
 
     private static int idFornecedor;
-    private static String CNPJ, tipoPessoa;
+    private static String CNPJ, tipoPessoa, docum;
     private static final String TABELA = Fornecedor.class.getSimpleName();
 
     /**
@@ -100,8 +100,8 @@ public class Fornecedor extends Pessoa {
      * se<b>PF</b> so poderá anexa a infornação for de 11 digito, senão
      * <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
-    public static void excluirFornecedor(String logFornecedor, String senFornecedor, String consenFornecedor, String tipoPessoa, String nomeFornecedor, String documFornecedor) {
-        Pessoa.excluirPessoa(getTABELA(), logFornecedor, senFornecedor, consenFornecedor, tipoPessoa, nomeFornecedor, documFornecedor);
+    public static void excluirFornecedor(String logFornecedor) {
+        Pessoa.excluirPessoa(Fornecedor.getTABELA(), logFornecedor);
     }
 
     /**
@@ -123,8 +123,8 @@ public class Fornecedor extends Pessoa {
      * se<b>PF</b> so poderá anexa a infornação for de 11 digito, senão
      * <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
-    public static void pesquisarFornecedor(String logFornecedor, String senFornecedor, String consenFornecedor, String tipoPessoa, String nomeFornecedor, String documFornecedor) {
-        Pessoa.pesquisarPessoa(getTABELA(), logFornecedor, senFornecedor, consenFornecedor, tipoPessoa, nomeFornecedor, documFornecedor);
+    public static void pesquisarFornecedor(String logFornecedor) {
+        Pessoa.pesquisarPessoa(Fornecedor.getTABELA(), logFornecedor);
     }
 
     /**
@@ -191,6 +191,14 @@ public class Fornecedor extends Pessoa {
      */
     public static String getTABELA() {
         return TABELA;
+    }
+
+    public static String getDocum() {
+        return docum;
+    }
+
+    public static void setDocum(String docum) {
+        Fornecedor.docum = docum;
     }
 
 }

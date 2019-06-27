@@ -6,9 +6,9 @@
 package marcenaria.tela.pessoa;
 
 import marcenaria.Marcenaria;
+import marcenaria.dado.ModuloConector;
 import marcenaria.pessoa1.Cliente;
 import marcenaria.pessoa1.Layout;
-
 
 /**
  *
@@ -17,16 +17,17 @@ import marcenaria.pessoa1.Layout;
 public class TelaCliente extends javax.swing.JInternalFrame {
 
     private static final long serialVersionUID = 1L;
-Marcenaria m = new Marcenaria();
-    
+    Marcenaria m = new Marcenaria();
 
     /**
      * Creates new form TelaFornecedor
      */
-    public TelaCliente() { 
-        Cliente.criarCliente();
+    public TelaCliente() {
+        if (ModuloConector.VerificarNaoExistirTabela(Cliente.getTABELA())) {
+            Cliente.criarCliente();
+        }
         initComponents();
-       
+
     }
 
     /**
@@ -123,41 +124,33 @@ Marcenaria m = new Marcenaria();
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(btnADD)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTipoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblConfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNome, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtLogin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSenha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtConfSenha1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbTipoPessoa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDocumento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
+                        .addComponent(btnADD, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEDIT)
+                        .addComponent(btnEDIT, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btmSEACH)
+                        .addComponent(btmSEACH, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDELETE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblNome, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lblLogin, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lblSenha, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lblConfSenha, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lblTipoPessoa, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lblDocumento, javax.swing.GroupLayout.Alignment.TRAILING))
-                            .addGap(36, 36, 36)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(cbTipoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(147, 147, 147)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtConfSenha1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnDELETE)))
+                .addGap(112, 112, 112))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +179,7 @@ Marcenaria m = new Marcenaria();
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDocumento)
                     .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnADD)
                     .addComponent(btnEDIT)
@@ -194,7 +187,7 @@ Marcenaria m = new Marcenaria();
                     .addComponent(btnDELETE)))
         );
 
-        pack();
+        setBounds(366, 252, 302, 252);
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbTipoPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoPessoaActionPerformed
@@ -205,24 +198,24 @@ Marcenaria m = new Marcenaria();
         Control.ADDCliente(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
         Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btnADDActionPerformed
- 
+
     private void btnEDITActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEDITActionPerformed
-        Control.EDITCliente(txtLogin,txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        Control.EDITCliente(txtLogin, txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
         Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btnEDITActionPerformed
- 
+
     private void btmSEACHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmSEACHActionPerformed
         Control.SEACHCliente(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
-        Control.SetarCliente(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        
     }//GEN-LAST:event_btmSEACHActionPerformed
-  
+
     private void btnDELETEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDELETEActionPerformed
-        Control.DELETEFornecedor(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        Control.DELETECliente(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
         Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btnDELETEActionPerformed
 
     private void txtConfSenha1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConfSenha1KeyReleased
-        Control.MudarCor(txtConfSenha1, txtSenha);    
+        Control.MudarCor(txtConfSenha1, txtSenha);
     }//GEN-LAST:event_txtConfSenha1KeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

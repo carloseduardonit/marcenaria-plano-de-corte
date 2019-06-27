@@ -25,6 +25,8 @@ public class Marcenaria extends javax.swing.JFrame {
       
         initComponents();
         Layout.setMaximo(dpMarcenaria.getMaximumSize());
+        Layout.setMinimo(dpMarcenaria.getMinimumSize());
+        Layout.setPerfil(dpMarcenaria.getPreferredSize());
     }
 
     /**

@@ -221,14 +221,17 @@ public class Messagem {
     }
 
     /**
+     * Este metodo Retornar um valor inteiro na Variavel de Controle de Criação.
+     *
      * @return Retornar um valor inteiro na Variavel de Controle de Criação.
      */
     public static int getCriada() {
         return criada;
     }
 
-    /**
-     * @param criada Informar um valor inteiro na Variavel de Controle de
+    /**  Este metodo Setar Informar um valor inteiro na Variavel de Controle de
+     * Criação.
+     * @param criada  Setar Informar um valor inteiro na Variavel de Controle de
      * Criação.
      */
     public static void setCriada(int criada) {

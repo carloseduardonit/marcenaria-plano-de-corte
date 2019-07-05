@@ -8,7 +8,7 @@ package marcenaria.pessoa1;
 /**
  * 16/06/2019
  *
- * @author Carlos
+ * @author Carlos Eduardo dos Santos Figueiredo
  */
 public class Fornecedor extends Pessoa {
 
@@ -50,7 +50,7 @@ public class Fornecedor extends Pessoa {
     }
 
     /**
-     *
+     * Este metodo faz a exclução da informação na Tabela
      */
     public static void deletarFornecedor() {
         Pessoa.deletarPessoa(getTABELA());
@@ -170,7 +170,8 @@ public class Fornecedor extends Pessoa {
         Fornecedor.CNPJ = CNPJ;
     }
 
-    /**
+    /**Este Metodo Retornar uma informação do tipo String da Tabela
+     * Fornecedor no Tipo de Fornecedor
      * @return Retornar uma informação do tipo String da Tabela
      * Fornecedor no Tipo de Fornecedor
      */
@@ -179,7 +180,10 @@ public class Fornecedor extends Pessoa {
     }
 
     /**
-     * @param tipoPessoa
+     * Este Metodo Setar uma informação do tipo String da Tabela
+     * Fornecedor no Tipo de Fornecedor
+     * @param tipoPessoa Setar uma informação do tipo String da Tabela
+     * Fornecedor no Tipo de Fornecedor
      */
     public static void setTipoPessoa(String tipoPessoa) {
         Fornecedor.tipoPessoa = tipoPessoa;
@@ -187,16 +191,23 @@ public class Fornecedor extends Pessoa {
 
     /**
      *
-     * @return
+     * @return Retornar uma informação do tipo String da Tabela
+     * Fornecedor  com nome da tabela
      */
     public static String getTABELA() {
         return TABELA;
     }
-
+/**
+     *
+     * @return
+     */
     public static String getDocum() {
         return docum;
     }
-
+/**
+     *
+     * 
+     */
     public static void setDocum(String docum) {
         Fornecedor.docum = docum;
     }

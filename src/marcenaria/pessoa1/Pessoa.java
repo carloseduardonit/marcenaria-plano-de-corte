@@ -35,43 +35,52 @@ public class Pessoa {
     /**
      * TA MONTANDO FALTA TESTA Este metodo inserer informação na tabela Pessoa
      *
-     * @param Tabela Setar uma informação do tipo String no nome da Tabela
-     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * novo Login Pessoa
-     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * na Confirmação da senha Pessoa
-     * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
-     * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Nome Pessoa
-     * @param documPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * no documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b> so poderá
-     * anexa a infornação for de 11 digito, senão <b>PJ</b> so poderá anexa a
-     * infornação for de 14 digito
+     * @param Tabela       Setar uma informação do tipo String no nome da Tabela
+     * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     novo Login Pessoa
+     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
+     *                     Confirmação da senha Pessoa
+     * @param tipoPessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     *                     <b>PJ</b>
+     * @param nomePessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Nome Pessoa
+     * @param documPessoa  Setar uma informação do tipo String da Tabela Pessoa no
+     *                     documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
+     *                     so poderá anexa a infornação for de 11 digito, senão
+     *                     <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
-    public static void adicionarPessoa(String Tabela, String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa, String nomePessoa, String documPessoa) {
+    public static void adicionarPessoa(String Tabela, String logPessoa, String senPessoa, String conSenPessoa,
+            String tipoPessoa, String nomePessoa, String documPessoa) {
         try {
             Pessoa();
             int idPessoa = 0;
             String sql = "";
             if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
                 if (Pessoa.obterIdPessoa(logPessoa) == 0) {
-                    sql = "insert into " + Pessoa.getTABELA().toLowerCase() + "(login,senha,tipoPessoa,nome)  values (?,?,?,?)";
+                    sql = "insert into " + Pessoa.getTABELA().toLowerCase()
+                            + "(login,senha,tipoPessoa,nome)  values (?,?,?,?)";
                 }
             } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
-                Pessoa.adicionarPessoa(Pessoa.getTABELA(), logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, documPessoa);
+                Pessoa.adicionarPessoa(Pessoa.getTABELA(), logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa,
+                        documPessoa);
                 idPessoa = Pessoa.obterIdPessoa(logPessoa);
-                sql = "insert into " + Cliente.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA() + ",login, docum) values (?,?,?)";
+                sql = "insert into " + Cliente.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA()
+                        + ",login, docum) values (?,?,?)";
             } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
-                Pessoa.adicionarPessoa(Pessoa.getTABELA(), logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, documPessoa);
-                sql = "insert into from " + Fornecedor.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + ", login, docum)  values (?,?,?)";
+                Pessoa.adicionarPessoa(Pessoa.getTABELA(), logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa,
+                        documPessoa);
+                idPessoa = Pessoa.obterIdPessoa(logPessoa);
+                sql = "insert into " + Fornecedor.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA()
+                        + ", login, docum )  values (?,?,?)";
             }
             if (!logPessoa.isEmpty() && !senPessoa.isEmpty() && !conSenPessoa.isEmpty() && !tipoPessoa.isEmpty()
                     && !nomePessoa.isEmpty() && !documPessoa.isEmpty()) {
                 pst = conexao.prepareStatement(sql);
-                if (senPessoa.equals(conSenPessoa) && Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
+                if (senPessoa.equals(conSenPessoa) && Tabela.equalsIgnoreCase(Pessoa.getTABELA())
+                        && Pessoa.obterIdPessoa(logPessoa) == 0) {
                     pst.setString(1, logPessoa);
                     pst.setString(2, senPessoa);
                     pst.setString(3, tipoPessoa);
@@ -82,62 +91,66 @@ public class Pessoa {
                         ModuloConector.fecharConexao(conexao, rs, pst, pst);
                     }
                 } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
-                    if ((documPessoa.length() == 11 && tipoPessoa.equalsIgnoreCase("pf"))
-                            || (documPessoa.length() == 14 && tipoPessoa.equalsIgnoreCase("pj"))) {
-                        pst.setInt(1, idPessoa);
-                        pst.setString(2, logPessoa);
-                        pst.setString(3, documPessoa);
+                    if (Pessoa.VerificaDocumento(documPessoa, tipoPessoa)) {
+                        if (Fornecedor.obterIdFornecedor(logPessoa) != 0) {
+                            Fornecedor.pesquisarFornecedor(logPessoa);
+                            pst.setInt(1, Fornecedor.getIdpessoa());
+                            pst.setString(2, Fornecedor.getLogin());
+                            pst.setString(3, Fornecedor.getDocum());
+                        } else {
+                            pst.setInt(1, idPessoa);
+                            pst.setString(2, logPessoa);
+                            pst.setString(3, documPessoa);
+                        }
                         int adicionado = pst.executeUpdate();
                         if (adicionado == 0) {
                             Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
                             ModuloConector.fecharConexao(conexao, rs, pst, pst);
                         }
                     } else {
-                        if (documPessoa.length() < 11 && tipoPessoa.equalsIgnoreCase("pf")) {
-                            Messagem.chamarTela("CPJ falta " + (11 - documPessoa.length()) + "digitos");
-                        } else if (documPessoa.length() > 11 && tipoPessoa.equalsIgnoreCase("pf")) {
-                            Messagem.chamarTela("CNPJ tem mais " + (documPessoa.length() - 11) + "digitos");
-                        } else if (documPessoa.length() < 14 && tipoPessoa.equalsIgnoreCase("pj")) {
-                            Messagem.chamarTela("CNPJ falta " + (14 - documPessoa.length()) + "digitos");
-                        } else if (documPessoa.length() > 14 && tipoPessoa.equalsIgnoreCase("pj")) {
-                            Messagem.chamarTela("CNPJ tem mais " + (documPessoa.length() - 14) + "digitos");
-                        }
+                        Messagem.chamarTela(Pessoa.txtVerificaDocumento(documPessoa, tipoPessoa));
                     }
                 } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
-                    if ((documPessoa.length() == 11 && tipoPessoa.equalsIgnoreCase("pf"))
-                            || (documPessoa.length() == 14 && tipoPessoa.equalsIgnoreCase("pj"))) {
-                        pst.setInt(1, idPessoa);
-                        pst.setString(2, logPessoa);
-                        pst.setString(3, documPessoa);
+                    if (Pessoa.VerificaDocumento(documPessoa, tipoPessoa)) {
+                        if (Cliente.obterIdCliente(logPessoa) != 0) {
+                            Cliente.pesquisarCliente(logPessoa);
+                            pst.setInt(1, Cliente.getIdpessoa());
+                            pst.setString(2, Cliente.getLogin());
+                            pst.setString(3, Cliente.getDocum());
+                        } else {
+                            pst.setInt(1, idPessoa);
+                            pst.setString(2, logPessoa);
+                            pst.setString(3, documPessoa);
+                        }
                         int adicionado = pst.executeUpdate();
                         if (adicionado == 0) {
                             Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
                             ModuloConector.fecharConexao(conexao, rs, pst, pst);
                         }
                     } else {
-                        if (documPessoa.length() < 11 && tipoPessoa.equalsIgnoreCase("pf")) {
-                            Messagem.chamarTela("CPF falta " + (11 - documPessoa.length()) + "digitos");
-                        } else if (documPessoa.length() > 11 && tipoPessoa.equalsIgnoreCase("pf")) {
-                            Messagem.chamarTela("CPF tem mais " + (documPessoa.length() - 11) + "digitos");
-                        } else if (documPessoa.length() < 14 && tipoPessoa.equalsIgnoreCase("pj")) {
-                            Messagem.chamarTela("CNPJ falta " + (14 - documPessoa.length()) + "digitos");
-                        } else if (documPessoa.length() > 14 && tipoPessoa.equalsIgnoreCase("pj")) {
-                            Messagem.chamarTela("CNPJ tem mais " + (documPessoa.length() - 14) + "digitos");
-                        }
+                        Messagem.chamarTela(Pessoa.txtVerificaDocumento(documPessoa, tipoPessoa));
                     }
                 }
             } else {
                 Messagem.chamarTela(Messagem.VAZIO(
                         CampoVazio(Tabela, logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, documPessoa)));
             }
-        } catch (Exception e) {
-            Messagem.chamarTela(e);
+        } catch (SQLException e) {
+            Messagem.chamarTela(Tabela + " Adicionar: " + e);
         }
     }
 
     /**
-     * TA MONTANDO FALTA INCLUI AS CHAVES ESTRAGEIRA E TESTA Este Metodo faz a
-     * criação da Tabela
+     * Este Metodo faz a criação da Tabela Pessoa apenas
+     *
+     */
+    public static void criarPessoa() {
+        criarPessoa(getTABELA());
+    }
+
+    /**
+     * TA MONTANDO E TESTA Este Metodo faz a criação da Tabela Pessoa e de Tabela
+     * Filhas
      *
      * @param Tabela Setar uma informação do tipo String no nome da Tabela
      */
@@ -147,30 +160,26 @@ public class Pessoa {
             String sql = "create table if not exists " + Tabela + "(";
             if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
                 sql += " id" + Pessoa.getTABELA() + " int primary key auto_increment, "
-                        + "login varchar(15) not  null unique, "
-                        + "senha varchar(9) not null, "
-                        + "tipoPessoa varchar(2) not null, "
-                        + "nome varchar(100) not null)";
+                        + "login varchar(15) not  null unique, " + "senha varchar(9) not null, "
+                        + "tipoPessoa varchar(2) not null, " + "nome varchar(100) not null)";
             } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                 Pessoa.criarPessoa(Pessoa.getTABELA());
-                sql += " id" + Pessoa.getTABELA() + " int not null unique, "
-                        + "login varchar(15) not  null unique, "
+                sql += " id" + Pessoa.getTABELA() + " int not null unique, " + "login varchar(15) not  null unique, "
                         + "id" + Cliente.getTABELA() + " int  auto_increment primary key, "
-                        + "docum varchar(14) not null unique, "
-                        + "foreign key (login) references " + Pessoa.getTABELA().toLowerCase() + "(login),"
-                        + "foreign key (id" + Pessoa.getTABELA() + ") references " + Pessoa.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + "))";
+                        + "docum varchar(14) not null unique, " + "foreign key (login) references "
+                        + Pessoa.getTABELA().toLowerCase() + "(login)," + "foreign key (id" + Pessoa.getTABELA()
+                        + ") references " + Pessoa.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + "))";
             } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
                 Pessoa.criarPessoa(Pessoa.getTABELA());
-                sql += " id" + Pessoa.getTABELA() + " int not null unique, "
-                        + "login varchar(15) not  null unique, "
+                sql += " id" + Pessoa.getTABELA() + " int not null unique, " + "login varchar(15) not  null unique, "
                         + "id" + Fornecedor.getTABELA() + " int primary key auto_increment, "
-                        + "docum varchar(14) not null unique, "
-                        + "foreign key (login) references " + Pessoa.getTABELA().toLowerCase() + "(login),"
-                        + "foreign key (id" + Pessoa.getTABELA() + ") references " + Pessoa.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + "))";
+                        + "docum varchar(14) not null unique, " + "foreign key (login) references "
+                        + Pessoa.getTABELA().toLowerCase() + "(login)," + "foreign key (id" + Pessoa.getTABELA()
+                        + ") references " + Pessoa.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + "))";
             } else {
             }
-            if (Tabela.equalsIgnoreCase(Cliente.getTABELA())
-                    || Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
+            if (Tabela.equalsIgnoreCase(Cliente.getTABELA()) || Tabela.equalsIgnoreCase(Fornecedor.getTABELA())
+                    || Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
                 Messagem.criadoTabela(Tabela);
                 if (Messagem.getCriada() == 0) {
                     stmt = conexao.createStatement();
@@ -181,8 +190,16 @@ public class Pessoa {
                 }
             }
         } catch (SQLException e) {
-            Messagem.chamarTela(e);
+            Messagem.chamarTela(Tabela + " adicionar " + e);
         }
+    }
+
+    /**
+     * TA MONTANDO FALTA TESTA Este Metodo deleta a tabela desejada
+     *
+     */
+    public static void deletarPessoa() {
+        Pessoa.deletarPessoa(Pessoa.getTABELA());
     }
 
     /**
@@ -202,8 +219,14 @@ public class Pessoa {
                     Messagem.tabelaDeletada(Tabela);
                 }
             }
-        } catch (Exception e) {
-            Messagem.chamarTela(e);
+        } catch (SQLIntegrityConstraintViolationException sicve) {
+            if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
+                Fornecedor.deletarFornecedor();
+                Cliente.deletarCliente();
+                Pessoa.deletarPessoa();
+            }
+        } catch (SQLException e) {
+            Messagem.chamarTela(Tabela+" deleta: "+e);
         }
     }
 
@@ -211,25 +234,55 @@ public class Pessoa {
      * FAZER Este Metodo editar a informaçao de determinado Tabela da conforme o
      * paramentro da Tabela, anexado nlogPessoa no login do usario
      *
-     * @param Tabela Setar uma informação do tipo String no nome da Tabela
-     * @param nlogPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * novo Login Pessoa
-     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Login Pessoa
-     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * na Confirmação da senha Pessoa
-     * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
-     * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Nome Pessoa
-     * @param documPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * no documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b> so poderá
-     * anexa a infornação for de 11 digito, senão <b>PJ</b> so poderá anexa a
-     * infornação for de 14 digito
+     * @param nlogPessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     novo Login Pessoa
+     * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Login Pessoa
+     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
+     *                     Confirmação da senha Pessoa
+     * @param tipoPessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     *                     <b>PJ</b>
+     * @param nomePessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Nome Pessoa
+     * @param documPessoa  Setar uma informação do tipo String da Tabela Pessoa no
+     *                     documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
+     *                     so poderá anexa a infornação for de 11 digito, senão
+     *                     <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
-    public static void editarPessoa(String Tabela, String nlogPessoa, String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa, String nomePessoa, String documPessoa) {
+    public static void editarPessoa(String nlogPessoa, String logPessoa, String senPessoa, String conSenPessoa,
+            String tipoPessoa, String nomePessoa, String documPessoa) {
+        editarPessoa(Pessoa.getTABELA(), nlogPessoa, logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa,
+                documPessoa);
+    }
+
+    /**
+     * FAZER Este Metodo editar a informaçao de determinado Tabela da conforme o
+     * paramentro da Tabela, anexado nlogPessoa no login do usario
+     *
+     * @param Tabela       Setar uma informação do tipo String no nome da Tabela
+     * @param nlogPessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     novo Login Pessoa
+     * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Login Pessoa
+     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
+     *                     Confirmação da senha Pessoa
+     * @param tipoPessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     *                     <b>PJ</b>
+     * @param nomePessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Nome Pessoa
+     * @param documPessoa  Setar uma informação do tipo String da Tabela Pessoa no
+     *                     documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
+     *                     so poderá anexa a infornação for de 11 digito, senão
+     *                     <b>PJ</b> so poderá anexa a infornação for de 14 digito
+     */
+    public static void editarPessoa(String Tabela, String nlogPessoa, String logPessoa, String senPessoa,
+            String conSenPessoa, String tipoPessoa, String nomePessoa, String documPessoa) {
         try {
             Pessoa();
             String sql = "";
@@ -238,17 +291,23 @@ public class Pessoa {
                     && !documPessoa.isEmpty()) {
                 if (senPessoa.equalsIgnoreCase(conSenPessoa)) {
                     if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
-                        sql = "uptade " + Pessoa.getTABELA() + " set login =?, senha=?, tipoPessoa=?, nome=? where id" + Pessoa.getTABELA() + " = ?";
+                        Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
+                        sql = "uptade " + Pessoa.getTABELA() + " set login =?, senha=?, tipoPessoa=?, nome=? where id"
+                                + Pessoa.getTABELA() + " = ?";
                     } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                         Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
                         Cliente.setIdCliente(Cliente.obterIdCliente(logPessoa));
-                        Pessoa.editarPessoa(Pessoa.getTABELA(), nlogPessoa, logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, documPessoa);
-                        sql = "uptade " + Cliente.getTABELA() + " set login = ?, docum = ? where id" + Pessoa.getTABELA() + " = ? or id" + Cliente.getTABELA() + " = ?";
+                        Pessoa.editarPessoa(Pessoa.getTABELA(), nlogPessoa, logPessoa, senPessoa, conSenPessoa,
+                                tipoPessoa, nomePessoa, documPessoa);
+                        sql = "uptade " + Cliente.getTABELA() + " set login = ?, docum = ? where id"
+                                + Pessoa.getTABELA() + " = ? or id" + Cliente.getTABELA() + " = ?";
                     } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
                         Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
                         Fornecedor.setIdFornecedor(Fornecedor.obterIdFornecedor(logPessoa));
-                        Pessoa.editarPessoa(Pessoa.getTABELA(), nlogPessoa, logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, documPessoa);
-                        sql = "uptade " + Fornecedor.getTABELA() + " set login = ?, docum = ? where id" + Pessoa.getTABELA() + " = ? or id" + Fornecedor.getTABELA() + " = ?";
+                        Pessoa.editarPessoa(Pessoa.getTABELA(), nlogPessoa, logPessoa, senPessoa, conSenPessoa,
+                                tipoPessoa, nomePessoa, documPessoa);
+                        sql = "uptade " + Fornecedor.getTABELA() + " set login = ?, docum = ? where id"
+                                + Pessoa.getTABELA() + " = ? or id" + Fornecedor.getTABELA() + " = ?";
                     }
 
                     pst = conexao.prepareStatement(sql);
@@ -273,7 +332,8 @@ public class Pessoa {
                     if (editada == 0) {
                         String mens = "";
                         if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
-                            mens = "Login: " + nlogPessoa + "\nsenha: " + senPessoa + "\ntipo de Pessoa: " + tipoPessoa + "\nNome: " + nomePessoa;
+                            mens = "Login: " + nlogPessoa + "\nsenha: " + senPessoa + "\ntipo de Pessoa: " + tipoPessoa
+                                    + "\nNome: " + nomePessoa;
                         } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                             if (tipoPessoa.equalsIgnoreCase("pf")) {
                                 mens = "Login: " + nlogPessoa + "\nCPF: " + documPessoa;
@@ -297,28 +357,29 @@ public class Pessoa {
                         CampoVazio(Tabela, logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, documPessoa)));
             }
         } catch (SQLException e) {
-            Messagem.chamarTela(e);
+            Messagem.chamarTela(Tabela + " Editar: " + e);
         }
     }
 
     /**
      * FAZER Este metodo faz a exclução da informação na Tabela
      *
-     * @param Tabela Setar uma informação do tipo String no nome da Tabela
-     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * novo Login Pessoa
-     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * na Confirmação da senha Pessoa
-     * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
-     * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Nome Pessoa
-     * @param documPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * no documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b> so poderá
-     * anexa a infornação for de 11 digito, senão <b>PJ</b> so poderá anexa a
-     * infornação for de 14 digito
+     * @param Tabela       Setar uma informação do tipo String no nome da Tabela
+     * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     novo Login Pessoa
+     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
+     *                     Confirmação da senha Pessoa
+     * @param tipoPessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     *                     <b>PJ</b>
+     * @param nomePessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Nome Pessoa
+     * @param documPessoa  Setar uma informação do tipo String da Tabela Pessoa no
+     *                     documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
+     *                     so poderá anexa a infornação for de 11 digito, senão
+     *                     <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
     public static void excluirPessoa(String Tabela, String logPessoa) {
         try {
@@ -331,27 +392,36 @@ public class Pessoa {
                 } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                     Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
                     Cliente.setIdCliente(Cliente.obterIdCliente(logPessoa));
-                    sql = "delete from " + Cliente.getTABELA() + " where id" + Pessoa.getTABELA() + " = ? ";
+                    sql = "delete from " + Cliente.getTABELA() + " where id" + Pessoa.getTABELA() + " = ?  or id"
+                            + Cliente.getTABELA() + " = ?";
                 } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
                     Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
                     Fornecedor.setIdFornecedor(Fornecedor.obterIdFornecedor(logPessoa));
-                    sql = "delete from " + Fornecedor.getTABELA() + " where id" + Pessoa.getTABELA() + " = ? ";
+                    sql = "delete from " + Fornecedor.getTABELA() + " where id" + Pessoa.getTABELA() + " = ?  or id"
+                            + Fornecedor.getTABELA() + " = ? ";
                 }
                 pst = conexao.prepareStatement(sql);
                 String s = "";
                 if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
                     Pessoa.pesquisarPessoa(Tabela, logPessoa);
-                    s = "Login: " + Pessoa.getLogin() + "\nSenha: " + Pessoa.getSenha() + "Tipo de pessoa: " + Pessoa.getTipoPessoa() + "\nNome: " + Pessoa.getNome();
+                    s = "Login: " + Pessoa.getLogin() + "\nSenha: " + Pessoa.getSenha() + "Tipo de pessoa: "
+                            + Pessoa.getTipoPessoa() + "\nNome: " + Pessoa.getNome();
                     pst.setInt(1, Pessoa.getIdpessoa());
 
                 } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                     Cliente.pesquisarCliente(logPessoa);
-                    s = "Login: " + Cliente.getLogin() + "\nSenha: " + Cliente.getSenha() + "\nTipo de pessoa: " + Cliente.getTipoPessoa() + "\nNome: " + Cliente.getNome() + "\ndomumento: " + Cliente.getDocum();
-                    pst.setInt(1, Cliente.getIdCliente());
+                    s = "Login: " + Cliente.getLogin() + "\nSenha: " + Cliente.getSenha() + "\nTipo de pessoa: "
+                            + Cliente.getTipoPessoa() + "\nNome: " + Cliente.getNome() + "\ndomumento: "
+                            + Cliente.getDocum();
+                    pst.setInt(1, Pessoa.getIdpessoa());
+                    pst.setInt(2, Cliente.getIdCliente());
                 } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
                     Fornecedor.pesquisarFornecedor(logPessoa);
-                    s = "Login: " + Fornecedor.getLogin() + "\nSenha: " + Fornecedor.getSenha() + "\nTipo de pessoa: " + Fornecedor.getTipoPessoa() + "\nNome: " + Fornecedor.getNome() + "\ndomumento: " + Fornecedor.getDocum();
-                    pst.setInt(1, Fornecedor.getIdFornecedor());
+                    s = "Login: " + Fornecedor.getLogin() + "\nSenha: " + Fornecedor.getSenha() + "\nTipo de pessoa: "
+                            + Fornecedor.getTipoPessoa() + "\nNome: " + Fornecedor.getNome() + "\ndomumento: "
+                            + Fornecedor.getDocum();
+                    pst.setInt(1, Pessoa.getIdpessoa());
+                    pst.setInt(2, Fornecedor.getIdFornecedor());
                 }
 
                 int excluir = JOptionPane.showConfirmDialog(null, s, Tabela, JOptionPane.OK_CANCEL_OPTION);
@@ -361,7 +431,8 @@ public class Pessoa {
                     if (excluido >= 0) {
                         Messagem.chamarTela(Messagem.EXCLUIDO(s));
                         if (!Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
-                            int pes = JOptionPane.showConfirmDialog(null, "Deseja excluido todos os dados", sql, JOptionPane.OK_CANCEL_OPTION);
+                            int pes = JOptionPane.showConfirmDialog(null, "Deseja excluido todos os dados", sql,
+                                    JOptionPane.OK_CANCEL_OPTION);
                             if (pes == JOptionPane.OK_OPTION) {
                                 Pessoa.excluirPessoa(Pessoa.getTABELA(), logPessoa);
                             }
@@ -369,8 +440,7 @@ public class Pessoa {
                     }
                 }
             } else {
-                Messagem.chamarTela(Messagem.VAZIO(
-                        CampoVazio(Tabela, logPessoa, null, null, null, null, null)));
+                Messagem.chamarTela(Messagem.VAZIO(CampoVazio(Tabela, logPessoa, null, null, null, null, null)));
             }
         } catch (SQLException e) {
             Messagem.chamarTela(Tabela + " Excluir :" + e);
@@ -380,33 +450,23 @@ public class Pessoa {
     /**
      * FAZER Este metodo Pesquisa na tabela do banco de dados
      *
-     * @param Tabela Setar uma informação do tipo String no nome da Tabela
+     * @param Tabela    Setar uma informação do tipo String no nome da Tabela
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * novo Login Pessoa
-     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * na Confirmação da senha Pessoa
-     * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
-     * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Nome Pessoa
-     * @param documPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * no documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b> so poderá
-     * anexa a infornação for de 11 digito, senão <b>PJ</b> so poderá anexa a
-     * infornação for de 14 digito
+     *                  Login Pessoa
+     *
      */
     public static void pesquisarPessoa(String Tabela, String logPessoa) {
         try {
             String sql = "";
             if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                 Cliente.setIdCliente(Cliente.obterIdCliente(logPessoa));
-                sql = "select P.login, P.senha, P.tipoPessoa, P.nome, C.docum from " + Pessoa.getTABELA() + " as P, " + Cliente.getTABELA() + " as C where  C.id" + Pessoa.getTABELA() + " = ?";
+                sql = "select P.login, P.senha, P.tipoPessoa, P.nome, C.docum from " + Pessoa.getTABELA() + " as P, "
+                        + Cliente.getTABELA() + " as C where  C.id" + Pessoa.getTABELA() + " = ?";
             } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
                 Fornecedor.setIdFornecedor(Fornecedor.obterIdFornecedor(logPessoa));
-                sql = "select P.login, P.senha, P.tipoPessoa, P.nome, F.docum from " + Pessoa.getTABELA() + " as P, " + Fornecedor.getTABELA() + " as F where F.id" + Pessoa.getTABELA() + " = ?";
+                sql = "select P.login, P.senha, P.tipoPessoa, P.nome, F.docum from " + Pessoa.getTABELA() + " as P, "
+                        + Fornecedor.getTABELA() + " as F where F.id" + Pessoa.getTABELA() + " = ?";
             }
-
             if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                 if (!logPessoa.isEmpty()) {
                     pst = conexao.prepareStatement(sql);
@@ -447,9 +507,9 @@ public class Pessoa {
      * logim Pessoa
      *
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Login Pessoa
+     *                  Login Pessoa
      * @return Retornar uma informação do do banco de dado tipo inteiro do ID da
-     * pessoa
+     *         pessoa
      */
     public static int obterIdPessoa(String logPessoa) {
         return obterIdPessoa(logPessoa, Pessoa.getTABELA());
@@ -459,10 +519,10 @@ public class Pessoa {
      * TA MONTANDO FALTA TESTA
      *
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Login Pessoa
-     * @param Tabela Setar uma informação do tipo String no nome da Tabela
+     *                  Login Pessoa
+     * @param Tabela    Setar uma informação do tipo String no nome da Tabela
      * @return Retornar uma informação do banco de dado do tipo inteiro do ID da
-     * pessoa
+     *         pessoa
      */
     public static int obterIdPessoa(String logPessoa, String Tabela) {
         int id = 0;
@@ -485,36 +545,65 @@ public class Pessoa {
                     id = rs.getInt(1);
                 }
             }
-
         } catch (Exception e) {
-            Messagem.chamarTela(e + "\nclasse Pessoa");
+            Messagem.chamarTela(Tabela + " Obter id Pessoa: " + e);
         }
         return id;
     }
-    // Sets e Gets
 
     /**
-     * Este metodo verificar ser Todos paramentros estão vazio e que tiver ser
-     * anexado no array interno, retornado assim um Array de String
      *
-     * @param Tabela Setar uma informação do tipo String no nome da Tabela
-     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Login Pessoa
-     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * na Confirmação da senha Pessoa
-     * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
-     * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Nome Pessoa
-     * @param documPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * no documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b> so poderá
-     * anexa a infornação for de 11 digito, senão <b>PJ</b> so poderá anexa a
-     * infornação for de 14 digito
-     * @return
      */
-    public static String[] CampoVazio(String Tabela, String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa, String nomePessoa, String documPessoa) {
+    private static Boolean VerificaDocumento(String docPessoa, String TipoPessoa) {
+        if ((docPessoa.length() == 11 && TipoPessoa.equalsIgnoreCase("pf"))
+                || (docPessoa.length() == 14 && TipoPessoa.equalsIgnoreCase("pj"))) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     */
+    private static String txtVerificaDocumento(String docPessoa, String TipoPessoa) {
+        String Mess = "";
+        if (docPessoa.length() < 11 && tipoPessoa.equalsIgnoreCase("pf")) {
+            Mess = "CPF falta " + (11 - docPessoa.length()) + "digitos";
+        } else if (docPessoa.length() > 11 && TipoPessoa.equalsIgnoreCase("pf")) {
+            Mess = "CPF tem mais " + (docPessoa.length() - 11) + "digitos";
+        } else if (docPessoa.length() < 14 && TipoPessoa.equalsIgnoreCase("pj")) {
+            Mess = "CNPJ falta " + (14 - docPessoa.length()) + "digitos";
+        } else if (docPessoa.length() > 14 && TipoPessoa.equalsIgnoreCase("pj")) {
+            Mess = "CNPJ tem mais " + (docPessoa.length() - 14) + "digitos";
+        }
+        return Mess;
+    }
+
+    // Sets e Gets
+    /**
+     * Este metodo verificar ser Todos paramentros estão vazio e que tiver ser
+     * anexado no array interno, retornado assim um Array de String dos Campos Vazios
+     *
+     * @param Tabela       Setar uma informação do tipo String no nome da Tabela
+     * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Login Pessoa
+     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
+     *                     Confirmação da senha Pessoa
+     * @param tipoPessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     *                     <b>PJ</b>
+     * @param nomePessoa   Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Nome Pessoa
+     * @param documPessoa  Setar uma informação do tipo String da Tabela Pessoa no
+     *                     documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
+     *                     so poderá anexa a infornação for de 11 digito, senão
+     *                     <b>PJ</b> so poderá anexa a infornação for de 14 digito
+     * @return             Retornar  um array de informação de String dos Campos vazios 
+     */
+    public static String[] CampoVazio(String Tabela, String logPessoa, String senPessoa, String conSenPessoa,
+            String tipoPessoa, String nomePessoa, String documPessoa) {
         String[] campo = new String[7];
         for (int i = 0; i < campo.length;) {
             if (Tabela.isEmpty()) {
@@ -566,17 +655,17 @@ public class Pessoa {
     }
 
     /**
-     * Este Metodo verifica os parametros senPessoa e conSenPessoa sao iquais e
-     * a quantidade de caracteres retornado uma String
+     * Este Metodo verifica os parametros senPessoa e conSenPessoa sao iquais e a
+     * quantidade de caracteres retornado uma String
      *
-     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * na Confirmação da senha Pessoa
-     * @param quant Setar uma informação do tipo inteiro para informar o numero
-     * de Cartecter
-     * @return Retorna Uma informação no valor de String dos campos diferentes
-     * ou com caracter menor a <b>quant</b>
+     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
+     *                     Confirmação da senha Pessoa
+     * @param quant        Setar uma informação do tipo inteiro para informar o
+     *                     numero de Cartecter
+     * @return             Retorna Uma informação no valor de String dos campos diferentes ou
+     *                     com caracter menor a <b>quant</b>
      */
     public static String CampoDiferente(String senPessoa, String conSenPessoa, int quant) {
         String s = "";
@@ -593,21 +682,23 @@ public class Pessoa {
     }
 
     /**
-     * Este Metodo verifica os parametros senPessoa e conSenPessoa sao iquais e
-     * a quantidade de caracteres retornado um valor Boolean
+     * Este Metodo verifica os parametros senPessoa e conSenPessoa sao iquais e a
+     * quantidade de caracteres retornado um valor Boolean
      *
-     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
-     * na Confirmação da senha Pessoa
-     * @param quant Setar uma informação do tipo inteiro para informar o numero
-     * de Cartecter
-     * @return Retorna Uma informação no valor de boolean dos campos diferentes
-     * ou com caracter maior ou iqual a <b>quant</b>
-     * <p>
-     * se sim o valor será TRUE</p>
-     * <p>
-     * se não o valor será FALSE</p>
+     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
+     *                     Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
+     *                     Confirmação da senha Pessoa
+     * @param quant        Setar uma informação do tipo inteiro para informar o
+     *                     numero de Cartecter
+     * @return             Retorna Uma informação no valor de boolean dos campos diferentes ou
+     *                      com caracter maior ou iqual a <b>quant</b>
+     *         <p>
+     *         se sim o valor será TRUE
+     *         </p>
+     *         <p>
+     *         se não o valor será FALSE
+     *         </p>
      */
     public static Boolean campoDiferente(String senPessoa, String conSenPessoa, int quant) {
         if (senPessoa.equalsIgnoreCase(conSenPessoa) && senPessoa.length() >= quant && conSenPessoa.length() >= quant) {
@@ -618,6 +709,7 @@ public class Pessoa {
     }
 
     /**
+     * Este Metodo Retornar uma informação do tipo inteiro do id pessoa
      *
      * @return Retornar uma informação do tipo inteiro do id pessoa
      */
@@ -626,6 +718,7 @@ public class Pessoa {
     }
 
     /**
+     * Este Metodo Setar uma informação do tipo inteiro do id pessoa
      *
      * @param idpessoa Setar uma informação do tipo inteiro do id pessoa
      */
@@ -634,96 +727,118 @@ public class Pessoa {
     }
 
     /**
+     * Este Metodo Retornar uma informação do tipo String da Tabela Pessoa no Login
+     * Pessoa
      *
      * @return Retornar uma informação do tipo String da Tabela Pessoa no Login
-     * Pessoa
+     *         Pessoa
      */
     public static String getLogin() {
         return login;
     }
 
     /**
+     * Este Metodo Setar uma informação do tipo String da Tabela Pessoa no Login
+     * Pessoa
      *
-     * @param login Setar uma informação do tipo String da Tabela Pessoa no
-     * Login Pessoa
+     * @param login Setar uma informação do tipo String da Tabela Pessoa no Login
+     *              Pessoa
      */
     public static void setLogin(String login) {
         Pessoa.login = login;
     }
 
     /**
+     * Este Metodo Retornar uma informação do tipo String da Tabela Pessoa no Senha
+     * Pessoa
      *
      * @return Retornar uma informação do tipo String da Tabela Pessoa no Senha
-     * Pessoa
+     *         Pessoa
      */
     public static String getSenha() {
         return senha;
     }
 
     /**
+     * Este Metodo Setar uma informação do tipo String da Tabela Pessoa no Senha
+     * Pessoa
      *
-     * @param senha Setar uma informação do tipo String da Tabela Pessoa no
-     * Senha Pessoa
+     * @param senha Setar uma informação do tipo String da Tabela Pessoa no Senha
+     *              Pessoa
      */
     public static void setSenha(String senha) {
         Pessoa.senha = senha;
     }
 
     /**
+     * Este Metodo Retornar uma informação do tipo String da Tabela Pessoa na
+     * Confirmação da senha Pessoa
      *
      * @return Retornar uma informação do tipo String da Tabela Pessoa na
-     * Confirmação da senha Pessoa
+     *         Confirmação da senha Pessoa
      */
     public static String getConfSenha() {
         return confSenha;
     }
 
     /**
+     * Este Metodo Setar uma informação do tipo String da Tabela Pessoa na
+     * Confirmação da senha Pessoa
      *
      * @param confSenha Setar uma informação do tipo String da Tabela Pessoa na
-     * Confirmação da senha Pessoa
+     *                  Confirmação da senha Pessoa
      */
     public static void setConfSenha(String confSenha) {
         Pessoa.confSenha = confSenha;
     }
 
     /**
-     *
-     * @return Retornar uma informação do tipo String da Tabela Pessoa no tipo
+     * Este metodo Retornar uma informação do tipo String da Tabela Pessoa no tipo
      * de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
+     *
+     * @return Retornar uma informação do tipo String da Tabela Pessoa no tipo de
+     *         Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
      */
     public static String getTipoPessoa() {
         return tipoPessoa;
     }
 
     /**
+     * Este metodo Setar uma informação do tipo String da Tabela Pessoa no tipo de
+     * Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
      *
      * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
+     *                   tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     *                   <b>PJ</b>
      */
     public static void setTipoPessoa(String tipoPessoa) {
         Pessoa.tipoPessoa = tipoPessoa;
     }
 
     /**
+     * Este Metodo Retornar uma informação do tipo String da Tabela Pessoa no Nome
+     * Pessoa
      *
      * @return Retornar uma informação do tipo String da Tabela Pessoa no Nome
-     * Pessoa
+     *         Pessoa
      */
     public static String getNome() {
         return nome;
     }
 
     /**
+     * Este metodo Setar uma informação do tipo String da Tabela Pessoa no Nome
+     * Pessoa
      *
      * @param nome Setar uma informação do tipo String da Tabela Pessoa no Nome
-     * Pessoa
+     *             Pessoa
      */
     public static void setNome(String nome) {
         Pessoa.nome = nome;
     }
 
     /**
+     * Este Metodo Retornar uma informação do tipo String no nome da Tabela
      *
      * @return Retornar uma informação do tipo String no nome da Tabela
      */

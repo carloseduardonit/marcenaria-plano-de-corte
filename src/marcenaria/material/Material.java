@@ -17,11 +17,12 @@ import marcenaria.dado.ModuloConector;
  * @author Carlos Eduardo dos Santos Figueiredo
  */
 public class Material {
-    
+
     static Connection conexao;
     static ResultSet rs;
     static PreparedStatement pst;
     static Statement stmt;
+    private static final String TABELA = Material.class.getSimpleName();
     private static String tipoMaterial;
     private static int quantMaterial, idMaterial;
     private static double comprMaterial, largMarterial, espesMaterial, precMaterial;
@@ -67,7 +68,7 @@ public class Material {
             pst.setDouble(5, preco);
             pst.setString(6, tipoMaterial);
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                
+
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
                 pst.setInt(7, Chapa.obterIdChapa(tipoMaterial, espessura));
             } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
@@ -81,7 +82,7 @@ public class Material {
                     ModuloConector.fecharConexao(conexao, rs, pst, stmt);
                 }
             } else {
-                
+
                 adicionarMaterial(Tabela, quantidade, comprimento, largura, espessura, preco, tipoMaterial);
             }
         } catch (NullPointerException npe) {
@@ -190,6 +191,7 @@ public class Material {
      * @param largura Informar um valor double da largura do Material.
      * @param espessura Informar um valor double da espessura do Material.
      * @param preco Informar um valor double do preço do Material.
+     * @param ou
      */
     public static void pesquisarMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento, double largura, double espessura, double preco, boolean ou) {
         try {
@@ -199,7 +201,7 @@ public class Material {
                 if (!tipoMaterial.isEmpty()) {
                     sql = "select  from " + Tabela + " where id" + Tabela + " =?";
                 } else {
-                    
+
                 }
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
                 sql = "select * from " + Tabela + " where id" + Tabela + " =?";
@@ -286,6 +288,10 @@ public class Material {
         }
     }
 
+    public static void deletarMaterial() {
+        Material.deletarMaterial(Material.getTABELA());
+    }
+
     /**
      * TESTADO E OK
      *
@@ -307,7 +313,11 @@ public class Material {
                 }
             }
         } catch (SQLIntegrityConstraintViolationException e) {
-            if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
+            if (Tabela.equalsIgnoreCase(Material.getTABELA())) {
+                Pedaco.deletaPedaco();
+                Peca.deletadaPeca();
+                Chapa.deletadaChapa();
+            } else if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
                 // Primeiro deleta a Tabela Peca depois a Tabela Chapa
                 deletarMaterial(Pedaco.getTABELA());
                 deletarMaterial(Peca.getTABELA());
@@ -320,15 +330,13 @@ public class Material {
             } else {
                 Messagem.chamarTela(Tabela + " esta  não foi criada o elseif");
             }
-        } catch (HeadlessException he) {
+        } catch (HeadlessException | SQLException he) {
             Messagem.chamarTela(he);
         } catch (NullPointerException npe) {
             ModuloConector.fecharConexao(conexao, rs, pst, stmt);
-        } catch (SQLException se) {
-            Messagem.chamarTela(se);
         }
     }
-    
+
     public static int obterIdMaterial(String Tabela, String tipoMaterial, double espessura) {
         int id = 0;
         try {
@@ -471,5 +479,9 @@ public class Material {
     public static void setPrecMaterial(double precMaterial) {
         Material.precMaterial = precMaterial;
     }
-    
+
+    public static String getTABELA() {
+        return TABELA;
+    }
+
 }

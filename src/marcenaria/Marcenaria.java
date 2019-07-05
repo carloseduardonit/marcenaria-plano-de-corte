@@ -5,7 +5,10 @@
  */
 package marcenaria;
 
+import marcenaria.material.Material;
 import marcenaria.pessoa1.Layout;
+import marcenaria.pessoa1.Pessoa;
+import marcenaria.tela.material.TelaChapa;
 import marcenaria.tela.pessoa.TelaCliente;
 import marcenaria.tela.pessoa.TelaFornecedor;
 
@@ -16,13 +19,15 @@ import marcenaria.tela.pessoa.TelaFornecedor;
 public class Marcenaria extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
- static TelaCliente  tc = new TelaCliente();
-   static TelaFornecedor tf  = new TelaFornecedor();
+    static TelaCliente tc = new TelaCliente();
+    static TelaFornecedor tf = new TelaFornecedor();
+    static TelaChapa tcp = new TelaChapa();
+
     /**
      * Creates new form Marcenaria
      */
     public Marcenaria() {
-      
+
         initComponents();
         Layout.setMaximo(dpMarcenaria.getMaximumSize());
         Layout.setMinimo(dpMarcenaria.getMinimumSize());
@@ -43,10 +48,12 @@ public class Marcenaria extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         miCliente = new javax.swing.JMenuItem();
         miFornecedor = new javax.swing.JMenuItem();
-        miProduto = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        miProdChapa = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         javax.swing.GroupLayout dpMarcenariaLayout = new javax.swing.GroupLayout(dpMarcenaria);
         dpMarcenaria.setLayout(dpMarcenariaLayout);
@@ -77,17 +84,30 @@ public class Marcenaria extends javax.swing.JFrame {
         });
         jMenu1.add(miFornecedor);
 
-        miProduto.setText("Produto");
-        miProduto.addActionListener(new java.awt.event.ActionListener() {
+        jMenu3.setText("Produto");
+
+        miProdChapa.setText("Chapa");
+        miProdChapa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miProdutoActionPerformed(evt);
+                miProdChapaActionPerformed(evt);
             }
         });
-        jMenu1.add(miProduto);
+        jMenu3.add(miProdChapa);
+
+        jMenu1.add(jMenu3);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        jMenuItem1.setText("Limpa Banco");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -112,25 +132,27 @@ public class Marcenaria extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void miClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miClienteActionPerformed
-        
-        tf.setVisible(false);
-        dpMarcenaria.remove(tf);
-        
+        tf.dispose();
         tc.setVisible(true);
         dpMarcenaria.add(tc);
     }//GEN-LAST:event_miClienteActionPerformed
 
     private void miFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miFornecedorActionPerformed
-         
+        tc.dispose();
         tf.setVisible(true);
-       dpMarcenaria.add(tf);
+        dpMarcenaria.add(tf);
     }//GEN-LAST:event_miFornecedorActionPerformed
 
-    private void miProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miProdutoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_miProdutoActionPerformed
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        Pessoa.deletarPessoa();
+        Material.deletarMaterial();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    
+    private void miProdChapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miProdChapaActionPerformed
+        tcp.setVisible(true);
+        dpMarcenaria.add(tcp);
+    }//GEN-LAST:event_miProdChapaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -171,10 +193,12 @@ public class Marcenaria extends javax.swing.JFrame {
     private javax.swing.JDesktopPane dpMarcenaria;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem miCliente;
     private javax.swing.JMenuItem miFornecedor;
-    private javax.swing.JMenuItem miProduto;
+    private javax.swing.JMenuItem miProdChapa;
     // End of variables declaration//GEN-END:variables
-    
+
 }

@@ -5,6 +5,10 @@
  */
 package marcenaria.tela.material;
 
+import marcenaria.dado.ModuloConector;
+import marcenaria.material.Chapa;
+import marcenaria.tela.pessoa.Control;
+
 /**
  * 02/07/2017
  *
@@ -16,6 +20,9 @@ public class TelaChapa extends javax.swing.JInternalFrame {
      * Creates new form Chapa
      */
     public TelaChapa() {
+       if(ModuloConector.VerificarNaoExistirTabela(Chapa.getTABELA())){
+           Chapa.criadaChapa();
+       }
         initComponents();
     }
 
@@ -247,56 +254,7 @@ public class TelaChapa extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtPrecoActionPerformed
 
     private void tbChapaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbChapaMouseClicked
-        ///       Control.SetarCampo(txtQuantidade, txtProduto, txtComprimento, txtLagura, txtEspessura, txtPreco, tbChapa,tbChapa.getSelectedRow());
-
-        int row = tbChapa.getSelectedRow(), n = -1, comp = n, larg = n, espe = n, qua = n, pro = n, pre = n;
-
-        for (int i = 0; i < tbChapa.getColumnCount(); i++) {
-            if (tbChapa.getColumnName(i).equalsIgnoreCase("Comprimento")) {
-                comp = i;
-            } else if (tbChapa.getColumnName(i).equalsIgnoreCase("Largura")) {
-                larg = i;
-            } else if (tbChapa.getColumnName(i).equalsIgnoreCase("Espessura")) {
-                espe = i;
-            } else if (tbChapa.getColumnName(i).equalsIgnoreCase("Quantidade")) {
-                qua = i;
-            } else if (tbChapa.getColumnName(i).equalsIgnoreCase("Produto")) {
-                pro = i;
-            } else if (tbChapa.getColumnName(i).equalsIgnoreCase("Preço")) {
-                pre = i;
-            }
-        }
-       
-        if (comp != n) {
-            txtComprimento.setText(String.valueOf(tbChapa.getValueAt(row, comp)));
-        } else {
-            txtComprimento.setText("0");
-        }
-        if (larg != n) {
-            txtLagura.setText(String.valueOf(tbChapa.getValueAt(row, larg)));
-        } else {
-            txtLagura.setText("0");
-        }
-        if (espe != n) {
-            txtEspessura.setText(String.valueOf(tbChapa.getValueAt(row, espe)));
-        } else {
-            txtEspessura.setText("0");
-        }
-        if (pre != n) {
-            txtPreco.setText(String.valueOf(tbChapa.getValueAt(row, pre)));
-        } else {
-            txtPreco.setText("0");
-        }
-        if(pro!=n){
-            txtProduto.setText(String.valueOf(tbChapa.getValueAt(row, pro)));
-        }else{
-            txtProduto.setText("0");
-        }
-        if(qua!=n){
-            txtQuantidade.setText(String.valueOf(tbChapa.getValueAt(row, qua)));
-        }else{
-            txtQuantidade.setText("0");
-        }
+        Control.SetarCampo(txtQuantidade, txtProduto, txtComprimento, txtLagura, txtEspessura, txtPreco, tbChapa);
     }//GEN-LAST:event_tbChapaMouseClicked
 
     private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnADDActionPerformed

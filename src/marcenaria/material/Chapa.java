@@ -7,6 +7,7 @@ package marcenaria.material;
 
 import java.sql.*;
 import marcenaria.dado.ModuloConector;
+import marcenaria.pessoa1.Fornecedor;
 
 /**
  * 16/05/2019
@@ -43,7 +44,7 @@ public class Chapa {
         //setPrecoChapa(150.0);
         //inserirChapa();
         //
-        adicionarChapa(5, 220, 160, 0.18, 280, "MDF");
+        adicionarChapa(5, 220, 160, 0.18, 280, "MDF","Carlos");
     }
 
     /** <b>Este Metodo faz Criação da Tabela Chapa</b>
@@ -65,9 +66,10 @@ public class Chapa {
      * Testa
      *
      * @param tipoMateria
+     * @param pos
      */
-    public static void adicionarChapa(String tipoMateria) {
-        Material.adicionarMaterial(getTABELA(), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa(), tipoMateria);
+    public static void adicionarChapa(String tipoMateria,int pos) {
+        Material.adicionarMaterial(getTABELA(), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa(),getTipoMateria(pos),Fornecedor.getLogin());
     }
     /**
      * Testa
@@ -78,9 +80,10 @@ public class Chapa {
      * @param espeChapa
      * @param precChapa
      * @param tipoMaterial
+     * @param fornecedor
      */
-    public static void adicionarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial){
-        Material.adicionarMaterial(getTABELA(), quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial);
+    public static void adicionarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial,String fornecedor){
+        Material.adicionarMaterial(getTABELA(), quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial,fornecedor);
     }
 
     /**
@@ -89,7 +92,7 @@ public class Chapa {
      */
     public static void editarChapa() {
         setTipoMateria();
-        Material.editarMaterial(getTABELA(), getTipoMateria(0), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa());
+        Material.editarMaterial(getTABELA(), getTipoMateria(0), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa(),Fornecedor.getLogin());
     }
 
     /**

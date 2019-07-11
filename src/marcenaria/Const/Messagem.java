@@ -9,8 +9,9 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Carlos
+ * @author Carlos Eduardo dos Santos Figueiredo
  * @since 20/10/2018
+ * @version 1.0
  */
 public class Messagem {
 
@@ -18,8 +19,13 @@ public class Messagem {
     private String[] vazia = new String[1];
 //input
 
-    /**Este metodo retornar um texto:<p><b>
+    /**
+     * Este metodo retornar um texto:
+     * <p>
+     * <b>
      * "ad Foi adicionado com sucesso !!!"</b>
+     *
+     * @version 1.0
      * @param ad Informar um valor String na Messagem Adicionar.
      * @return Retornar a Messagem (ad Foi adicionado com sucesso !!!)
      */
@@ -28,8 +34,11 @@ public class Messagem {
         return mens;
     }
 
-    /**<h1>Este metodo retornar um texto:</h1><p><b>
+    /** <h1>Este metodo retornar um texto:</h1><p>
+     * <b>
      * "cr Foi criada com sucesso !!!"</b></p>
+     *
+     * @version 1.0
      * @param cr Informar um valor String na Messagem Criar.
      * @return Retornar a Messagem (cr Foi criada com sucesso !!!)
      */
@@ -38,8 +47,10 @@ public class Messagem {
         return mens;
     }
 
-    /**Este metodo retornar um texto:\n
-     * "ed Foi editada com sucesso !!!"
+    /**
+     * Este metodo retornar um texto:\n "ed Foi editada com sucesso !!!"
+     *
+     * @version 1.0
      * @param ed Informar um valor String na Messagem Editada.
      * @return Retornar a Messagem (ed Foi editada com sucesso !!!)
      */
@@ -48,8 +59,10 @@ public class Messagem {
         return mens;
     }
 
-    /**Este metodo retornar um texto:\n
-     * "ex Foi excluido com sucesso !!!"
+    /**
+     * Este metodo retornar um texto:\n "ex Foi excluido com sucesso !!!"
+     *
+     * @version 1.0
      * @param ex Informar um valor String na Messagem Excluido.
      * @return Retornar a Messagem (ex Foi excluido com sucesso !!!)
      */
@@ -58,8 +71,10 @@ public class Messagem {
         return mens;
     }
 
-    /**Este metodo retornar um texto:\n
-     * "im Foi imprimido com sucesso !!!"
+    /**
+     * Este metodo retornar um texto:\n "im Foi imprimido com sucesso !!!"
+     *
+     * @version 1.1
      * @param im Informar um valor String na Messagem Imprimido.
      * @return Retornar a Messagem (im Foi imprimido com sucesso !!!)
      */
@@ -68,8 +83,10 @@ public class Messagem {
         return mens;
     }
 
-    /** Este Metodo retornar  um texto:\n
-	* "Campo va esta vazio"
+    /**
+     * Este Metodo retornar um texto:\n "Campo va esta vazio"
+     *
+     * @version 1.2
      * @param va Informar um valor String na Messagem Vazio.
      * @return Retornar a Messagem (Campo va esta vazio);
      */
@@ -79,6 +96,10 @@ public class Messagem {
     }
 
     /**
+     * Este metodo obtem uma Array de valor String e retonar uma Informação com
+     * valor do tipo String dos campos vazio
+     *
+     * @version 1.2
      * @param va Informar um Array String na Messagem Vazio.
      * @return Retornar a Messagem (Campos vazios: Array de va);
      */
@@ -95,8 +116,10 @@ public class Messagem {
     }
 //Tabela
 
-    /** Este metodo Retornar um texto:
-     * "Tabela tabela Criada com sucesso !!!"
+    /**
+     * Este metodo Retornar um texto: "Tabela tabela Criada com sucesso !!!"
+     *
+     * @version 1.3
      * @param tabela Informar um valor String com nome da Tabela.
      * @return Retornar (Tabela tabela Criada com sucesso !!!).
      */
@@ -105,6 +128,9 @@ public class Messagem {
     }
 
     /**
+     * Este metodo Retornar um texto: "Tabela tabela Deletada com sucesso !!!"
+     *
+     * @version 1.3
      * @param tabela Informar um valor String com nome da Tabela
      * @return Retornar (Tabela tabela Deletada com sucesso !!!).
      */
@@ -114,14 +140,20 @@ public class Messagem {
 
 //Tela
     /**
+     * Este metodo Chama a Metodo da Classe informado pelo parametro
+     *
+     * @version 1.3
      * @param o Informar um valor de Class na Messagem da Tela
      *
      */
-    public static void chamarTela(Class o) {
+    public static void chamarTela(Class<Object> o) {
         JOptionPane.showMessageDialog(null, o.getSimpleName());
     }
 
     /**
+     * Este metodo Chama a Metodo da Classe informado pelo parametro
+     *
+     * @version 1.3
      * @param o Informar um Valor de Objeto na Messagem da Tela.
      */
     public static void chamarTela(Object o) {
@@ -129,6 +161,9 @@ public class Messagem {
     }
 
     /**
+     * Este metodo Chama a Metodo da Classe informado pelo parametro
+     *
+     * @version 1.3
      * @param o Informar um valor String na Messagem da Tela
      */
     public static void chamarTela(String o) {
@@ -136,11 +171,30 @@ public class Messagem {
     }
 
     /**
+     * Este metodo exibe uma tela de confimação sendo que a opção so pode ser "deleta ou Deleta" ou "" Chama a Metodo da Classe informado pelo parametro
+     *
+     * @version 1.3
      * @param mens Informar um valor String para Messagem.
      * @param title Informar um valor String para Titulo.
-     * @param opcao Informar um valor String para Opção: deleta ou Deleta -
-     * Utilizar um metodo Auxiliar setDeleta(int deleta) ou criada ou Criada -
-     * Utilizar um metodo Auxiliar setCriada(int criada)
+     * @param opcao Informar um valor String para Opção:
+     * <ul>
+     * <li>deleta ou Deleta - Utilizar um metodo Auxiliar <code>setDeleta(int deleta)</code>
+     * <ul>onde o getDeleta():
+     *<li>se for <b>-1</b>: Houve uma ação de Cancelamento.
+     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.
+     * <li>se for <b>2</b>: Houve o fechamento da tela.
+     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.
+     * </ul>
+     * ou
+     * <li>criada ou Criada - Utilizar um metodo Auxiliar
+     * <code>setCriada(int criada)</code>
+     * <ul>onde o getCriada():
+     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.
+     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.
+     * <li>se for <b>2</b>: Houve o fechamento da tela.
+     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.
+     * </ul>
+     * </ul>
      */
     public static void chamarTelaConfirma(String mens, String title, String opcao) {
         int ver = JOptionPane.showConfirmDialog(null, mens, title, JOptionPane.OK_CANCEL_OPTION);
@@ -177,6 +231,9 @@ public class Messagem {
                         break;
                 }
                 break;
+            default:
+            JOptionPane.showMessageDialog(null, "Opçao invalida no Metodo ChamaTelaConfirma");
+            break;
         }
     }
 
@@ -184,6 +241,7 @@ public class Messagem {
      * Este metodo Pergunta ser desejar Criar uma tabela, utilizar um metodo
      * auxiliar chamarTelaConfirma(mens,title,opcao)
      *
+     * @version 1.3
      * @param tabela Informar um valor String com nome da Tabela
      */
     public static void criadoTabela(String tabela) {
@@ -196,6 +254,7 @@ public class Messagem {
      * Este metodo pergunta ser desejar Deletar uma tabela, utilizar um metodo
      * auxiliar chamarTelaConfirma(mens,title,opcao)
      *
+     * @version 1.3
      * @param tabela Informar um valor String com nome da Tabela
      */
     public static void deletadaTabela(String tabela) {
@@ -204,8 +263,17 @@ public class Messagem {
         chamarTelaConfirma(mens, title, opcao);
     }
 
-    
     /**
+     * Este metodo Retornar um valor inteiro na Variavel de Controle de
+     * Deletação.
+     * <ul>onde o getDeleta():
+     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.
+     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.
+     * <li>se for <b>2</b>: Houve o fechamento da tela.
+     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.
+     * </ul>
+     *
+     * @version 1.3
      * @return Retornar um valor inteiro na Variavel de Controle de Deletação.
      */
     public static int getDeleta() {
@@ -213,6 +281,7 @@ public class Messagem {
     }
 
     /**
+     * @version 1.3
      * @param deleta Informar um valor inteiro na Variavel de Controle de
      * Deletação.
      */
@@ -222,16 +291,26 @@ public class Messagem {
 
     /**
      * Este metodo Retornar um valor inteiro na Variavel de Controle de Criação.
+     * <ul>onde o getCriada():
+     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.
+     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.
+     * <li>se for <b>2</b>: Houve o fechamento da tela.
+     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.
+     * </ul>
      *
+     * @version 1.3
      * @return Retornar um valor inteiro na Variavel de Controle de Criação.
      */
     public static int getCriada() {
         return criada;
     }
 
-    /**  Este metodo Setar Informar um valor inteiro na Variavel de Controle de
+    /**
+     * Este metodo Setar Informar um valor inteiro na Variavel de Controle de
      * Criação.
-     * @param criada  Setar Informar um valor inteiro na Variavel de Controle de
+     *
+     * @version 1.3
+     * @param criada Setar Informar um valor inteiro na Variavel de Controle de
      * Criação.
      */
     public static void setCriada(int criada) {

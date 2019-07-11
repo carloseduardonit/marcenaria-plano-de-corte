@@ -10,6 +10,8 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.pessoa1.Fornecedor;
+import marcenaria.pessoa1.Pessoa;
 
 /**
  * 18/05/2019
@@ -28,7 +30,7 @@ public class Material {
     private static double comprMaterial, largMarterial, espesMaterial, precMaterial;
 
     /**
-     * OK
+     * Este Metodo faz a conexão do banco de dados.
      */
     public static void Material() {
         conexao = ModuloConector.getConecction();
@@ -45,20 +47,25 @@ public class Material {
      * @param largura Informar um valor double da largura do Material.
      * @param espessura Informar um valor double da espessura do Material.
      * @param preco Informar um valor double do preço do Material.
+     * @param Fornecedo Informar um valor String do Fornecedor do Material.
      *
      */
-    public static void adicionarMaterial(String Tabela, int quantidade, double comprimento, double largura, double espessura, double preco, String tipoMaterial) {
+    public static void adicionarMaterial(String Tabela, int quantidade, double comprimento, double largura,
+            double espessura, double preco, String tipoMaterial, String Fornecedo) {
         try {
             Material();
             String sql = "";
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                //OK
-                sql = "insert into " + Tabela + "(quantidade, comprimento, largura, espessura, preco, tipoMaterial) values (?,?,?,?,?,?)";
+                // Verificar
+                sql = "insert into " + Tabela + "(quantidade, comprimento, largura, espessura, preco, tipoMaterial, id"
+                        + Fornecedor.getTABELA() + ") values (?,?,?,?,?,?,?)";
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
                 //
-                sql = "insert into " + Tabela + "(quantidade,comprimento,largura,espessura,preco, tipoMaterial,id" + Chapa.getTABELA() + ") values (?,?,?,?,?,?,?)";
+                sql = "insert into " + Tabela + "(quantidade,comprimento,largura,espessura,preco, tipoMaterial,id"
+                        + Chapa.getTABELA() + ") values (?,?,?,?,?,?,?)";
             } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
-                sql = "insert into " + Tabela + "(quantidade,comprimento,largura,espessura,preco, tipoMaterial,id" + Chapa.getTABELA() + "id" + Peca.getTABELA() + ") values (?,?,?,?,?,?,?)";
+                sql = "insert into " + Tabela + "(quantidade,comprimento,largura,espessura,preco, tipoMaterial,id"
+                        + Chapa.getTABELA() + "id" + Peca.getTABELA() + ") values (?,?,?,?,?,?,?)";
             }
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, quantidade);
@@ -68,22 +75,25 @@ public class Material {
             pst.setDouble(5, preco);
             pst.setString(6, tipoMaterial);
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-
+                pst.setInt(7, Fornecedor.obterIdFornecedor(Fornecedo));// verificar
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
                 pst.setInt(7, Chapa.obterIdChapa(tipoMaterial, espessura));
             } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
                 pst.setInt(7, Chapa.obterIdChapa(tipoMaterial, espessura));
                 pst.setInt(8, Peca.obterIdPeca(tipoMaterial, espessura));
             }
-            if ((Tabela.equalsIgnoreCase(Chapa.getTABELA())) || (Tabela.equalsIgnoreCase(Peca.getTABELA()) && Chapa.obterIdChapa(tipoMaterial, espessura) > 0) || (Tabela.equalsIgnoreCase(Pedaco.getTABELA()) && (Chapa.obterIdChapa(tipoMaterial, espessura) > 0 || Peca.obterIdPeca(tipoMaterial, espessura) > 0))) {
+            if ((Tabela.equalsIgnoreCase(Chapa.getTABELA()))
+                    || (Tabela.equalsIgnoreCase(Peca.getTABELA()) && Chapa.obterIdChapa(tipoMaterial, espessura) > 0)
+                    || (Tabela.equalsIgnoreCase(Pedaco.getTABELA()) && (Chapa.obterIdChapa(tipoMaterial, espessura) > 0
+                    || Peca.obterIdPeca(tipoMaterial, espessura) > 0))) {
                 int inserido = pst.executeUpdate();
                 if (inserido > 0) {
-                    Messagem.chamarTela("Foi inserido na Tabela " + Tabela + " a quantidade de " + quantidade + " como as Medidas :" + comprimento + "X" + largura + "X" + espessura + " CM.");
+                    Messagem.chamarTela("Foi inserido na Tabela " + Tabela + " a quantidade de " + quantidade
+                            + " como as Medidas :" + comprimento + "X" + largura + "X" + espessura + " CM.");
                     ModuloConector.fecharConexao(conexao, rs, pst, stmt);
                 }
             } else {
-
-                adicionarMaterial(Tabela, quantidade, comprimento, largura, espessura, preco, tipoMaterial);
+                adicionarMaterial(Tabela, quantidade, comprimento, largura, espessura, preco, tipoMaterial, Fornecedo);
             }
         } catch (NullPointerException npe) {
         } catch (HeadlessException | SQLException e) {
@@ -102,17 +112,22 @@ public class Material {
      * @param largura Informar um valor double da largura do Material.
      * @param espessura Informar um valor double da espessura do Material.
      * @param preco Informar um valor double do preço do Material.
+     * @param Fornecedo Informar um valor String do Fornecedor do Material.
      */
-    public static void editarMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento, double largura, double espessura, double preco) {
+    public static void editarMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento,
+            double largura, double espessura, double preco, String Fornecedo) {
         try {
             Material();
             String sql = "";
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                sql = "insert into " + Tabela + "(tipoMaterial,quantidade,comprimento,largura,espessura,preco) values (?,?,?,?,?)";
+                sql = "insert into " + Tabela
+                        + "(tipoMaterial,quantidade,comprimento,largura,espessura,preco,Id" + Fornecedor.getTABELA() + ") values (?,?,?,?,?)";
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
-                sql = "insert into " + Tabela + "(tipoMaterial,quantidade,comprimento,largura,espessura,preco,id" + Chapa.getTABELA() + ") values (?,?,?,?,?,?)";
+                sql = "insert into " + Tabela + "(tipoMaterial,quantidade,comprimento,largura,espessura,preco,id"
+                        + Chapa.getTABELA() + ") values (?,?,?,?,?,?)";
             } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
-                sql = "inset into " + Tabela + "(tipoMaterial,quantidade,comprimento,largura,espessura,preco,id" + Chapa.getTABELA() + ") values (?,?,?,?,?,?)";
+                sql = "inset into " + Tabela + "(tipoMaterial,quantidade,comprimento,largura,espessura,preco,id"
+                        + Chapa.getTABELA() + ") values (?,?,?,?,?,?)";
             } else {
                 Messagem.chamarTela("Classe não criada");
             }
@@ -132,7 +147,8 @@ public class Material {
             }
             int inserido = pst.executeUpdate();
             if (inserido == 0) {
-                JOptionPane.showMessageDialog(null, "Foi inserido n Tabela " + Tabela + "" + quantidade + "" + comprimento + "X" + largura + "X" + espessura);
+                JOptionPane.showMessageDialog(null, "Foi inserido n Tabela " + Tabela + "" + quantidade + ""
+                        + comprimento + "X" + largura + "X" + espessura);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -149,8 +165,10 @@ public class Material {
      * @param largura Informar um valor double da largura do Material.
      * @param espessura Informar um valor double da espessura do Material.
      * @param preco Informar um valor double do preço do Material.
+     * @param fornecedo Informar um valor String do Fornecedor do Material.
      */
-    public static void excluirMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento, double largura, double espessura, double preco) {
+    public static void excluirMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento,
+            double largura, double espessura, double preco,String fornecedo) {
         try {
             Material();
             String sql = "";
@@ -161,7 +179,8 @@ public class Material {
                     sql = "drop table " + Tabela + "where ";
                 }
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
-                sql = "drop table " + Tabela + "(quantidade,comprimento,largura,espessura,preco,id" + Chapa.getTABELA() + ") values (?,?,?,?,?,?,?)";
+                sql = "drop table " + Tabela + "(quantidade,comprimento,largura,espessura,preco,id" + Chapa.getTABELA()
+                        + ") values (?,?,?,?,?,?,?)";
             }
             pst = conexao.prepareStatement(sql);
             pst.setString(1, tipoMaterial);
@@ -175,10 +194,50 @@ public class Material {
             }
             int editado = pst.executeUpdate();
             if (editado == 0) {
-                JOptionPane.showMessageDialog(null, "Foi excluido da Tabela " + Tabela + "" + quantidade + "" + comprimento + "X" + largura + "X" + espessura);
+                JOptionPane.showMessageDialog(null, "Foi excluido da Tabela " + Tabela + "" + quantidade + ""
+                        + comprimento + "X" + largura + "X" + espessura);
             }
         } catch (Exception e) {
+            Messagem.chamarTela(Tabela + " Excluir: " + e);
         }
+    }
+
+    /**
+     *
+     * @param Tabela
+     * @param idPessoa
+     * @param row
+     * @param colu
+     * @return
+     */
+    public static String[][] TabeladeMaterial(String Tabela, int idPessoa, int row, int colu) {
+        Material();
+        String[][] tab = new String[row][colu];
+        try {
+            String sql = "select from " + Tabela + " from id" + Pessoa.getTABELA() + " = ?";
+
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, idPessoa);
+            rs = pst.executeQuery();
+
+            for (int lin = 0; lin < tab.length; lin++) {
+                if (rs.next()) {
+                    for (int col = 0; col < tab[lin].length; col++) {
+                        tab[lin][col] = rs.getString(col);
+                        /*
+                     * if (co == 0) { tab[lin][col] = rs.getString(co); } else if (col == 1) {
+                     * tab[lin][col] = rs.getString(co); } else if (col == 2) { tab[lin][col] = 0; }
+                     * else if (col == 3) { tab[lin][col] = 0; } else if (col == 4) { tab[lin][col]
+                     * = 0; } else if (col == 5) { tab[lin][col] = 0; }
+                         */
+                    }
+                }
+            }
+
+        } catch (SQLException se) {
+Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
+        }
+        return tab;
     }
 
     /**
@@ -231,31 +290,20 @@ public class Material {
     public static void criarMaterial(String Tabela) {
         try {
             Material();
-            String sql = "create table if not exists " + Tabela + "("
-                    + "id" + Tabela + " int primary key auto_increment,"
-                    + "quantidade int default 0,"
-                    + "comprimento double,"
-                    + "largura double,"
-                    + "espessura double,"
-                    + "preco double, "
-                    + "tipoMaterial varchar(30)";
+            String sql = "create table if not exists " + Tabela + "(" + "id" + Tabela
+                    + " int primary key auto_increment," + "quantidade int default 0," + "comprimento double,"
+                    + "largura double," + "espessura double," + "preco double, " + "tipoMaterial varchar(30)";
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                sql += ",id)";
+                sql += ", id" + Fornecedor.getTABELA() + " int not null, foreign key (id" + Fornecedor.getTABELA()
+                        + ") references " + Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
-                sql += ","
-                        + "id" + Chapa.getTABELA() + " int not null,"
-                        + "foreign key(id" + Chapa.getTABELA()
+                sql += "," + "id" + Chapa.getTABELA() + " int not null," + "foreign key(id" + Chapa.getTABELA()
                         + ") references chapa(id" + Chapa.getTABELA() + "))";
             } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
-                sql += ",id" + Chapa.getTABELA() + " int default '0',"
-                        + "id" + Peca.getTABELA() + " int default 0,"
-                        + "incData Timestamp,"
-                        + "foreign key (id" + Chapa.getTABELA()
-                        + ") references " + Chapa.getTABELA()
-                        + " (id" + Chapa.getTABELA() + "), "
-                        + "foreign key (id" + Peca.getTABELA()
-                        + ") references " + Peca.getTABELA()
-                        + " (id" + Peca.getTABELA() + "))";
+                sql += ",id" + Chapa.getTABELA() + " int default '0'," + "id" + Peca.getTABELA() + " int default 0,"
+                        + "incData Timestamp," + "foreign key (id" + Chapa.getTABELA() + ") references "
+                        + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), " + "foreign key (id" + Peca.getTABELA()
+                        + ") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
             }
             stmt = conexao.createStatement();
             Messagem.criadoTabela(Tabela);
@@ -273,13 +321,16 @@ public class Material {
         } catch (HeadlessException he) {
             Messagem.chamarTela(he);
         } catch (SQLException e) {
-            if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
-                // primeiro tem que criar  a Tabela Chapa para depois a Tabela Peça para depois Tabela Pedaco
+            if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
+                Fornecedor.criarFornecedor();
+            } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
+                // primeiro tem que criar a Tabela Chapa para depois a Tabela Peça para depois
+                // Tabela Pedaco
                 criarMaterial(Chapa.getTABELA());
                 criarMaterial(Peca.getTABELA());
                 criarMaterial(Tabela);
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
-                // primeiro tem que criar  a Tabela Chapa para depois a Tabela Peça
+                // primeiro tem que criar a Tabela Chapa para depois a Tabela Peça
                 criarMaterial(Chapa.getTABELA());
                 criarMaterial(Tabela);
             } else {
@@ -288,6 +339,10 @@ public class Material {
         }
     }
 
+    /**
+     * TESTADO E OK
+     *
+     */
     public static void deletarMaterial() {
         Material.deletarMaterial(Material.getTABELA());
     }
@@ -302,11 +357,12 @@ public class Material {
             Material();
             String sql = "drop table if exists " + Tabela;
             stmt = conexao.createStatement();
-            int deleta = JOptionPane.showConfirmDialog(null, "Desejar excluir a  tabela " + Tabela, Tabela, JOptionPane.OK_CANCEL_OPTION);
-            //System.out.println(deleta + "X" + JOptionPane.OK_OPTION);
+            int deleta = JOptionPane.showConfirmDialog(null, "Desejar excluir a  tabela " + Tabela, Tabela,
+                    JOptionPane.OK_CANCEL_OPTION);
+            // System.out.println(deleta + "X" + JOptionPane.OK_OPTION);
             if (deleta == JOptionPane.OK_OPTION) {
                 int deletado = stmt.executeUpdate(sql);
-                //System.out.println("" + deletado);
+                // System.out.println("" + deletado);
                 if (deletado == 0) {
                     JOptionPane.showMessageDialog(null, "Foi Exclui com sucesso  a tabela " + Tabela);
                     ModuloConector.fecharConexao(conexao, rs, pst, stmt);
@@ -337,6 +393,13 @@ public class Material {
         }
     }
 
+    /**
+     *
+     * @param Tabela
+     * @param tipoMaterial
+     * @param espessura
+     * @return
+     */
     public static int obterIdMaterial(String Tabela, String tipoMaterial, double espessura) {
         int id = 0;
         try {
@@ -381,7 +444,7 @@ public class Material {
         return id;
     }
 
-    //Gets e Sets 
+    // Gets e Sets
     /**
      * @return Retornar um valor inteiro do Tipo do Material.
      */

@@ -36,12 +36,13 @@ public class Control {
      * @param Largura
      * @param Espessura
      * @param Preco
+     * @param Fornecedor
      */
     public static void ADDChapa(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco) {
+            JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
         Chapa.adicionarChapa(Control.deJTextparaInt(Produto), Control.deJTextparaDouble(Comprimento),
                 Control.deJTextparaDouble(Largura), Control.deJTextparaDouble(Espessura),
-                Control.deJTextparaDouble(Preco), Produto.getText());
+                Control.deJTextparaDouble(Preco), Produto.getText(), Fornecedor.getText());
     }
 
     /**
@@ -496,33 +497,57 @@ public class Control {
      * @param Espessura
      * @param Preco
      * @param tab
-     * @param row
+     *
      *
      */
-    public static void SetarCampo(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco, JTable tab,int row) {
-        String t= "txt";
-        for (int i = 0; i < tab.getColumnCount();) {
-            if (Quantidade.getName().equalsIgnoreCase(t+tab.getColumnName(i))) {
-                Quantidade.setText(String.valueOf(tab.getValueAt(row, i)));
-            } else if (Produto.getName().equalsIgnoreCase(t+tab.getColumnName(i))) {
-                Produto.setText(String.valueOf(tab.getValueAt(row, i)));
-            } else if (Comprimento.getName().equalsIgnoreCase(t+tab.getColumnName(i))) {
-                Comprimento.setText(String.valueOf(tab.getValueAt(row, i)));
-            } else if (Largura.getName().equalsIgnoreCase(t+tab.getColumnName(i))) {
-                Largura.setText(String.valueOf(tab.getValueAt(row, i)));
-            } else if (Espessura.getName().equalsIgnoreCase(t+tab.getColumnName(i))) {
-                Espessura.setText(String.valueOf(tab.getValueAt(row, i)));
-            } else if (Preco.getName().equalsIgnoreCase(t+tab.getColumnName(i))) {
-                Preco.setText(String.valueOf(tab.getValueAt(row, i)));
-            } else {
-                Quantidade.setText(Quantidade.getName());
-                Produto.setText(Produto.getName());
-                Comprimento.setText(Comprimento.getName());
-                Largura.setText(Largura.getName());
-                Espessura.setText(Espessura.getName());
-                Preco.setText(Preco.getName());
+    public static void SetarCampo(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura, JTextField Espessura, JTextField Preco, JTable tab) {
+        int row = tab.getSelectedRow(), n = -1, comp = n, larg = n, espe = n, qua = n, pro = n, pre = n;
+        for (int i = 0; i < tab.getColumnCount(); i++) {
+            if (tab.getColumnName(i).equalsIgnoreCase("Comprimento")) {
+                comp = i;
+            } else if (tab.getColumnName(i).equalsIgnoreCase("Largura")) {
+                larg = i;
+            } else if (tab.getColumnName(i).equalsIgnoreCase("Espessura")) {
+                espe = i;
+            } else if (tab.getColumnName(i).equalsIgnoreCase("Quantidade")) {
+                qua = i;
+            } else if (tab.getColumnName(i).equalsIgnoreCase("Produto")) {
+                pro = i;
+            } else if (tab.getColumnName(i).equalsIgnoreCase("Preço") || tab.getColumnName(i).equalsIgnoreCase("Preco")) {
+                pre = i;
             }
         }
+
+        if (comp != n) {
+            Comprimento.setText(String.valueOf(tab.getValueAt(row, comp)));
+        } else {
+            Comprimento.setText("0");
+        }
+        if (larg != n) {
+            Largura.setText(String.valueOf(tab.getValueAt(row, larg)));
+        } else {
+            Largura.setText("0");
+        }
+        if (espe != n) {
+            Espessura.setText(String.valueOf(tab.getValueAt(row, espe)));
+        } else {
+            Espessura.setText("0");
+        }
+        if (pre != n) {
+            Preco.setText(String.valueOf(tab.getValueAt(row, pre)));
+        } else {
+            Preco.setText("0");
+        }
+        if (pro != n) {
+            Produto.setText(String.valueOf(tab.getValueAt(row, pro)));
+        } else {
+            Produto.setText("0");
+        }
+        if (qua != n) {
+            Quantidade.setText(String.valueOf(tab.getValueAt(row, qua)));
+        } else {
+            Quantidade.setText("0");
+        }
+
     }
 }

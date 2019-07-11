@@ -72,12 +72,13 @@ public class Pedaco {
      * @param compPedaco Informar um valor double da Comprimento da Pedaço.
      * @param precPedaco
      * @param tipoMaterial
+     * @param fornecedor
      * @param largPedaco Informar um valor double da largura da Pedaço.
      * @param espePedaco Informar um valor double da espessura do Pedaço.
      * @param incData Informar um valor Date do dia da Inclusão.
      */
     public static void adicionarPedaco(int quantPeca, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial) {
-        Material.adicionarMaterial(getTABELA(), quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial);
+        Material.adicionarMaterial(getTABELA(), quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial,null);
     }
 
     /**

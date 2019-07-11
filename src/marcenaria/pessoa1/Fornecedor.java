@@ -18,28 +18,31 @@ public class Fornecedor extends Pessoa {
 
     /**
      * Este metodo inserer informação na tabela Fornecedor utilizado um metodo
-     * auxiliar da classe <b>Pessoa</b> no metodo <b>adicionarPessoa(String
-     * Tabela, String logPessoa, String senPessoa, String conSenPessoa, String
-     * tipoPessoa, String nomePessoa, String documPessoa)</b>
+     * auxiliar da classe <b>Pessoa</b> no metodo <b>adicionarPessoa(String Tabela,
+     * String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa,
+     * String nomePessoa, String documPessoa)</b>
      *
-     * @param logFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Login Fornecedor
-     * @param senFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Senha Fornecedor
+     * @param logFornecedor    Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Login Fornecedor
+     * @param senFornecedor    Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Senha Fornecedor
      * @param consenFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor na Confirmação da senha Fornecedor
-     * @param tipoPessoa etar uma informação do tipo String da Tabela Fornecedor
-     * no tipo de Fornecedor, sendo que so podera utilizar <b>PF</b> ou
-     * <b>PJ</b>
-     * @param nomeFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Nome Fornecedor
-     * @param documFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no documento do Fornecedor,sendo quanto o tipoPessoa
-     * se<b>PF</b> so poderá anexa a infornação for de 11 digito, senão
-     * <b>PJ</b> so poderá anexa a infornação for de 14 digito
+     *                         Fornecedor na Confirmação da senha Fornecedor
+     * @param tipoPessoa       etar uma informação do tipo String da Tabela
+     *                         Fornecedor no tipo de Fornecedor, sendo que so podera
+     *                         utilizar <b>PF</b> ou <b>PJ</b>
+     * @param nomeFornecedor   Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Nome Fornecedor
+     * @param documFornecedor  Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no documento do Fornecedor,sendo quanto o
+     *                         tipoPessoa se<b>PF</b> so poderá anexa a infornação
+     *                         for de 11 digito, senão <b>PJ</b> so poderá anexa a
+     *                         infornação for de 14 digito
      */
-    public static void adicionarFornecedor(String logFornecedor, String senFornecedor, String consenFornecedor, String tipoPessoa, String nomeFornecedor, String documFornecedor) {
-        Pessoa.adicionarPessoa(getTABELA(), logFornecedor, senFornecedor, consenFornecedor, tipoPessoa, nomeFornecedor, documFornecedor);
+    public static void adicionarFornecedor(String logFornecedor, String senFornecedor, String consenFornecedor,
+            String tipoPessoa, String nomeFornecedor, String documFornecedor) {
+        Pessoa.adicionarPessoa(getTABELA(), logFornecedor, senFornecedor, consenFornecedor, tipoPessoa, nomeFornecedor,
+                documFornecedor);
     }
 
     /**
@@ -59,46 +62,50 @@ public class Fornecedor extends Pessoa {
     /**
      * TA MONTANDO FALTA TESTA
      *
-     * @param nlogFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no novo Login Fornecedor
-     * @param logFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Login Fornecedor
-     * @param senFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Senha Fornecedor
+     * @param nlogFornecedor   Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no novo Login Fornecedor
+     * @param logFornecedor    Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Login Fornecedor
+     * @param senFornecedor    Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Senha Fornecedor
      * @param consenFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor na Confirmação da senha Fornecedor
-     * @param tipoPessoa etar uma informação do tipo String da Tabela Fornecedor
-     * no tipo de Fornecedor, sendo que so podera utilizar <b>PF</b> ou
-     * <b>PJ</b>
-     * @param nomeFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Nome Fornecedor
-     * @param documFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no documento do Fornecedor,sendo quanto o tipoPessoa
-     * se<b>PF</b> so poderá anexa a infornação for de 11 digito, senão
-     * <b>PJ</b> so poderá anexa a infornação for de 14 digito
+     *                         Fornecedor na Confirmação da senha Fornecedor
+     * @param tipoPessoa       etar uma informação do tipo String da Tabela
+     *                         Fornecedor no tipo de Fornecedor, sendo que so podera
+     *                         utilizar <b>PF</b> ou <b>PJ</b>
+     * @param nomeFornecedor   Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Nome Fornecedor
+     * @param documFornecedor  Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no documento do Fornecedor,sendo quanto o
+     *                         tipoPessoa se<b>PF</b> so poderá anexa a infornação
+     *                         for de 11 digito, senão <b>PJ</b> so poderá anexa a
+     *                         infornação for de 14 digito
      */
-    public static void editarFornecedor(String nlogFornecedor, String logFornecedor, String senFornecedor, String consenFornecedor, String tipoPessoa, String nomeFornecedor, String documFornecedor) {
-        Pessoa.editarPessoa(getTABELA(), nlogFornecedor, logFornecedor, senFornecedor, consenFornecedor, tipoPessoa, nomeFornecedor, documFornecedor);
+    public static void editarFornecedor(String nlogFornecedor, String logFornecedor, String senFornecedor,
+            String consenFornecedor, String tipoPessoa, String nomeFornecedor, String documFornecedor) {
+        Pessoa.editarPessoa(getTABELA(), nlogFornecedor, logFornecedor, senFornecedor, consenFornecedor, tipoPessoa,
+                nomeFornecedor, documFornecedor);
     }
 
     /**
      * TA MONTANDO FALTA TESTA
      *
-     * @param logFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Login Fornecedor
-     * @param senFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Senha Fornecedor
+     * @param logFornecedor    Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Login Fornecedor
+     * @param senFornecedor    Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Senha Fornecedor
      * @param consenFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor na Confirmação da senha Fornecedor
-     * @param tipoPessoa etar uma informação do tipo String da Tabela Fornecedor
-     * no tipo de Fornecedor, sendo que so podera utilizar <b>PF</b> ou
-     * <b>PJ</b>
-     * @param nomeFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Nome Fornecedor
-     * @param documFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no documento do Fornecedor,sendo quanto o tipoPessoa
-     * se<b>PF</b> so poderá anexa a infornação for de 11 digito, senão
-     * <b>PJ</b> so poderá anexa a infornação for de 14 digito
+     *                         Fornecedor na Confirmação da senha Fornecedor
+     * @param tipoPessoa       etar uma informação do tipo String da Tabela
+     *                         Fornecedor no tipo de Fornecedor, sendo que so podera
+     *                         utilizar <b>PF</b> ou <b>PJ</b>
+     * @param nomeFornecedor   Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Nome Fornecedor
+     * @param documFornecedor  Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no documento do Fornecedor,sendo quanto o
+     *                         tipoPessoa se<b>PF</b> so poderá anexa a infornação
+     *                         for de 11 digito, senão <b>PJ</b> so poderá anexa a
+     *                         infornação for de 14 digito
      */
     public static void excluirFornecedor(String logFornecedor) {
         Pessoa.excluirPessoa(Fornecedor.getTABELA(), logFornecedor);
@@ -107,39 +114,40 @@ public class Fornecedor extends Pessoa {
     /**
      * TA MONTANDO FALTA TESTA
      *
-     * @param logFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Login Fornecedor
-     * @param senFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Senha Fornecedor
+     * @param logFornecedor    Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Login Fornecedor
+     * @param senFornecedor    Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Senha Fornecedor
      * @param consenFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor na Confirmação da senha Fornecedor
-     * @param tipoPessoa etar uma informação do tipo String da Tabela Fornecedor
-     * no tipo de Fornecedor, sendo que so podera utilizar <b>PF</b> ou
-     * <b>PJ</b>
-     * @param nomeFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Nome Fornecedor
-     * @param documFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no documento do Fornecedor,sendo quanto o tipoPessoa
-     * se<b>PF</b> so poderá anexa a infornação for de 11 digito, senão
-     * <b>PJ</b> so poderá anexa a infornação for de 14 digito
+     *                         Fornecedor na Confirmação da senha Fornecedor
+     * @param tipoPessoa       etar uma informação do tipo String da Tabela
+     *                         Fornecedor no tipo de Fornecedor, sendo que so podera
+     *                         utilizar <b>PF</b> ou <b>PJ</b>
+     * @param nomeFornecedor   Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no Nome Fornecedor
+     * @param documFornecedor  Setar uma informação do tipo String da Tabela
+     *                         Fornecedor no documento do Fornecedor,sendo quanto o
+     *                         tipoPessoa se<b>PF</b> so poderá anexa a infornação
+     *                         for de 11 digito, senão <b>PJ</b> so poderá anexa a
+     *                         infornação for de 14 digito
      */
     public static void pesquisarFornecedor(String logFornecedor) {
         Pessoa.pesquisarPessoa(Fornecedor.getTABELA(), logFornecedor);
     }
 
     /**
-     * @param logFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no Login Fornecedor
+     * @param logFornecedor Setar uma informação do tipo String da Tabela Fornecedor
+     *                      no Login Fornecedor
      * @return Retornar o id da Tabela Fornecedor atraves do Login.
      */
     public static int obterIdFornecedor(String logFornecedor) {
         return Pessoa.obterIdPessoa(logFornecedor, Fornecedor.getTABELA());
     }
 
-    //Sets e Gets
+    // Sets e Gets
     /**
-     * @return Retornar uma informação do tipo inteiro da Tabela
-     * Fornecedor no ID Fornecedor
+     * @return Retornar uma informação do tipo inteiro da Tabela Fornecedor no ID
+     *         Fornecedor
      */
     public static int getIdFornecedor() {
         return idFornecedor;
@@ -155,8 +163,8 @@ public class Fornecedor extends Pessoa {
 
     /**
      *
-     * @return Retornar uma informação do tipo inteiro da Tabela
-     * Fornecedor no Documento Fornecedor
+     * @return Retornar uma informação do tipo inteiro da Tabela Fornecedor no
+     *         Documento Fornecedor
      */
     public static String getCNPJ() {
         return CNPJ;
@@ -170,20 +178,23 @@ public class Fornecedor extends Pessoa {
         Fornecedor.CNPJ = CNPJ;
     }
 
-    /**Este Metodo Retornar uma informação do tipo String da Tabela
-     * Fornecedor no Tipo de Fornecedor
-     * @return Retornar uma informação do tipo String da Tabela
-     * Fornecedor no Tipo de Fornecedor
+    /**
+     * Este Metodo Retornar uma informação do tipo String da Tabela Fornecedor no
+     * Tipo de Fornecedor
+     * 
+     * @return Retornar uma informação do tipo String da Tabela Fornecedor no Tipo
+     *         de Fornecedor
      */
     public static String getTipoPessoa() {
         return tipoPessoa;
     }
 
     /**
-     * Este Metodo Setar uma informação do tipo String da Tabela
-     * Fornecedor no Tipo de Fornecedor
-     * @param tipoPessoa Setar uma informação do tipo String da Tabela
-     * Fornecedor no Tipo de Fornecedor
+     * Este Metodo Setar uma informação do tipo String da Tabela Fornecedor no Tipo
+     * de Fornecedor
+     * 
+     * @param tipoPessoa Setar uma informação do tipo String da Tabela Fornecedor no
+     *                   Tipo de Fornecedor
      */
     public static void setTipoPessoa(String tipoPessoa) {
         Fornecedor.tipoPessoa = tipoPessoa;
@@ -191,20 +202,22 @@ public class Fornecedor extends Pessoa {
 
     /**
      *
-     * @return Retornar uma informação do tipo String da Tabela
-     * Fornecedor  com nome da tabela
+     * @return Retornar uma informação do tipo String da Tabela Fornecedor com nome
+     *         da tabela
      */
     public static String getTABELA() {
         return TABELA;
     }
-/**
+
+    /**
      *
      * @return
      */
     public static String getDocum() {
         return docum;
     }
-/**
+
+    /**
      *
      * 
      */

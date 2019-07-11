@@ -10,8 +10,9 @@ import java.sql.*;
 import marcenaria.Const.Messagem;
 
 /**
- *
- * @author Carlos
+ * @version 1.2
+ * @author Carlos Eduardo dos Santos Figueiredo
+ * @see ModuloConector
  */
 public class ModuloConector {
 
@@ -32,8 +33,9 @@ public class ModuloConector {
     }
 
     /**
-     * Este metodo faz a conexao com o banco de dados MYSQL utilizado as
-     * variaveis finais
+     * @version 1.0
+     * Este metodo faz a conexao com o banco de dados MYSQL utilizado as variaveis
+     * finais
      *
      * @return a conexao conexao com o banco de dado
      */
@@ -42,16 +44,16 @@ public class ModuloConector {
         try {
             Class.forName(DRIVER);
             return conexao = DriverManager.getConnection(URLD, USER, PASS);
-        } //catch{        }
+        } // catch{ }
         catch (ClassNotFoundException cnfe) {
-            Messagem.chamarTela("O Servidor ultra-passou o limite de Conexão");
-            fecharConexao(conexao);
-        } catch (CommunicationsException e) {
-            Messagem.chamarTela("O banco de dados deve esta desligado");
-            fecharConexao(conexao);
+            Messagem.chamarTela("O Servidor ultra-passou o limite de Conexão " + cnfe);
+            fecharConexao(conexao, rs, pst, stmt);
+        } catch (CommunicationsException ce) {
+            Messagem.chamarTela("O banco de dados deve esta desligado " + ce);
+            fecharConexao(conexao, rs, pst, stmt);
         } catch (Exception e) {
-            Messagem.chamarTela("O banco de dados deve esta desligado");
-            fecharConexao(conexao);
+            Messagem.chamarTela("O banco de dados deve esta desligado " + e);
+            fecharConexao(conexao, rs, pst, stmt);
         }
         return conexao;
     }
@@ -75,6 +77,7 @@ public class ModuloConector {
     }
 
     /**
+     * @version 1.0
      * Este Metodo faz o fechamento da conexao
      *
      * @param con - Fecha a conexao do banco
@@ -90,10 +93,11 @@ public class ModuloConector {
     }
 
     /**
+     * 
      * Este Metodo faz o fechamento da conexao e Resultado
      *
      * @param con - Fecha a conexao do banco
-     * @param rs - Fecha o resultado do Banco
+     * @param rs  - Fecha o resultado do Banco
      */
     public static void fecharConexao(Connection con, ResultSet rs) {
         try {
@@ -112,7 +116,7 @@ public class ModuloConector {
      * Este Metodo faz o fechamento da conexao, Resultado e Editação
      *
      * @param con - Fecha a conexao do banco
-     * @param rs - Fecha o resultado do Banco
+     * @param rs  - Fecha o resultado do Banco
      * @param pst -Fecha a
      */
     public static void fecharConexao(Connection con, ResultSet rs, PreparedStatement pst) {
@@ -131,9 +135,9 @@ public class ModuloConector {
     /**
      * Este Metodo faz o fechamento da conexao, Resultado e Editação
      *
-     * @param con Fecha a conexao do banco
-     * @param rs Fecha o resultado do Banco
-     * @param pst Fecha a
+     * @param con  Fecha a conexao do banco
+     * @param rs   Fecha o resultado do Banco
+     * @param pst  Fecha a
      * @param stmt Fecha a
      */
     public static void fecharConexao(Connection con, ResultSet rs, PreparedStatement pst, Statement stmt) {
@@ -154,8 +158,7 @@ public class ModuloConector {
      */
     public static void criarBackupdataBase() {
         Connection conexao = getConecction();
-        String sql = "BACKUP DATABASE teste\n"
-                + "TO DISK = 'D:\\backups\\testDB.bak'";
+        String sql = "BACKUP DATABASE teste\n" + "TO DISK = 'D:\\backups\\testDB.bak'";
         try {
             Statement stmt = conexao.createStatement();
             int adicionar = stmt.executeUpdate(sql);
@@ -191,5 +194,21 @@ public class ModuloConector {
             Messagem.chamarTela(e);
         }
         return true;
+    }
+
+    /**
+     * Este Metodo Obtem o numero de Coluna no banco
+     */
+    public static int quantColuna(String a) {
+
+        return 0;
+    }
+
+    /**
+     * Este Metodo Obtem o numero de Coluna no banco
+     */
+    public static int quantLinha(String a) {
+
+        return 0;
     }
 }

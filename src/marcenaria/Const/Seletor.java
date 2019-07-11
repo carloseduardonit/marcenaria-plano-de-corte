@@ -11,10 +11,6 @@ package marcenaria.Const;
  */
 public  class Seletor extends Object{
     
-    public static enum tipoPessoa{
-        PJ,
-        PF
-    }
     public enum dia{
         
     }

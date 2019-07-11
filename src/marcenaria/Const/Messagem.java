@@ -16,9 +16,8 @@ import javax.swing.JOptionPane;
 public class Messagem {
 
     private static int deleta = 3, criada = 3;
-    private String[] vazia = new String[1];
-//input
-
+private String[] vazia = new String[1];
+//Input
     /**
      * Este metodo retornar um texto:
      * <p>
@@ -137,8 +136,9 @@ public class Messagem {
     public static final String tabelaDeletada(String tabela) {
         return "Tabela " + tabela + " Deletada com sucesso !!!";
     }
-
+//Input
 //Tela
+
     /**
      * Este metodo Chama a Metodo da Classe informado pelo parametro
      *
@@ -171,16 +171,19 @@ public class Messagem {
     }
 
     /**
-     * Este metodo exibe uma tela de confimação sendo que a opção so pode ser "deleta ou Deleta" ou "" Chama a Metodo da Classe informado pelo parametro
+     * Este metodo exibe uma tela de confimação sendo que a opção so pode ser
+     * "deleta ou Deleta" ou "" Chama a Metodo da Classe informado pelo
+     * parametro
      *
      * @version 1.3
      * @param mens Informar um valor String para Messagem.
      * @param title Informar um valor String para Titulo.
      * @param opcao Informar um valor String para Opção:
      * <ul>
-     * <li>deleta ou Deleta - Utilizar um metodo Auxiliar <code>setDeleta(int deleta)</code>
+     * <li>deleta ou Deleta - Utilizar um metodo Auxiliar
+     * <code>setDeleta(int deleta)</code>
      * <ul>onde o getDeleta():
-     *<li>se for <b>-1</b>: Houve uma ação de Cancelamento.
+     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.
      * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.
      * <li>se for <b>2</b>: Houve o fechamento da tela.
      * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.
@@ -232,8 +235,8 @@ public class Messagem {
                 }
                 break;
             default:
-            JOptionPane.showMessageDialog(null, "Opçao invalida no Metodo ChamaTelaConfirma");
-            break;
+                JOptionPane.showMessageDialog(null, "Opçao invalida no Metodo ChamaTelaConfirma");
+                break;
         }
     }
 
@@ -262,6 +265,8 @@ public class Messagem {
         String mens = "Deseja Excluir a Tabela " + tabela + " !!", title = tabela;
         chamarTelaConfirma(mens, title, opcao);
     }
+//Tela
+//Gets e Sets
 
     /**
      * Este metodo Retornar um valor inteiro na Variavel de Controle de
@@ -281,8 +286,11 @@ public class Messagem {
     }
 
     /**
+     * Este metodo Setar Informar um valor inteiro na Variavel de Controle de
+     * Deletação.
+     *
      * @version 1.3
-     * @param deleta Informar um valor inteiro na Variavel de Controle de
+     * @param deleta Setar Informar um valor inteiro na Variavel de Controle de
      * Deletação.
      */
     public static void setDeleta(int deleta) {
@@ -316,5 +324,6 @@ public class Messagem {
     public static void setCriada(int criada) {
         Messagem.criada = criada;
     }
-
+//Gets e Sets
+    
 }

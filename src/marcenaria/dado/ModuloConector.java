@@ -43,23 +43,23 @@ public class ModuloConector {
     public static final String PASS = "";
     //Variaveis de gerencimento do bano de dados
     /**
-     * 
+     *
      */
     private static Connection conexao = null;
     /**
-     * 
+     *
      */
     private static PreparedStatement pst = null;
     /**
-     * 
+     *
      */
     private static ResultSet rs = null;
     /**
-     * 
+     *
      */
     private static ResultSetMetaData rsmd = null;
     /**
-     * 
+     *
      */
     private static Statement stmt = null;
 
@@ -68,7 +68,6 @@ public class ModuloConector {
      */
     private static void conector() {
         conexao = getConecction();
-
     }
 
     /**
@@ -80,20 +79,19 @@ public class ModuloConector {
      * @return a conexao conexao com o banco de dado
      */
     public static java.sql.Connection getConecction() {
-        Connection conexao = null;
         try {
             Class.forName(DRIVER);
             return conexao = DriverManager.getConnection(URLD, USER, PASS);
         } // catch{ }
         catch (ClassNotFoundException cnfe) {
             Messagem.chamarTela("O Servidor ultra-passou o limite de Conexão " + cnfe);
-            fecharConexao(conexao, rs, pst, stmt);
+            fecharConexao(conexao, rs, rsmd, pst, stmt);
         } catch (CommunicationsException ce) {
             Messagem.chamarTela("O banco de dados deve esta desligado " + ce);
-            fecharConexao(conexao, rs, pst, stmt);
+            fecharConexao(conexao, rs, rsmd, pst, stmt);
         } catch (Exception e) {
             Messagem.chamarTela("O banco de dados deve esta desligado " + e);
-            fecharConexao(conexao, rs, pst, stmt);
+            fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
         return conexao;
     }
@@ -153,14 +151,33 @@ public class ModuloConector {
     }
 
     /**
-     * Este Metodo faz o fechamento da conexao, Resultado e Editação
      *
+     * Este Metodo faz o fechamento da conexao e Resultado
+     *@since 13/07/2019
+     * @param rsmd
+     * @since 01/05/2019
+     * @version 1.1
+     * @param con - Fecha a conexao do banco
+     * @param rs - Fecha o resultado do Banco
+     */
+    public static void fecharConexao(Connection con, ResultSet rs, ResultSetMetaData rsmd) {
+        if (rsmd != null) {
+            fecharConexao(con, rs);
+        } else {
+            fecharConexao(con, rs);
+        }
+    }
+
+    /**
+     * Este Metodo faz o fechamento da conexao, Resultado e Editação
+     *@since 13/07/2019
+     * @param rsmd
      * @since 01/05/2019
      * @param con - Fecha a conexao do banco
      * @param rs - Fecha o resultado do Banco
      * @param pst -Fecha a
      */
-    public static void fecharConexao(Connection con, ResultSet rs, PreparedStatement pst) {
+    public static void fecharConexao(Connection con, ResultSet rs, ResultSetMetaData rsmd, PreparedStatement pst) {
         try {
             if (pst != null) {
                 fecharConexao(con, rs);
@@ -175,20 +192,21 @@ public class ModuloConector {
 
     /**
      * Este Metodo faz o fechamento da conexao, Resultado e Editação
-     *
+     *@since 13/07/2019
+     * @param rsmd
      * @since 01/05/2019
      * @param con Fecha a conexao do banco
      * @param rs Fecha o resultado do Banco
      * @param pst Fecha a
      * @param stmt Fecha a
      */
-    public static void fecharConexao(Connection con, ResultSet rs, PreparedStatement pst, Statement stmt) {
+    public static void fecharConexao(Connection con, ResultSet rs, ResultSetMetaData rsmd, PreparedStatement pst, Statement stmt) {
         try {
-            if (pst != null) {
-                fecharConexao(con, rs, pst);
+            if (stmt != null) {
+                fecharConexao(con, rs, rsmd, pst);
                 stmt.close();
             } else {
-                fecharConexao(con, rs, pst);
+                fecharConexao(con, rs, rsmd, pst);
             }
         } catch (SQLException e) {
             Messagem.chamarTela(e);
@@ -277,16 +295,15 @@ public class ModuloConector {
                 if (rs.next()) {
                     rsmd = rs.getMetaData();
                     return rsmd.getColumnCount();
-                }else{
-
+                } else {
+                    Messagem.chamarTela("");
                 }
-            }else   {
-                
+            } else {
+                Messagem.chamarTela("");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             Messagem.chamarTela("Metodo QuantColuna da Classe ModuloConector: " + e);
         }
-
         return 0;
     }
 
@@ -324,13 +341,13 @@ public class ModuloConector {
                 stmt = rs.getStatement();
                 if (rs.next()) {
                     return stmt.getMaxRows();
-                }else{
+                } else {
                     Messagem.chamarTela("");
                 }
             } else {
                 Messagem.chamarTela("");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             Messagem.chamarTela("Metodo QuantLinha da Classe ModuloConector: " + e);
         }
         return 0;

@@ -17,26 +17,30 @@ import marcenaria.pessoa1.Fornecedor;
 public class Chapa {
 
     /**
-     *
+     * Variaveis do tipo Double para largura , comprimento, espessura, preço da
+     * chapa
      */
     private static Double largChapa, comprChapa, espesChapa, precoChapa;
     /**
-     *
+     * Variaveis do tipo inteiro para id e quantidade da chapa;
      */
     private static int idChapa, quantChapa;
     /**
-     *
+     * Variaveis do tipo String para nome da Tabela Chapa;
      */
     private static final String TABELA = Chapa.class.getSimpleName();
     /**
-     *
+     * Array do tipo String para tipo de materia da Chapa;
      */
-    static String[] tipoMateria = new String[2];
-    static Connection conexao;
-    static ResultSet rs;
-    static PreparedStatement pst;
-    static Statement stmt;
+    private static String[] tipoMateria = new String[2];
+    private static Connection conexao;
+    private static ResultSet rs;
+    private static ResultSetMetaData rsmd;
+    private static PreparedStatement pst;
+    private static Statement stmt;
 
+    /**
+     *      */
     public static void Chapa() {
         conexao = ModuloConector.getConecction();
     }
@@ -61,21 +65,28 @@ public class Chapa {
 
     /** <b>Este Metodo faz Criação da Tabela Chapa</b>
      *
+     * @since 16/05/2019
+     * @version 1.0
      */
     public static void criadaChapa() {
         Material.criarMaterial(TABELA);
     }
 
     /**
-     * OK
+     * <b>Este Metodo faz Deletação da Tabela Chapa</b>
      *
+     * @since 16/05/2019
+     * @version 1.0
      */
     public static void deletadaChapa() {
         Material.deletarMaterial(TABELA);
     }
 
     /**
-     * Testa
+     * Tem que faze-lo
+     *
+     * @since 01/05/2019
+     * @version 1.0Testa
      *
      * @param tipoMateria
      * @param pos
@@ -85,23 +96,35 @@ public class Chapa {
     }
 
     /**
-     * Testa
+     * Tem que faze-lo Este metodo faz a inserção de uma informação no banco de
+     * dado na tabela Chapa utilizado uma classe e Metodo Auxiliar
+     * Material.adicionarMaterial() conforme os pa
      *
-     * @param quantChapa
-     * @param compChapa
-     * @param largChapa
-     * @param espeChapa
-     * @param precChapa
-     * @param tipoMaterial
-     * @param fornecedor
+     * @since 01/05/2019
+     * @version 1.0
+     *
+     * @param quantChapa Setar uma informação de valor inteiro da quantidade de
+     * Chapa
+     * @param compChapa Setar uma informação de valor double do comprimento de
+     * Chapa
+     * @param largChapa Setar uma informação de valor double do largura de Chapa
+     * @param espeChapa Setar uma informação de valor double do espessura de
+     * Chapa
+     * @param precChapa Setar uma informação de valor double do Preço da Chapa
+     * @param tipoMaterial Setar uma informação de valor String do tipo de
+     * materia da Chapa
+     * @param fornecedor Setar uma informação de valor String do fornecedor da
+     * Chapa
      */
     public static void adicionarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
         Material.adicionarMaterial(getTABELA(), quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor);
     }
 
     /**
-     * testa
+     * Tem que faze-lo
      *
+     * @since 01/05/2019
+     * @version 1.0
      */
     public static void editarChapa() {
         setTipoMateria();
@@ -109,7 +132,10 @@ public class Chapa {
     }
 
     /**
-     * testa
+     * Tem que faze-lo
+     *
+     * @since 01/05/2019
+     * @version 1.0
      *
      */
     public static void excluirChapa() {
@@ -117,8 +143,10 @@ public class Chapa {
     }
 
     /**
-     * testa
+     * Tem que faze-lo
      *
+     * @since 01/05/2019
+     * @version 1.0
      */
     public static void pesquisarChapa() {
 
@@ -127,7 +155,8 @@ public class Chapa {
     /**
      * Este Metodo Retornar uma informação de valor inteiro do Id de Chapa
      * conforme o tipo de Materia e espessura da Chapa.
-     *@since 01/05/2019
+     *
+     * @since 01/05/2019
      * @version 1.0
      * @param tipoMaterial Setar uma informação de valor String do Tipo de
      * Materia da Chapa.
@@ -138,6 +167,7 @@ public class Chapa {
     public static int obterIdChapa(String tipoMaterial, double espessura) {
         return Material.obterIdMaterial(getTABELA(), tipoMaterial, espessura);
     }
+// Gets e Sets
 
     /**
      * Este Metodo Retornar uma valor double da largura da Chapa

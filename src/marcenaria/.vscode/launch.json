@@ -4,6 +4,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Chapa",
+            "request": "launch",
+            "mainClass": "marcenaria.material.Chapa"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
             "mainClass": "${file}"

@@ -9,7 +9,7 @@ import java.sql.*;
 import marcenaria.Const.Messagem;
 
 /**
- * 16/05/2019
+ * @since 16/05/2019
  *
  * @version 1.0
  * @author Carlos Eduardo dos Santos Figueiredo
@@ -36,7 +36,7 @@ public class Peca {
      */
     public static void main(String[] args) {
        
-        adicionarPeca(5, 220, 160, 0.18, 280.50, "MDF");
+        adicionarPeca(5, 220, 160, 0.18, 280.50, "MDF","lab");
     }
 
     /**
@@ -86,13 +86,14 @@ public class Peca {
      * @param largPeca
      * @param espePeca
      * @param precPeca
+     * @param fornecedor
      * @param tipoMaterial
      */
-    public static void adicionarPeca(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial) {
-        Material.adicionarMaterial(getTABELA(), quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial);
+    public static void adicionarPeca(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial,String fornecedor) {
+        Material.adicionarMaterial(getTABELA(), quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial,fornecedor);
     }
 
-    /**
+    /** com erro
      * <b>Este metodo faz Edição na tabela Peça.</b>
      * <p>
      * Utilizar um metodo da classe Material como Metodo auxiliar o metodo
@@ -130,11 +131,11 @@ public class Peca {
     /**
      * Estou preparando soma as peça Se 109,5X79,5
      *
-     * @param compChapa
-     * @param largChapa
-     * @param compPeca
-     * @param largPeca
-     * @param serra
+     * @param compChapa Setar uma informaÇão de valor double do comprimento da Chapa.
+     * @param largChapa Setar uma informação de valor double da largura da Chapa.
+     * @param compPeca Setar uma informaÇão de valor double do comprimento da Peça.
+     * @param largPeca Setar uma informação de valor double da largura da Peça.
+     * @param serra Setar uma informação de valor double da Espessura da Serra.
      */
     public static void SomarVerticalPeca(double compChapa, double largChapa, double compPeca, double largPeca, double serra) {
         double somar;
@@ -162,11 +163,11 @@ public class Peca {
     /**
      * PREPARADO
      *
-     * @param compChapa
-     * @param largChapa
-     * @param compPeca
-     * @param largPeca
-     * @param serra
+     * @param compChapa Setar uma informaÇão de valor double do comprimento da Chapa.
+     * @param largChapa Setar uma informação de valor double da largura da Chapa.
+     * @param compPeca Setar uma informaÇão de valor double do comprimento da Peça.
+     * @param largPeca Setar uma informação de valor double da largura da Peça.
+     * @param serra Setar uma informação de valor double da Espessura da Serra.
      */
     public static void SomarhorizontalPeca(double compChapa, double largChapa, double compPeca, double largPeca, double serra) {
         double somar;
@@ -192,11 +193,11 @@ public class Peca {
     }
 
     /**
-     * @param compChapa
-     * @param largChapa
-     * @param compPeca
-     * @param largPeca
-     * @param serra
+     *  @param compChapa Setar uma informaÇão de valor double do comprimento da Chapa.
+     * @param largChapa Setar uma informação de valor double da largura da Chapa.
+     * @param compPeca Setar uma informaÇão de valor double do comprimento da Peça.
+     * @param largPeca Setar uma informação de valor double da largura da Peça.
+     * @param serra Setar uma informação de valor double da Espessura da Serra.
      */
     public static void Sobra(double compChapa, double largChapa, double compPeca, double largPeca, double serra) {
 

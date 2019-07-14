@@ -11,7 +11,9 @@ import marcenaria.dado.ModuloConector;
 
 /**
  *
- * @author Carlos
+ * @author Carlos Eduardo dos Santos Figueiredo
+ * @since 16/05/2019
+ * @version 1.0
  */
 public class Corte {
 
@@ -157,6 +159,8 @@ public class Corte {
     }
 
     /**
+     * @since 16/05/2019
+ * @version 1.0
      * @param compriCorte Informar um Array no Array double Comprimento do Corte
      */
     public static void setCompriCorte(double[] compriCorte) {
@@ -165,7 +169,8 @@ public class Corte {
 
     /**
      * Comprimento
-     *
+     *@since 16/05/2019
+ * @version 1.0
      * @param array Informar um valor inteiro a tamanho do Array
      * @param multiplicado Informar um valor inteiro multiplicado Se
      * multiplicado for MAIOR do que ZERO(0) o tamanho do Array de Comprimento
@@ -181,6 +186,8 @@ public class Corte {
     }
 
     /**
+     * @since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array do comprimento de corte 
      * @param compriCorte Informar um valor double do comprimento de corte
      */
@@ -193,7 +200,8 @@ public class Corte {
     }
 
     /**
-     *
+     *@since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array do
      * @param comprChapa Informar um valor double da Comprimento da Chapa
      * @param comprPeca Informar um valor double da Comprimento da Peça
@@ -206,14 +214,16 @@ public class Corte {
         }
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @return Retornar uma Array  de double da largura de Corte
      */
     public static double[] getLargCorte() {
         return largCorte;
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array da largura de Corte
      * @return Retornar um valor double da Array da largura de Corte
      */
@@ -221,14 +231,16 @@ public class Corte {
         return largCorte[pos];
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param largCorte Informar um Array de largura de Corte
      */
     public static void setLargCorte(double[] largCorte) {
         Corte.largCorte = largCorte;
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array do largura de Corte
      * @param largCorte Informar um valor double no Array de largura de Corte
      */
@@ -236,7 +248,8 @@ public class Corte {
         Corte.largCorte[pos] = largCorte;
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param array Informar um valor inteiro a tamanho do Array
      * @param multiplicado Informar um valor inteiro multiplicado Se Informar um valor inteiro multiplicado Se Informar um valor inteiro multiplicado Se
      */
@@ -248,7 +261,8 @@ public class Corte {
         }
     }
 
-    /**
+    /** @since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array do
      * @param largChapa Informar um valor double da largura da Chapa
      * @param largPeca Informar um valor double da largura da Peça
@@ -261,14 +275,16 @@ public class Corte {
         }
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @return Retornar uma Array do Espessura de Corte
      */
     public static double[] getEspeCorte() {
         return espeCorte;
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array do  Espessura de Corte
      * @return Retornar um valor double do  Array do  Espessura de Corte
      */
@@ -276,14 +292,16 @@ public class Corte {
         return espeCorte[pos];
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param espeCorte Informar uma Array do Espessura de Corte
      */
     public static void setEspeCorte(double[] espeCorte) {
         Corte.espeCorte = espeCorte;
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array do Espessura de Corte
      * @param espeCorte Informar um valor double da Espessura de Corte
      */
@@ -295,7 +313,8 @@ public class Corte {
         }
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param array Informar um valor inteiro a tamanho do Array
      * @param multiplicado Informar um valor inteiro multiplicado Se Informar um valor inteiro multiplicado Se
      */
@@ -307,7 +326,9 @@ public class Corte {
         }
     }
 
-    /**
+    /** Este Metodo 
+     * @since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array do
      * @param espeChapa Informar um valor double da espessura da Chapa
      * @param espePeca Informar um valor double da espessura da Peça
@@ -323,7 +344,8 @@ public class Corte {
     /**
      * --Fim do Sets e gets--
      */
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array do
      * @param largChapa Informar um valor double da largura da Chapa
      * @param largPeca Informar um valor double da largura da Peça
@@ -339,7 +361,8 @@ public class Corte {
         }
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array do
      * @param comprChapa Informar um valor double da Comprimento da Chapa
      * @param comprPeca Informar um valor double da Comprimento da Peça
@@ -357,7 +380,8 @@ public class Corte {
 
     /**
      * TespeChapatando
-     *
+     *@since 16/05/2019
+ * @version 1.0
      * @param pos Informar um valor inteiro no index do Array do
      * @param comprChapa Informar um valor double da Comprimento da Chapa
      * @param comprPeca Informar um valor double da Comprimento da Peça 
@@ -385,7 +409,8 @@ public class Corte {
         }
     }
 
-    /**
+    /**@since 16/05/2019
+ * @version 1.0
      * @param comprChapa Informar um valor double da Comprimento da Chapa
      * @param largChapa Informar um valor double da largura da Chapa
      * @param espeChapa Informar um valor double da espessura da Chapa
@@ -432,6 +457,9 @@ public class Corte {
     }
 
     /**
+     * Este Metodo 
+     * @since 16/05/2019
+ * @version 1.0
      * @param comprChapa Informar um valor double da Comprimento da Chapa
      * @param largChapa Informar um valor double da largura da Chapa
      * @param espeChapa Informar um valor double da espessura da Chapa
@@ -460,7 +488,8 @@ public class Corte {
 
     /**
      * PARCIALMENTE PRONTO
-     *
+     *@since 16/05/2019
+ * @version 1.0
      * @param comprChapa Informar um valor double da Comprimento da Chapa
      * @param largChapa Informar um valor double da largura da Chapa
      * @param comprPeca Informar um valor double da Comprimento da Peça
@@ -500,7 +529,9 @@ public class Corte {
         }
     }
 
-    /**
+    /**Este metodo faz a somar as peças conforme 
+     * @since 16/05/2019
+ * @version 1.0
      * @param comprChapa Informar um valor double da Comprimento da Chapa
      * @param largChapa Informar um valor double da largura da Chapa
      * @param espeChapa Informar um valor double da espessura da Chapa

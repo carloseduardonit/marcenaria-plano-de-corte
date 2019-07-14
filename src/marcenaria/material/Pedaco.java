@@ -21,8 +21,9 @@ public class Pedaco {
     private static Date incData;
     private static final String TABELA = Pedaco.class.getSimpleName();
     static Connection conexao;
-    static PreparedStatement pst;
     static ResultSet rs;
+    static ResultSetMetaData rsmd;
+    static PreparedStatement pst;
     static Statement stmt;
 
     /**/
@@ -102,7 +103,7 @@ public class Pedaco {
             pst.setDouble(3, espePedaco);
             int editar = pst.executeUpdate();
             if (editar == 0) {
-                ModuloConector.fecharConexao(conexao, rs, pst, stmt);
+                ModuloConector.fecharConexao(conexao, rs,rsmd, pst, stmt);
                 Messagem.chamarTela(Messagem.EDITADO(sql));
             }
         } catch (NullPointerException e) {
@@ -130,7 +131,7 @@ public class Pedaco {
             pst.setDouble(1, espePedaco);
             int excluir = pst.executeUpdate();
             if (excluir == 0) {
-                ModuloConector.fecharConexao(conexao, rs, pst, stmt);
+                ModuloConector.fecharConexao(conexao, rs,rsmd, pst, stmt);
                 Messagem.chamarTela(Messagem.EXCLUIDO(sql));
             }
         } catch (NullPointerException e) {
@@ -229,7 +230,7 @@ public class Pedaco {
                 setLarg(rs.getDouble(4));
                 setEspe(rs.getDouble(5));
                 setIncData(rs.getDate(6));
-                ModuloConector.fecharConexao(conexao, rs, pst, stmt);
+                ModuloConector.fecharConexao(conexao, rs,rsmd, pst, stmt);
             }
         } catch (NullPointerException e) {
             Messagem.chamarTela("Nulo");

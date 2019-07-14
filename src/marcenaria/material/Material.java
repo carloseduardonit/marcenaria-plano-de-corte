@@ -14,16 +14,18 @@ import marcenaria.pessoa1.Fornecedor;
 import marcenaria.pessoa1.Pessoa;
 
 /**
- * 18/05/2019
- *
+ * @since 18/05/2019
+ * @version 1.0
  * @author Carlos Eduardo dos Santos Figueiredo
  */
 public class Material {
 
     static Connection conexao;
     static ResultSet rs;
+    static ResultSetMetaData rsmd;
     static PreparedStatement pst;
     static Statement stmt;
+  
     private static final String TABELA = Material.class.getSimpleName();
     private static String tipoMaterial;
     private static int quantMaterial, idMaterial;
@@ -31,6 +33,9 @@ public class Material {
 
     /**
      * Este Metodo faz a conexão do banco de dados.
+     *
+     * @since 18/05/2019
+     * @version 1.0
      */
     public static void Material() {
         conexao = ModuloConector.getConecction();
@@ -40,6 +45,8 @@ public class Material {
      * Este metodo Adicionar informações em uma determinada Tabela conforme o
      * paramentro Tabela
      *
+     * @since 18/05/2019
+     * @version 1.0
      * @param Tabela Informar um valor String para tabela de Material
      * @param tipoMaterial Informar um valor inteiro do Tipo do Material.
      * @param quantidade Informar um valor inteiro da quantidade do Material.
@@ -90,7 +97,7 @@ public class Material {
                 if (inserido > 0) {
                     Messagem.chamarTela("Foi inserido na Tabela " + Tabela + " a quantidade de " + quantidade
                             + " como as Medidas :" + comprimento + "X" + largura + "X" + espessura + " CM.");
-                    ModuloConector.fecharConexao(conexao, rs, pst, stmt);
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
             } else {
                 adicionarMaterial(Tabela, quantidade, comprimento, largura, espessura, preco, tipoMaterial, Fornecedo);
@@ -105,6 +112,8 @@ public class Material {
      * FAZENDO- Este metodo Editar informações em uma determinada Tabela
      * conforme o paramentro Tabela
      *
+     * @since 18/05/2019
+     * @version 1.0
      * @param Tabela Informar um valor String para tabela de Material
      * @param tipoMaterial Informar um valor inteiro do Tipo do Material.
      * @param quantidade Informar um valor inteiro da quantidade do Material.
@@ -158,6 +167,9 @@ public class Material {
     /**
      * FAZENDO
      *
+     **@since 18/05/2019
+     * @version 1.0
+     *
      * @param Tabela Informar um valor String para tabela de Material
      * @param tipoMaterial Informar um valor inteiro do Tipo do Material.
      * @param quantidade Informar um valor inteiro da quantidade do Material.
@@ -168,7 +180,7 @@ public class Material {
      * @param fornecedo Informar um valor String do Fornecedor do Material.
      */
     public static void excluirMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento,
-            double largura, double espessura, double preco,String fornecedo) {
+            double largura, double espessura, double preco, String fornecedo) {
         try {
             Material();
             String sql = "";
@@ -203,8 +215,9 @@ public class Material {
     }
 
     /**
-     *
-     * @param Tabela
+     **@since 18/05/2019
+     * @version 1.0
+     * @param Tabela Informar um valor String para tabela de Material
      * @param idPessoa
      * @param row
      * @param colu
@@ -235,7 +248,7 @@ public class Material {
             }
 
         } catch (SQLException se) {
-Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
+            Messagem.chamarTela(Tabela + " TabeladeMaterial: " + se);
         }
         return tab;
     }
@@ -243,8 +256,11 @@ Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
     /**
      * FAZENDO
      *
+     **@since 18/05/2019
+     * @version 1.0
      * @param Tabela Informar um valor String para tabela de Material
-     * @param tipoMaterial Informar um valor inteiro do Tipo do Material.
+     * @param tipoMaterial Informar um valor String do Tipo do Material do
+     * materia.
      * @param quantidade Informar um valor inteiro da quantidade do Material.
      * @param comprimento Informar um valor double do comprimento do Material.
      * @param largura Informar um valor double da largura do Material.
@@ -285,6 +301,8 @@ Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
     /**
      * TESTADO E OK
      *
+     **@since 18/05/2019
+     * @version 1.0
      * @param Tabela Informar um valor String para tabela de Material
      */
     public static void criarMaterial(String Tabela) {
@@ -311,13 +329,13 @@ Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
                 int adicionada = stmt.executeUpdate(sql);
                 if (adicionada == 0) {
                     Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
-                    ModuloConector.fecharConexao(conexao, rs, pst, stmt);
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
             }
         } catch (SQLIntegrityConstraintViolationException sicve) {
             Messagem.chamarTela(sicve);
         } catch (NullPointerException ne) {
-            ModuloConector.fecharConexao(conexao, rs, pst, stmt);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         } catch (HeadlessException he) {
             Messagem.chamarTela(he);
         } catch (SQLException e) {
@@ -342,6 +360,8 @@ Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
     /**
      * TESTADO E OK
      *
+     **@since 18/05/2019
+     * @version 1.0
      */
     public static void deletarMaterial() {
         Material.deletarMaterial(Material.getTABELA());
@@ -350,6 +370,8 @@ Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
     /**
      * TESTADO E OK
      *
+     **@since 18/05/2019
+     * @version 1.0
      * @param Tabela Informar um valor String para tabela de Material
      */
     public static void deletarMaterial(String Tabela) {
@@ -365,7 +387,7 @@ Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
                 // System.out.println("" + deletado);
                 if (deletado == 0) {
                     JOptionPane.showMessageDialog(null, "Foi Exclui com sucesso  a tabela " + Tabela);
-                    ModuloConector.fecharConexao(conexao, rs, pst, stmt);
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
             }
         } catch (SQLIntegrityConstraintViolationException e) {
@@ -389,16 +411,22 @@ Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
         } catch (HeadlessException | SQLException he) {
             Messagem.chamarTela(he);
         } catch (NullPointerException npe) {
-            ModuloConector.fecharConexao(conexao, rs, pst, stmt);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
     /**
+     * Este Metodo obtem o numero de id do materia da tabela de Material.
      *
-     * @param Tabela
-     * @param tipoMaterial
-     * @param espessura
-     * @return
+     * @since 18/05/2019
+     * @version 1.0
+     * @param Tabela setar uma Informação de valor String para tabela de
+     * Material
+     * @param tipoMaterial Setar uma Informação de valor String do Tipo do
+     * Material do materia.
+     * @param espessura Setar uma Informação de valor double da espessura do
+     * Material.
+     * @return Retornar uma informação de valor inteiro de id de material.
      */
     public static int obterIdMaterial(String Tabela, String tipoMaterial, double espessura) {
         int id = 0;
@@ -411,8 +439,8 @@ Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
                 pst.setDouble(2, espessura);
                 rs = pst.executeQuery();
                 if (rs.next()) {
-                    id = rs.getInt(1);
-                    ModuloConector.fecharConexao(conexao, rs, pst, stmt);
+                    id = rs.getInt(1);                   
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
             } else {
                 String erro = "";
@@ -446,103 +474,184 @@ Messagem.chamarTela(Tabela+" TabeladeMaterial: "+se);
 
     // Gets e Sets
     /**
-     * @return Retornar um valor inteiro do Tipo do Material.
+     * Este Metodo Retornar uma Informação de valor String do Tipo do Material
+     * do material.
+     *
+     **@since 18/05/2019
+     * @version 1.0
+     * @return Retornar uma Informação de valor String do Tipo do Material do
+     * material..
      */
     public static String getTipoMaterial() {
         return tipoMaterial;
     }
 
     /**
-     * @param tipoMaterial Informar um valor inteiro do Tipo do Material.
+     * Este Metodo setar uma Informação de valor String do Tipo do Material do
+     * material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @param tipoMaterial setar uma Informação de valor String do Tipo do
+     * Material do material.
      */
     public static void setTipoMaterial(String tipoMaterial) {
         Material.tipoMaterial = tipoMaterial;
     }
 
     /**
-     * @return Retornar um valor inteiro da quantidade do Material.
+     * Este metodo Retornar uma informação de valor inteiro da quantidade do
+     * Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @return Retornar uma informação de valor inteiro da quantidade do
+     * Material.
      */
     public static int getQuantMaterial() {
         return quantMaterial;
     }
 
     /**
-     * @param quantMaterial Informar um valor inteiro da quantidade do Material.
+     * Este metodo Setar uma Informação de valor inteiro da quantidade do
+     * Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @param quantMaterial Setar uma Informação de valor inteiro da quantidade
+     * do Material.
      */
     public static void setQuantMaterial(int quantMaterial) {
         Material.quantMaterial = quantMaterial;
     }
 
     /**
-     * @return Retornar um valor inteiro do id do Material.
+     * Este Metodo Retornar uma informação de valor inteiro do id do Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @return Retornar uma informação de valor inteiro do id do Material.
      */
     public static int getIdMaterial() {
         return idMaterial;
     }
 
     /**
-     * @param idMaterial Informar um valor inteiro do id do Material.
+     * Este Metodo Setar uma Informação de valor inteiro do id do Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @param idMaterial Setar uma Informação de valor inteiro do id do
+     * Material.
      */
     public static void setIdMaterial(int idMaterial) {
         Material.idMaterial = idMaterial;
     }
 
     /**
-     * @return Retornar um valor double do comprimento do Material.
+     * Este Metodo Retornar uma informação de valor double do comprimento do
+     * Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @return Retornar uma informação de valor double do comprimento do
+     * Material.
      */
     public static double getComprMaterial() {
         return comprMaterial;
     }
 
     /**
-     * @param comprMaterial Informar um valor double do comprimento do Material.
+     * Este Metodo Setar uma Informação de valor double do comprimento do
+     * Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @param comprMaterial Setar uma Informação de valor double do comprimento
+     * do Material.
      */
     public static void setComprMaterial(double comprMaterial) {
         Material.comprMaterial = comprMaterial;
     }
 
     /**
-     * @return Retornar um valor double da largura do Material.
+     * Este Metodo Retornar uma informação de valor double da largura do
+     * Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @return Retornar uma informação de valor double da largura do Material.
      */
     public static double getLargMarterial() {
         return largMarterial;
     }
 
     /**
-     * @param largMarterial Informar um valor double da largura do Material.
+     * Este Metodo Setar Informação um valor double da largura do Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @param largMarterial Setar Informação um valor double da largura do
+     * Material.
      */
     public static void setLargMarterial(double largMarterial) {
         Material.largMarterial = largMarterial;
     }
 
     /**
-     * @return Retornar um valor double da espessura do Material.
+     * Este Metodo Retornar uma informação de valor double da espessura do
+     * Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @return Retornar uma informação de valor double da espessura do Material.
      */
     public static double getEspesMaterial() {
         return espesMaterial;
     }
 
     /**
-     * @param espesMaterial Informar um valor double da espessura do Material.
+     * Este Metodo setar Informação um valor double da espessura do Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @param espesMaterial setar Informação um valor double da espessura do
+     * Material.
      */
     public static void setEspesMaterial(double espesMaterial) {
         Material.espesMaterial = espesMaterial;
     }
 
     /**
-     * @return Retornar um valor double do preço do Material.
+     * Este Metodo Retornar uma informação de valor double do preço do Material.
+     *
+     * @return Retornar uma informação de valor double do preço do Material.
      */
     public static double getPrecMaterial() {
         return precMaterial;
     }
 
     /**
-     * @param precMaterial Informar um valor double do preço do Material.
+     * Este Metodo Setar a Informação um valor double do preço do Material.
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @param precMaterial Setar a Informação um valor double do preço do
+     * Material.
      */
     public static void setPrecMaterial(double precMaterial) {
         Material.precMaterial = precMaterial;
     }
 
+    /**
+     * Este Metodo Retornar uma informação de valor String com nome da tabela
+     * Material
+     *
+     * *@since 18/05/2019
+     * @version 1.0
+     * @return Retornar uma informação de valor String com nome da tabela
+     * Material
+     */
     public static String getTABELA() {
         return TABELA;
     }

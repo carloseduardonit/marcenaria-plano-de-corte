@@ -91,20 +91,6 @@ public class Cliente extends Pessoa {
      *
      * @param logCliente    Setar uma informação do tipo String da Tabela Cliente no
      *                      Login Cliente
-     * @param senCliente    Setar uma informação do tipo String da Tabela Cliente no
-     *                      Senha Cliente
-     * @param conSenCliente Setar uma informação do tipo String da Tabela Cliente na
-     *                      Confirmação da senha Cliente
-     * @param tipoPessoa    Setar uma informação do tipo String da Tabela Cliente no
-     *                      tipo de Cliente, sendo que so podera utilizar <b>PF</b>
-     *                      ou <b>PJ</b>
-     * @param nomeCliente   Setar uma informação do tipo String da Tabela Cliente no
-     *                      Nome Cliente
-     * @param documCliente  Setar uma informação do tipo String da Tabela Cliente no
-     *                      documento do Cliente,sendo quanto o tipoPessoa
-     *                      se<b>PF</b> so poderá anexa a infornação for de 11
-     *                      digito, senão <b>PJ</b> so poderá anexa a infornação for
-     *                      de 14 digito
      */
     public static void excluirCliente(String logCliente) {
         Pessoa.excluirPessoa(Cliente.getTABELA(), logCliente);
@@ -115,20 +101,6 @@ public class Cliente extends Pessoa {
      *
      * @param logCliente    Setar uma informação do tipo String da Tabela Cliente no
      *                      Login Cliente
-     * @param senCliente    Setar uma informação do tipo String da Tabela Cliente no
-     *                      Senha Cliente
-     * @param conSenCliente Setar uma informação do tipo String da Tabela Cliente na
-     *                      Confirmação da senha Cliente
-     * @param tipoPessoa    Setar uma informação do tipo String da Tabela Cliente no
-     *                      tipo de Cliente, sendo que so podera utilizar <b>PF</b>
-     *                      ou <b>PJ</b>
-     * @param nomeCliente   Setar uma informação do tipo String da Tabela Cliente no
-     *                      Nome Cliente
-     * @param documCliente  Setar uma informação do tipo String da Tabela Cliente no
-     *                      documento do Cliente,sendo quanto o tipoPessoa
-     *                      se<b>PF</b> so poderá anexa a infornação for de 11
-     *                      digito, senão <b>PJ</b> so poderá anexa a infornação for
-     *                      de 14 digito
      */
     public static void pesquisarCliente(String logCliente) {
         Pessoa.pesquisarPessoa(getTABELA(), logCliente);
@@ -146,16 +118,16 @@ public class Cliente extends Pessoa {
     // Sets e Gets
 
     /**
-     *
-     * @return
+     *Este Metodo Retornar uma informação de valor inteiro do CPF
+     * @return  Retorn
      */
     public static int getCpf() {
         return cpf;
     }
 
     /**
-     *
-     * @param cpf
+     *Este Metodo Setar uma informação de valor inteiro do CPF
+     * @param cpf Setar uma informação de valor inteiro do CPF
      */
     public static void setCpf(int cpf) {
         Cliente.cpf = cpf;
@@ -209,15 +181,17 @@ public class Cliente extends Pessoa {
         return TABELA;
     }
 
-    /**
-     * @return
+    /**Este Metodo Retornar uma informação de valor String do documento do Cliente.
+     * @return Retornar uma informação de valor String do documento do Cliente.
      */
     public static String getDocum() {
         return docum;
     }
 
-    /**
-     * @param docum
+    /**Este Metodo Setar uma informação de valor String do documento do Cliente.
+     *
+     * @param docum Setar uma informação de valor String do documento do
+     * Cliente.
      */
     public static void setDocum(String docum) {
         Cliente.docum = docum;

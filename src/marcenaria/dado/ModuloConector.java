@@ -92,6 +92,7 @@ public class ModuloConector {
         } catch (Exception e) {
             Messagem.chamarTela("O banco de dados deve esta desligado " + e);
             fecharConexao(conexao, rs, rsmd, pst, stmt);
+            
         }
         return conexao;
     }
@@ -154,7 +155,7 @@ public class ModuloConector {
      *
      * Este Metodo faz o fechamento da conexao e Resultado
      *@since 13/07/2019
-     * @param rsmd
+     * @param rsmd fecha o resuldado de meta dado
      * @since 01/05/2019
      * @version 1.1
      * @param con - Fecha a conexao do banco
@@ -171,7 +172,7 @@ public class ModuloConector {
     /**
      * Este Metodo faz o fechamento da conexao, Resultado e Editação
      *@since 13/07/2019
-     * @param rsmd
+     * @param rsmd fecha o resuldado de meta dado
      * @since 01/05/2019
      * @param con - Fecha a conexao do banco
      * @param rs - Fecha o resultado do Banco
@@ -193,7 +194,7 @@ public class ModuloConector {
     /**
      * Este Metodo faz o fechamento da conexao, Resultado e Editação
      *@since 13/07/2019
-     * @param rsmd
+     * @param rsmd fecha o resuldado de meta dado
      * @since 01/05/2019
      * @param con Fecha a conexao do banco
      * @param rs Fecha o resultado do Banco
@@ -252,13 +253,16 @@ public class ModuloConector {
                 if (rs.next()) {
                     return false;
                 }
+                fecharConexao(conexao, rs, rsmd, pst, stmt);
             } else {
                 Messagem.chamarTela("O campo tabela esta Vazio !!!");
             }
         } catch (SQLException e) {
             Messagem.chamarTela(e);
         }
+        fecharConexao(conexao, rs, rsmd, pst, stmt);
         return true;
+        
     }
 
     /**

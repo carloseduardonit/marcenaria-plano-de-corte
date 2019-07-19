@@ -23,6 +23,7 @@ public class Pessoa {
     private static Connection conexao;
     private static PreparedStatement pst;
     private static ResultSet rs;
+    private static ResultSetMetaData rsmd;
     private static Statement stmt;
 
     /**
@@ -88,7 +89,7 @@ public class Pessoa {
                     int adicionado = pst.executeUpdate();
                     if (adicionado == 0) {
                         Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
-                        ModuloConector.fecharConexao(conexao, rs, pst, pst);
+                        ModuloConector.fecharConexao(conexao, rs,rsmd, pst, pst);
                     }
                 } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                     if (Pessoa.VerificaDocumento(documPessoa, tipoPessoa)) {
@@ -105,7 +106,7 @@ public class Pessoa {
                         int adicionado = pst.executeUpdate();
                         if (adicionado == 0) {
                             Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
-                            ModuloConector.fecharConexao(conexao, rs, pst, pst);
+                            ModuloConector.fecharConexao(conexao, rs,rsmd, pst, pst);
                         }
                     } else {
                         Messagem.chamarTela(Pessoa.txtVerificaDocumento(documPessoa, tipoPessoa));
@@ -125,7 +126,7 @@ public class Pessoa {
                         int adicionado = pst.executeUpdate();
                         if (adicionado == 0) {
                             Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
-                            ModuloConector.fecharConexao(conexao, rs, pst, pst);
+                            ModuloConector.fecharConexao(conexao, rs,rsmd,pst,stmt);
                         }
                     } else {
                         Messagem.chamarTela(Pessoa.txtVerificaDocumento(documPessoa, tipoPessoa));
@@ -367,19 +368,6 @@ public class Pessoa {
      * @param Tabela       Setar uma informação do tipo String no nome da Tabela
      * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
      *                     novo Login Pessoa
-     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
-     *                     Confirmação da senha Pessoa
-     * @param tipoPessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
-     *                     <b>PJ</b>
-     * @param nomePessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Nome Pessoa
-     * @param documPessoa  Setar uma informação do tipo String da Tabela Pessoa no
-     *                     documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
-     *                     so poderá anexa a infornação for de 11 digito, senão
-     *                     <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
     public static void excluirPessoa(String Tabela, String logPessoa) {
         try {

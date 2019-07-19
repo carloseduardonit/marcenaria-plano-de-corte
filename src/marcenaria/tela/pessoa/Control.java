@@ -30,13 +30,14 @@ public class Control {
     Fornecedor fr = new Fornecedor();
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
-     * @param Fornecedor
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void ADDChapa(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
             JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
@@ -46,12 +47,13 @@ public class Control {
     }
 
     /**
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     * @param login Setar uma informação de valor JText de login
+     * @param senha Setar uma informação de valor JText de senha
+     * @param conSenha Setar uma informação de valor JText de confimação de
+     * senha
+     * @param TipoPessoa Setar uma informação de valor JText de tipo de pessoa
+     * @param nome Setar uma informação de valor JText de nome
+     * @param documento Setar uma informação de valor JText de documento
      */
     public static void ADDCliente(JTextField login, JTextField senha, JTextField conSenha, JComboBox<String> TipoPessoa,
             JTextField nome, JTextField documento) {
@@ -65,12 +67,13 @@ public class Control {
     }
 
     /**
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     *  @param login Setar uma informação de valor JText de login
+     * @param senha Setar uma informação de valor JText de senha
+     * @param conSenha Setar uma informação de valor JText de confimação de
+     * senha
+     * @param TipoPessoa Setar uma informação de valor JText de tipo de pessoa
+     * @param nome Setar uma informação de valor JText de nome
+     * @param documento Setar uma informação de valor JText de documento
      */
     public static void ADDFornecedor(JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
@@ -83,12 +86,12 @@ public class Control {
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
      */
     public static void ADDPedaco(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
             JTextField Espessura, JTextField Preco) {
@@ -98,41 +101,46 @@ public class Control {
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void ADDPeca(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco) {
+            JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
         Peca.adicionarPeca(Control.deJTextparaInt(Quantidade), Control.deJTextparaDouble(Comprimento),
                 Control.deJTextparaDouble(Largura), Control.deJTextparaDouble(Espessura),
-                Control.deJTextparaDouble(Preco), Produto.getText());
+                Control.deJTextparaDouble(Preco), Produto.getText(), Fornecedor.getText());
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void EDITChapa(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco) {
+            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
         Chapa.editarChapa();
     }
 
     /**
-     * @param nlogin
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     * @param nlogin Setar uma informação de valor JText de novo login
+     * @param login Setar uma informação de valor JText de login
+     * @param senha Setar uma informação de valor JText de senha
+     * @param conSenha Setar uma informação de valor JText de confimação de
+     * senha
+     * @param TipoPessoa Setar uma informação de valor JText de tipo de pessoa
+     * @param nome Setar uma informação de valor JText de nome
+     * @param documento Setar uma informação de valor JText de documento
      */
     public static void EDITCliente(JTextField nlogin, JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
@@ -145,13 +153,14 @@ public class Control {
     }
 
     /**
-     * @param nlogin
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     * @param nlogin Setar uma informação de valor JText de novo login
+     ** @param login Setar uma informação de valor JText de login
+     * @param senha Setar uma informação de valor JText de senha
+     * @param conSenha Setar uma informação de valor JText de confimação de
+     * senha
+     * @param TipoPessoa Setar uma informação de valor JText de tipo de pessoa
+     * @param nome Setar uma informação de valor JText de nome
+     * @param documento Setar uma informação de valor JText de documento
      */
     public static void EDITFornecedor(JTextField nlogin, JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
@@ -166,51 +175,58 @@ public class Control {
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void EDITPeca(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco) {
-        Peca.editarPeca();
+            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
+        Peca.editarPeca(Quantidade.getText());
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void EDITPedaco(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco) {
+            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
         // Pedaco.editarPedaco(tcs, tcs, tcs, tcs, tcs, incData);
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void DELETEChapa(JTextField Quantidade, JTextField Produto, JTextField Comprimento,
-            JTextField Largura, JTextField Espessura, JTextField Preco) {
+            JTextField Largura, JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
         Chapa.excluirChapa();
     }
 
     /**
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     * @param login Setar uma informação de valor JText de login
+     * @param senha Setar uma informação de valor JText de senha
+     * @param conSenha Setar uma informação de valor JText de confimação de
+     * senha
+     * @param TipoPessoa Setar uma informação de valor JText de tipo de pessoa
+     * @param nome Setar uma informação de valor JText de nome
+     * @param documento Setar uma informação de valor JText de documento
      */
     public static void DELETECliente(JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
@@ -225,12 +241,13 @@ public class Control {
     }
 
     /**
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     * @param login Setar uma informação de valor JText de login
+     * @param senha Setar uma informação de valor JText de senha
+     * @param conSenha Setar uma informação de valor JText de confimação de
+     * senha
+     * @param TipoPessoa Setar uma informação de valor JText de tipo de pessoa
+     * @param nome Setar uma informação de valor JText de nome
+     * @param documento Setar uma informação de valor JText de documento
      */
     public static void DELETEFornecedor(JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
@@ -244,51 +261,58 @@ public class Control {
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void DELETEPeca(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco) {
+            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
         // Peca.excluirPeca(tcs, tcs, tcs, tcs, tcs, incData);
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void DELETEPedaco(JTextField Quantidade, JTextField Produto, JTextField Comprimento,
-            JTextField Largura, JTextField Espessura, JTextField Preco) {
+            JTextField Largura, JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
         // Pedaco.excluirPedaco(tcs, tcs, tcs, tcs, tcs, incData);
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void SEACHChapa(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco) {
+            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
         Chapa.pesquisarChapa();
     }
 
     /**
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     * @param login Setar uma informação de valor JText de login
+     * @param senha Setar uma informação de valor JText de senha
+     * @param conSenha Setar uma informação de valor JText de confimação de
+     * senha
+     * @param TipoPessoa Setar uma informação de valor JText de tipo de pessoa
+     * @param nome Setar uma informação de valor JText de nome
+     * @param documento Setar uma informação de valor JText de documento
      */
     public static void SEACHCliente(JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
@@ -307,12 +331,13 @@ public class Control {
     }
 
     /**
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     * @param login Setar uma informação de valor JText de login
+     * @param senha Setar uma informação de valor JText de senha
+     * @param conSenha Setar uma informação de valor JText de confimação de
+     * senha
+     * @param TipoPessoa Setar uma informação de valor JText de tipo de pessoa
+     * @param nome Setar uma informação de valor JText de nome
+     * @param documento Setar uma informação de valor JText de documento
      */
     public static void SEACHFornecedor(JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
@@ -326,35 +351,54 @@ public class Control {
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void SEACHPeca(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco) {
+            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
         Peca.pesquisarPeca();
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
+     * @param Quantidade Setar uma informação de valor JText de Quantidade
+     * @param Produto Setar uma informação de valor JText de Tipo de Produto
+     * @param Comprimento Setar uma informação de valor JText de Comprimento
+     * @param Largura Setar uma informação de valor JText de Largura
+     * @param Espessura Setar uma informação de valor JText de Espessura
+     * @param Preco Setar uma informação de valor JText de Preço
+     * @param Fornecedor Setar uma informação de valor JText de login do
+     * fornecedor
      */
     public static void SEACHPedaco(JTextField Quantidade, JTextField Produto, JTextField Comprimento,
-            JTextField Largura, JTextField Espessura, JTextField Preco) {
+            JTextField Largura, JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
         // Pedaco.pesquisarPedaco(tcs, tcs, tcs, tcs, tcs, incData, true);
     }
 
     /**
-     * @param TipoPessoa
-     * @param ldocumento
-     * @param documento
+     * Este metodo desablitar a ediçao do paramentro de valor Jtext e Mudar o
+     * texto do paramentro de valor JLabel mediante a informação setada atraves
+     * do paramento de valor JComboBox.
+     * <p>
+     * sendo <b>TipoPessoa</b>:</p> <p>se <b>TipoPessoa</b> for iqual a "pf" será
+     * habilitado o parametro <b>documento</b> e mudará o texto do parametro
+     * para "N° CPF:",</p> ou se <b>TipoPessoa</b> for iqual a "pj" será habilitado
+     * o parametro <b>documento</b> e mudará o texto do parametro para "N°
+     * CNPJ:",<p> ou se <b>TipoPessoa</b> Nâo for iqual a "pj" ou a "pf" será
+     * Desabilitado o parametro <b>documento</b> e mudará o texto do parametro
+     * para "Documento:".</p>
+     *
+     * @param TipoPessoa Seta uma informação de valor JComboBox do tipo de
+     * pessoa
+     * @param ldocumento Retornar uma informação de valor JLabel do texto do
+     * documento
+     * @param documento Retornar uma informação de valor JText do texto do
+     * documento
      */
     public static void DesabilitaeMudaDoc(JComboBox<String> TipoPessoa, JLabel ldocumento, JTextField documento) {
         try {
@@ -375,8 +419,14 @@ public class Control {
     }
 
     /**
-     * @param senha
-     * @param confSenha
+     * Este Metodo Muda de Cor dos parametros do valor Jtext.
+     * <p>
+     * sendo confSenha iqual senha E os digitos da <b>senha</b> tem que ser
+     * maior ou iqual a 7 E os digitos da <b>confSenha</b> tem que ser maior ou
+     * iqual a 7 E</p>
+     *
+     * @param senha Setar uma informação de valor JText da Senha
+     * @param confSenha Setar uma informação de valor JText da confimação Senha
      */
     public static void MudarCor(JTextField confSenha, JTextField senha) {
         if (confSenha.getText().equalsIgnoreCase(senha.getText()) && senha.getText().length() >= 7
@@ -390,12 +440,15 @@ public class Control {
     }
 
     /**
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     * Este metodo retornar os valores dos campos Vazios
+     *
+     * @param login Retornar uma informação de valor JText do login
+     * @param senha Retornar uma informação de valor JText da Senha
+     * @param conSenha Retornar uma informação de valor JText da Confirmação da
+     * Senha
+     * @param TipoPessoa Retornar uma informação de valor JText do tipo pessoa
+     * @param nome Retornar uma informação de valor JText do nome
+     * @param documento Retornar uma informação de valor JText da documentação
      */
     public static void LimpaDados(JTextField login, JTextField senha, JTextField conSenha, JComboBox<String> TipoPessoa,
             JTextField nome, JTextField documento) {
@@ -408,12 +461,16 @@ public class Control {
     }
 
     /**
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     * Este metodo retornar os valores dos campos do banco de dados da tabela
+     * Cliente
+     *
+     * @param login Retornar uma informação de valor JText do login
+     * @param senha Retornar uma informação de valor JText da Senha
+     * @param conSenha Retornar uma informação de valor JText da Confirmação da
+     * Senha
+     * @param TipoPessoa Retornar uma informação de valor JText do tipo pessoa
+     * @param nome Retornar uma informação de valor JText do nome
+     * @param documento Retornar uma informação de valor JText da documentação
      */
     public static void SetarCliente(JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
@@ -426,12 +483,16 @@ public class Control {
     }
 
     /**
-     * @param login
-     * @param senha
-     * @param conSenha
-     * @param TipoPessoa
-     * @param nome
-     * @param documento
+     * Este metodo retornar os valores dos campos do banco de dados da tabela
+     * Fornecedor
+     *
+     * @param login Retornar uma informação de valor JText do login
+     * @param senha Retornar uma informação de valor JText da Senha
+     * @param conSenha Retornar uma informação de valor JText da Confirmação da
+     * Senha
+     * @param TipoPessoa Retornar uma informação de valor JText do tipo pessoa
+     * @param nome Retornar uma informação de valor JText do nome
+     * @param documento Retornar uma informação de valor JText da documentação
      */
     public static void SetarFornecedor(JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
@@ -444,7 +505,7 @@ public class Control {
     }
 
     /**
-     *
+     * Este Metodo inserir o usuario Zero nas tabelas Cliente e Fornecedor.
      */
     public static void UsuarioZERO() {
         JTextField login = null, senha = null, conSenha = null, nome = null, documento = null;
@@ -474,33 +535,46 @@ public class Control {
     }
 
     /**
-     * @param text
-     * @return
+     * Este metodo setar uma informação de valor JText e Retorna uma informação
+     * de valor inteiro
+     *
+     * @param text Setar uma informação de valor JText da varivel
+     * @return Retornar uma informação de valor Inteiro da variavel
      */
     public static int deJTextparaInt(JTextField text) {
         return Integer.valueOf(text.getText());
     }
 
     /**
-     * @param text
-     * @return
+     * Este metodo setar uma informação de valor JText e Retorna uma informação
+     * de valor Double
+     *
+     * @param text Setar uma informação de valor JText da varivel
+     * @return Retornar uma informação de valor Double da variavel
      */
     public static Double deJTextparaDouble(JTextField text) {
         return Double.valueOf(text.getText());
     }
 
     /**
-     * @param Quantidade
-     * @param Produto
-     * @param Comprimento
-     * @param Largura
-     * @param Espessura
-     * @param Preco
-     * @param tab
+     * Este metodo Setará informações de Valor JText mediante a selecionamento
+     * da linha determinada Tabela.
+     *
+     * @param Quantidade Retornar uma informação de valor JText da Quantidade
+     * @param Produto Retornar uma informação de valor JText do Tipo de Produto
+     * @param Comprimento Retornar uma informação de valor JText do Comprimento
+     * do produto
+     * @param Largura Retornar uma informação de valor JText da largura do
+     * Produto
+     * @param Espessura Retornar uma informação de valor JText da Espessura do
+     * Produto
+     * @param Preco Retornar uma informação de valor JText da Preço do Produto
+     * @param tab Setar informar de valor Jtable
      *
      *
      */
-    public static void SetarCampo(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura, JTextField Espessura, JTextField Preco, JTable tab) {
+    public static void SetarCampo(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
+            JTextField Espessura, JTextField Preco, JTable tab) {
         int row = tab.getSelectedRow(), n = -1, comp = n, larg = n, espe = n, qua = n, pro = n, pre = n;
         for (int i = 0; i < tab.getColumnCount(); i++) {
             if (tab.getColumnName(i).equalsIgnoreCase("Comprimento")) {
@@ -513,7 +587,8 @@ public class Control {
                 qua = i;
             } else if (tab.getColumnName(i).equalsIgnoreCase("Produto")) {
                 pro = i;
-            } else if (tab.getColumnName(i).equalsIgnoreCase("Preço") || tab.getColumnName(i).equalsIgnoreCase("Preco")) {
+            } else if (tab.getColumnName(i).equalsIgnoreCase("Preço")
+                    || tab.getColumnName(i).equalsIgnoreCase("Preco")) {
                 pre = i;
             }
         }

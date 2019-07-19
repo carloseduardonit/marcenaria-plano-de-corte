@@ -14,57 +14,57 @@ public class Circulo {
     double pi = Math.PI;
     private static double raio, perimento, diametro;
 
-    /**
-     * @return
+    /**Este Metodo Retornar uma informação de valor double do raio do Circulo
+     * @return Retornar uma informação de valor double do raio do Circulo
      */
     public static double getRaio() {
         return raio;
     }
 
-    /**
-     * @param raio
+    /**Este Metodo Setar uma informação de valor double do raio do Circulo
+     * @param raio Setar uma informação de valor double do raio do Circulo
      */
     public static void setRaio(double raio) {
         Circulo.raio = raio;
     }
 
-    /**
-     * @return
+    /**Este Metodo Retornar uma informação de valor double do Perimetro do Circulo
+     * @return Retornar uma informação de valor double do Perimetro do Circulo 
      */
     public static double getPerimento() {
         return perimento;
     }
 
-    /**
-     * @param perimento
+    /**Este Metodo Setar uma informação de valor double do Perimetro do Circulo
+     * @param perimento Setar uma informação de valor double do Perimetro do Circulo
      */
     public static void setPerimento(double perimento) {
         Circulo.perimento = perimento;
     }
 
-    /**
-     * @return
+    /**Este Metodo Retornar uma informação de valor double do Diametro do Circulo
+     * @return Retornar uma informação de valor double do Diametro do Circulo
      */
     public static double getDiametro() {
         return diametro;
     }
 
-    /**
-     * @param diametro
+    /**Este Metodo Setar uma informação de valor double do Diametro do Circulo
+     * @param diametro Setar uma informação de valor double do Diametro do Circulo
      */
     public static void setDiametro(double diametro) {
         Circulo.diametro = diametro;
     }
 
     /**
-     * 
+     * Este Metodo Setar uma informação de valor double do Diametro do Circulo
      */
     public static void setDiametro() {
         Circulo.diametro = getRaio() * 2;
     }
 
-    /**
-     * @param d
+    /**Este Metodo Setar uma informação de valor double do Diametro do Circulo
+     * @param d Setar uma informação de valor double do Diametro do Circulo
      */
     public static void setDiametro(int d) {
         Circulo.diametro = getRaio() * 2 + 1;

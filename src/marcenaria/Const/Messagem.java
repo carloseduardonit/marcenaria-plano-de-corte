@@ -16,8 +16,9 @@ import javax.swing.JOptionPane;
 public class Messagem {
 
     private static int deleta = 3, criada = 3;
-private String[] vazia = new String[1];
+    private String[] vazia = new String[1];
 //Input
+
     /**
      * Este metodo retornar um texto:
      * <p>
@@ -181,22 +182,22 @@ private String[] vazia = new String[1];
      * @param opcao Informar um valor String para Opção:
      * <ul>
      * <li>deleta ou Deleta - Utilizar um metodo Auxiliar
-     * <code>setDeleta(int deleta)</code>
-     * <ul>onde o getDeleta():
-     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.
-     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.
-     * <li>se for <b>2</b>: Houve o fechamento da tela.
-     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.
-     * </ul>
-     * ou
-     * <li>criada ou Criada - Utilizar um metodo Auxiliar
-     * <code>setCriada(int criada)</code>
-     * <ul>onde o getCriada():
-     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.
-     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.
-     * <li>se for <b>2</b>: Houve o fechamento da tela.
-     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.
-     * </ul>
+     * <code>setDeleta(int deleta)</code></li>
+     * <li>onde o getDeleta():<ul>
+     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.</li>
+     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.</li>
+     * <li>se for <b>2</b>: Houve o fechamento da tela.</li>
+     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.</li>
+     * </ul></li>
+     *
+     * <li> criada ou Criada - Utilizar um metodo Auxiliar
+     * <code>setCriada(int criada)</code></li>
+     * <li>onde o getCriada():<ul>
+     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.</li>
+     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.</li>
+     * <li>se for <b>2</b>: Houve o fechamento da tela.</li>
+     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.</li>
+     * </ul></li>
      * </ul>
      */
     public static void chamarTelaConfirma(String mens, String title, String opcao) {
@@ -270,12 +271,12 @@ private String[] vazia = new String[1];
 
     /**
      * Este metodo Retornar um valor inteiro na Variavel de Controle de
-     * Deletação.
-     * <ul>onde o getDeleta():
-     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.
-     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.
-     * <li>se for <b>2</b>: Houve o fechamento da tela.
-     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.
+     * Deletação.onde o getDeleta():
+     * <ul>
+     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.</li>
+     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.</li>
+     * <li>se for <b>2</b>: Houve o fechamento da tela.</li>
+     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.</li>
      * </ul>
      *
      * @version 1.3
@@ -299,11 +300,12 @@ private String[] vazia = new String[1];
 
     /**
      * Este metodo Retornar um valor inteiro na Variavel de Controle de Criação.
-     * <ul>onde o getCriada():
-     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.
-     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.
-     * <li>se for <b>2</b>: Houve o fechamento da tela.
-     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.
+     * onde o getCriada():
+     * <ul>
+     * <li>se for <b>-1</b>: Houve uma ação de Cancelamento.</li>
+     * <li>se for <b>0</b>: Houve uma ação e obteve sucesso.</li>
+     * <li>se for <b>2</b>: Houve o fechamento da tela.</li>
+     * <li>se for <b>3</b>: Houve algum erro e não foi atualizado.</li>
      * </ul>
      *
      * @version 1.3
@@ -325,5 +327,5 @@ private String[] vazia = new String[1];
         Messagem.criada = criada;
     }
 //Gets e Sets
-    
+
 }

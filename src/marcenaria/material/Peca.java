@@ -68,10 +68,11 @@ public class Peca {
      * comprimento, double largura, double espessura, double preco, String
      * tipoMa).</p>
      *
+     * @param fornecedor Setar Informação de valor String  do nome do fornecedor
      */
-    public static void adicionarPeca() {
+    public static void adicionarPeca(String fornecedor) {
         setTipoMateria();
-        Material.adicionarMaterial(getTABELA(), getQuantPeca(), getComprimento(), getLargura(), getEspessura(), getPreco(), getTipoMateria(0));
+        Material.adicionarMaterial(getTABELA(), getQuantPeca(), getComprimento(), getLargura(), getEspessura(), getPreco(), getTipoMateria(0),fornecedor);
     }
 
     /** <b>Este metodo faz adição na tabela Peça.</b>
@@ -80,14 +81,13 @@ public class Peca {
      * adicionarMaterial((String Tabela, int quantidade, double comprimento,
      * double largura, double espessura, double preco, String tipoMaterial).</p>
      *
-     * @param Tabela
-     * @param quanPeca
-     * @param compPeca
-     * @param largPeca
-     * @param espePeca
-     * @param precPeca
-     * @param fornecedor
-     * @param tipoMaterial
+     * @param quanPeca Setar informação de valor inteiro da quantidade de Peça
+     * @param compPeca Setar informação de valor double do Comprimento da Peça
+     * @param largPeca Setar informação de valor double da largura da Peça
+     * @param espePeca Setar informação de valor double de espessura da  Peça
+     * @param precPeca Setar informação de valor double de preço da Peça
+     * @param fornecedor Setar Informação de valor String  do nome do fornecedor
+     * @param tipoMaterial Setar Informação de valor String tipo de Material da Peça
      */
     public static void adicionarPeca(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial,String fornecedor) {
         Material.adicionarMaterial(getTABELA(), quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial,fornecedor);
@@ -100,20 +100,22 @@ public class Peca {
      * editarMaterial(String Tabela, String tipoMaterial, int quantidade, double
      * comprimento, double largura, double espessura, double preco).</p>
      *
+     * @param fornecedor Setar Informação de valor String  do nome do fornecedor
      */
-    public static void editarPeca() {
+    public static void editarPeca(String fornecedor) {
         setTipoMateria();
-        Material.editarMaterial(getTABELA(), getTipoMateria(1), getQuantPeca(), getComprimento(), getLargura(), getEspessura(), getPreco());
+        Material.editarMaterial(getTABELA(), getTipoMateria(1), getQuantPeca(), getComprimento(), getLargura(), getEspessura(), getPreco(),fornecedor);
     }
 
     /**
      * <b>Este metodo faz a Exclução na tabela Peça.</b><p>
      * Utilizar um metodo da classe Material como Metodo auxiliar o metodo
      * excluirMaterial(String Tabela, String tipoMaterial, int quantidade,
-     * double comprimento, double largura, double espessura, double preco).</p>
+     * double comprimento, double largura, double espessura, double preco,String fornecedo).</p>
+     * @param fornecedor Setar Informação de valor String  do nome do fornecedor
      */
-    public static void excluirPeca() {
-        Material.excluirMaterial(TABELA, TABELA, quantPeca, 0, 0, 0, 0);
+    public static void excluirPeca(String fornecedor) {
+        Material.excluirMaterial(TABELA, TABELA, quantPeca, 0, 0, 0, 0,fornecedor);
     }
 
     /** <b>Este metodo faz Pesquisar na tabela Peça.</b>
@@ -187,7 +189,6 @@ public class Peca {
                 setLargura(getLargura() + largPeca + serra);
             } else {
                 setLargura(getLargura() + largPeca + serra);
-
             }
         }
     }
@@ -454,7 +455,7 @@ public class Peca {
      * <p>
      * pos = linha,</p>
      * <p>
-     * pos1 =coluna.</p
+     * pos1 =coluna.</p>
      *
      * @param pos Informar um valor inteiro do index do Array da posição linha e
      * deve começa em <b>ZERO(0)</b>.

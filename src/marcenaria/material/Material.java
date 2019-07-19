@@ -217,11 +217,11 @@ public class Material {
     /**
      **@since 18/05/2019
      * @version 1.0
-     * @param Tabela Informar um valor String para tabela de Material
-     * @param idPessoa
-     * @param row
-     * @param colu
-     * @return
+     * @param Tabela Setar uma Informação de valor String para tabela de Material
+     * @param idPessoa Setar uma Informação de valor Inteiro do ID pessoa
+     * @param row Setar uma Informação de valor Inteiro da quantidade de linha
+     * @param colu Setar uma Informação de valor Inteiro da quantidade de coluna
+     * @return Retornar um array de Informaçãode valor String da tabela de Produto
      */
     public static String[][] TabeladeMaterial(String Tabela, int idPessoa, int row, int colu) {
         Material();
@@ -266,7 +266,7 @@ public class Material {
      * @param largura Informar um valor double da largura do Material.
      * @param espessura Informar um valor double da espessura do Material.
      * @param preco Informar um valor double do preço do Material.
-     * @param ou
+     * @param ou Setar uma informação de valor boolean 
      */
     public static void pesquisarMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento, double largura, double espessura, double preco, boolean ou) {
         try {

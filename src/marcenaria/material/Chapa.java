@@ -39,8 +39,10 @@ public class Chapa {
     private static PreparedStatement pst;
     private static Statement stmt;
 
-    /**
-     *      */
+    /**Este metodo realiza a conexao com o banco de dado
+     *    @since 16/05/2019
+     * @version 1.0
+     */
     public static void Chapa() {
         conexao = ModuloConector.getConecction();
     }
@@ -63,7 +65,7 @@ public class Chapa {
         adicionarChapa(5, 220, 160, 0.18, 280, "MDF", "Carlos");
     }
 
-    /** <b>Este Metodo faz Criação da Tabela Chapa</b>
+    /** <b>Este Metodo faz Criação da Tabela Chapa utilizando uma classe  e metodo auxiliar</b>
      *
      * @since 16/05/2019
      * @version 1.0
@@ -88,8 +90,8 @@ public class Chapa {
      * @since 01/05/2019
      * @version 1.0Testa
      *
-     * @param tipoMateria
-     * @param pos
+     * @param tipoMateria ti
+     * @param pos po
      */
     public static void adicionarChapa(String tipoMateria, int pos) {
         Material.adicionarMaterial(getTABELA(), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa(), getTipoMateria(pos), Fornecedor.getLogin());
@@ -172,6 +174,8 @@ public class Chapa {
     /**
      * Este Metodo Retornar uma valor double da largura da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @return Retornar uma valor double da largura da Chapa
      */
     public static Double getLargChapa() {
@@ -181,6 +185,8 @@ public class Chapa {
     /**
      * Este Metodo Setar Informar uma valor double da largura da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @param largChapa Setar Informar uma valor double da largura da Chapa
      */
     public static void setLargChapa(Double largChapa) {
@@ -190,6 +196,8 @@ public class Chapa {
     /**
      * Este Metodo Retornar um valor double do comprimento da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @return Retornar um valor double do comprimento da Chapa
      */
     public static Double getComprChapa() {
@@ -199,6 +207,8 @@ public class Chapa {
     /**
      * Este Metodo setar Informação um valor double do Comprimento da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @param comprChapa setar Informação um valor double do Comprimento da
      * Chapa
      */
@@ -209,6 +219,8 @@ public class Chapa {
     /**
      * Este Metodo Retornar um valor double da espessura da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @return Retornar um valor double da espessura da Chapa
      */
     public static Double getEspesChapa() {
@@ -218,6 +230,8 @@ public class Chapa {
     /**
      * Este Metodo setar uma Informação de valor double da espessura da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @param espesChapa setar uma Informação de valor double da espessura da
      * Chapa
      */
@@ -228,6 +242,8 @@ public class Chapa {
     /**
      * Este Metodo Retorna um valor double do preco da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @return Retorna um valor double do preco da Chapa
      */
     public static Double getPrecoChapa() {
@@ -237,6 +253,8 @@ public class Chapa {
     /**
      * Este Metodo Setar Informar um valor double do preco da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @param precoChapa Setar Informar um valor double do preco da Chapa
      */
     public static void setPrecoChapa(Double precoChapa) {
@@ -246,6 +264,8 @@ public class Chapa {
     /**
      * Este Metodo Retornar um valor inteiro do id da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @return Retornar um valor inteiro do id da Chapa
      */
     public static int getIdChapa() {
@@ -255,6 +275,8 @@ public class Chapa {
     /**
      * Este Metodo setar Informar um valor inteiro do id da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @param idChapa setar Informar um valor inteiro do id da Chapa
      */
     public static void setIdChapa(int idChapa) {
@@ -264,6 +286,8 @@ public class Chapa {
     /**
      * Este Metodo Retornar um valor inteiro referente a quantidade
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @return Retornar um valor inteiro referente a quantidade
      */
     public static int getQuantChapa() {
@@ -273,6 +297,8 @@ public class Chapa {
     /**
      * Este Metodo Setar uma Informar de valor inteiro na quantidade da Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @param quantChapa Setar uma Informar de valor inteiro na quantidade da
      * Chapa
      */
@@ -284,6 +310,8 @@ public class Chapa {
      * Este Metodo Retornar uma informação de valor String do nome da Tabela
      * Chapa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @return Retorna uma String com nome da tabela
      */
     public static String getTABELA() {
@@ -294,6 +322,8 @@ public class Chapa {
      * Este Metodo Retornar um array de informação de valor String do tipo de
      * Pessoa
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @return Retornar um Array de String
      */
     public static String[] getTipoMateria() {
@@ -304,6 +334,8 @@ public class Chapa {
      * Este Metodo Retornar uma informação de valor String do tipo de Pessoa
      * conforme a posição de Index.
      *
+     ** @since 16/05/2019
+     * @version 1.0
      * @param pos Informar um valor inteiro do index do Array e deve começa em
      * ZERO(0)
      * @return Retornar uma informação de valor String do tipo de Pessoa
@@ -313,8 +345,8 @@ public class Chapa {
     }
 
     /**
-     * Este Metodo Setar a informação um valor do tipo String em um array de
-     * String sendo:
+     * Este Metodo Setar a informação um valor do tipo String em um array do
+     * tipo de Materia da Chapa. String sendo:
      * <p>
      * <b>0</b> iqual a Compensado</p>
      * <p>

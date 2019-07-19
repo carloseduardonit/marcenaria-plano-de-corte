@@ -90,6 +90,12 @@ public class TelaChapa extends javax.swing.JInternalFrame {
 
         lblFornecedor.setText("Fornecedor:");
 
+        txtFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtFornecedorMousePressed(evt);
+            }
+        });
+
         lblProduto.setText("Produto: ");
 
         txtProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -259,7 +265,7 @@ public class TelaChapa extends javax.swing.JInternalFrame {
 
     private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnADDActionPerformed
 
-//Chapa.adicionarChapa(Control.deJTextparaInt(txtProduto), Control.deJTextparaDouble(txtComprimento), Control.deJTextparaDouble(txtLagura), Control.deJTextparaDouble(txtEspessura), Control.deJTextparaDouble(txtPreco), txtProduto.getText());
+Chapa.adicionarChapa(Control.deJTextparaInt(txtProduto), Control.deJTextparaDouble(txtComprimento), Control.deJTextparaDouble(txtLagura), Control.deJTextparaDouble(txtEspessura), Control.deJTextparaDouble(txtPreco), txtProduto.getText(),txtFornecedor.getText());
 
     }//GEN-LAST:event_btnADDActionPerformed
 
@@ -270,6 +276,10 @@ public class TelaChapa extends javax.swing.JInternalFrame {
     private void txtQuantidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQuantidadeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtQuantidadeActionPerformed
+
+    private void txtFornecedorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFornecedorMousePressed
+        
+    }//GEN-LAST:event_txtFornecedorMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

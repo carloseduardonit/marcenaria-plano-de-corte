@@ -67,16 +67,12 @@ public class Pedaco {
     /**
      * <b>Este Metodo adicionar informação na tabela Pedaço no banco.</b>
      *
-     * @param quantPeca
-     * @param idChapa Informar um valor inteiro do Id da Chapa.
-     * @param idPeca Informar um valor inteiro do Id da Peca.
+     * @param quantPeca Informar um valor double da Comprimento da Pedaço.
      * @param compPedaco Informar um valor double da Comprimento da Pedaço.
-     * @param precPedaco
-     * @param tipoMaterial
-     * @param fornecedor
+     * @param precPedaco Informar um valor double da preço da Pedaço.
+     * @param tipoMaterial Informar um valor double da largura da Pedaço.
      * @param largPedaco Informar um valor double da largura da Pedaço.
      * @param espePedaco Informar um valor double da espessura do Pedaço.
-     * @param incData Informar um valor Date do dia da Inclusão.
      */
     public static void adicionarPedaco(int quantPeca, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial) {
         Material.adicionarMaterial(getTABELA(), quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial,null);

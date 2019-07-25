@@ -61,8 +61,7 @@ public class Chapa {
         //setEspesChapa(1.8);
         //setPrecoChapa(150.0);
         //inserirChapa();
-        //
-        adicionarChapa(5, 220, 160, 0.18, 280, "MDF", "Carlos");
+        //adicionarChapa(5, 220, 160, 0.18, 280, "MDF", "Carlos");
     }
 
     /** <b>Este Metodo faz Criação da Tabela Chapa utilizando uma classe  e metodo auxiliar</b>

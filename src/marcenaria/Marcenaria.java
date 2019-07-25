@@ -9,6 +9,8 @@ import marcenaria.material.Material;
 import marcenaria.pessoa1.Layout;
 import marcenaria.pessoa1.Pessoa;
 import marcenaria.tela.material.TelaChapa;
+import marcenaria.tela.material.TelaPeca;
+import marcenaria.tela.material.TelaPedaco;
 import marcenaria.tela.pessoa.TelaCliente;
 import marcenaria.tela.pessoa.TelaFornecedor;
 
@@ -22,7 +24,8 @@ public class Marcenaria extends javax.swing.JFrame {
     static TelaCliente tc = new TelaCliente();
     static TelaFornecedor tf = new TelaFornecedor();
     static TelaChapa tcp = new TelaChapa();
-
+    static TelaPeca tpc = new TelaPeca();
+    static TelaPedaco tpd = new TelaPedaco();
     /**
      * Creates new form Marcenaria
      */
@@ -50,20 +53,25 @@ public class Marcenaria extends javax.swing.JFrame {
         miFornecedor = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         miProdChapa = new javax.swing.JMenuItem();
+        miPeca = new javax.swing.JMenuItem();
+        miPedaco = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(700, 700));
+        setMinimumSize(new java.awt.Dimension(700, 700));
+        setPreferredSize(new java.awt.Dimension(700, 700));
 
         javax.swing.GroupLayout dpMarcenariaLayout = new javax.swing.GroupLayout(dpMarcenaria);
         dpMarcenaria.setLayout(dpMarcenariaLayout);
         dpMarcenariaLayout.setHorizontalGroup(
             dpMarcenariaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         dpMarcenariaLayout.setVerticalGroup(
             dpMarcenariaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 271, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jMenu1.setText("Arquivo");
@@ -93,6 +101,22 @@ public class Marcenaria extends javax.swing.JFrame {
             }
         });
         jMenu3.add(miProdChapa);
+
+        miPeca.setText("Peça");
+        miPeca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miPecaActionPerformed(evt);
+            }
+        });
+        jMenu3.add(miPeca);
+
+        miPedaco.setText("Pedaço");
+        miPedaco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miPedacoActionPerformed(evt);
+            }
+        });
+        jMenu3.add(miPedaco);
 
         jMenu1.add(jMenu3);
 
@@ -129,6 +153,7 @@ public class Marcenaria extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void miClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miClienteActionPerformed
@@ -152,6 +177,16 @@ public class Marcenaria extends javax.swing.JFrame {
         tcp.setVisible(true);
         dpMarcenaria.add(tcp);
     }//GEN-LAST:event_miProdChapaActionPerformed
+
+    private void miPecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPecaActionPerformed
+        tpc.setVisible(true);
+        dpMarcenaria.add(tpc);
+    }//GEN-LAST:event_miPecaActionPerformed
+
+    private void miPedacoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPedacoActionPerformed
+        tpd.setVisible(true);
+        dpMarcenaria.add(tpd);
+    }//GEN-LAST:event_miPedacoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,6 +233,8 @@ public class Marcenaria extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem miCliente;
     private javax.swing.JMenuItem miFornecedor;
+    private javax.swing.JMenuItem miPeca;
+    private javax.swing.JMenuItem miPedaco;
     private javax.swing.JMenuItem miProdChapa;
     // End of variables declaration//GEN-END:variables
 

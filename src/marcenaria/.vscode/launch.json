@@ -4,6 +4,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Projeto",
+            "request": "launch",
+            "mainClass": "marcenaria.pessoa1.cliente.Projeto"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - Chapa",
             "request": "launch",
             "mainClass": "marcenaria.material.Chapa"

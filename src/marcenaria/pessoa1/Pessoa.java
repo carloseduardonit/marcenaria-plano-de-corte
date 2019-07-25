@@ -36,22 +36,22 @@ public class Pessoa {
     /**
      * TA MONTANDO FALTA TESTA Este metodo inserer informação na tabela Pessoa
      *
-     * @param Tabela       Setar uma informação do tipo String no nome da Tabela
-     * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     novo Login Pessoa
-     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
-     *                     Confirmação da senha Pessoa
-     * @param tipoPessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
-     *                     <b>PJ</b>
-     * @param nomePessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Nome Pessoa
-     * @param documPessoa  Setar uma informação do tipo String da Tabela Pessoa no
-     *                     documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
-     *                     so poderá anexa a infornação for de 11 digito, senão
-     *                     <b>PJ</b> so poderá anexa a infornação for de 14 digito
+     * @param Tabela Setar uma informação do tipo String no nome da Tabela
+     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * novo Login Pessoa
+     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
+     * na Confirmação da senha Pessoa
+     * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     * <b>PJ</b>
+     * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Nome Pessoa
+     * @param documPessoa Setar uma informação do tipo String da Tabela Pessoa
+     * no documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
+     * so poderá anexa a infornação for de 11 digito, senão
+     * <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
     public static void adicionarPessoa(String Tabela, String logPessoa, String senPessoa, String conSenPessoa,
             String tipoPessoa, String nomePessoa, String documPessoa) {
@@ -89,7 +89,7 @@ public class Pessoa {
                     int adicionado = pst.executeUpdate();
                     if (adicionado == 0) {
                         Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
-                        ModuloConector.fecharConexao(conexao, rs,rsmd, pst, pst);
+                        ModuloConector.fecharConexao(conexao, rs, rsmd, pst, pst);
                     }
                 } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                     if (Pessoa.VerificaDocumento(documPessoa, tipoPessoa)) {
@@ -106,7 +106,7 @@ public class Pessoa {
                         int adicionado = pst.executeUpdate();
                         if (adicionado == 0) {
                             Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
-                            ModuloConector.fecharConexao(conexao, rs,rsmd, pst, pst);
+                            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, pst);
                         }
                     } else {
                         Messagem.chamarTela(Pessoa.txtVerificaDocumento(documPessoa, tipoPessoa));
@@ -126,7 +126,7 @@ public class Pessoa {
                         int adicionado = pst.executeUpdate();
                         if (adicionado == 0) {
                             Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
-                            ModuloConector.fecharConexao(conexao, rs,rsmd,pst,stmt);
+                            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                         }
                     } else {
                         Messagem.chamarTela(Pessoa.txtVerificaDocumento(documPessoa, tipoPessoa));
@@ -135,9 +135,11 @@ public class Pessoa {
             } else {
                 Messagem.chamarTela(Messagem.VAZIO(
                         CampoVazio(Tabela, logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, documPessoa)));
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
         } catch (SQLException e) {
             Messagem.chamarTela(Tabela + " Adicionar: " + e);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
@@ -150,8 +152,8 @@ public class Pessoa {
     }
 
     /**
-     * TA MONTANDO E TESTA Este Metodo faz a criação da Tabela Pessoa e de Tabela
-     * Filhas
+     * TA MONTANDO E TESTA Este Metodo faz a criação da Tabela Pessoa e de
+     * Tabela Filhas
      *
      * @param Tabela Setar uma informação do tipo String no nome da Tabela
      */
@@ -192,6 +194,7 @@ public class Pessoa {
             }
         } catch (SQLException e) {
             Messagem.chamarTela(Tabela + " adicionar " + e);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
@@ -227,7 +230,8 @@ public class Pessoa {
                 Pessoa.deletarPessoa();
             }
         } catch (SQLException e) {
-            Messagem.chamarTela(Tabela+" deleta: "+e);
+            Messagem.chamarTela(Tabela + " deleta: " + e);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
@@ -235,23 +239,23 @@ public class Pessoa {
      * FAZER Este Metodo editar a informaçao de determinado Tabela da conforme o
      * paramentro da Tabela, anexado nlogPessoa no login do usario
      *
-     * @param nlogPessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     novo Login Pessoa
-     * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Login Pessoa
-     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
-     *                     Confirmação da senha Pessoa
-     * @param tipoPessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
-     *                     <b>PJ</b>
-     * @param nomePessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Nome Pessoa
-     * @param documPessoa  Setar uma informação do tipo String da Tabela Pessoa no
-     *                     documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
-     *                     so poderá anexa a infornação for de 11 digito, senão
-     *                     <b>PJ</b> so poderá anexa a infornação for de 14 digito
+     * @param nlogPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * novo Login Pessoa
+     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Login Pessoa
+     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
+     * na Confirmação da senha Pessoa
+     * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     * <b>PJ</b>
+     * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Nome Pessoa
+     * @param documPessoa Setar uma informação do tipo String da Tabela Pessoa
+     * no documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
+     * so poderá anexa a infornação for de 11 digito, senão
+     * <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
     public static void editarPessoa(String nlogPessoa, String logPessoa, String senPessoa, String conSenPessoa,
             String tipoPessoa, String nomePessoa, String documPessoa) {
@@ -263,24 +267,24 @@ public class Pessoa {
      * FAZER Este Metodo editar a informaçao de determinado Tabela da conforme o
      * paramentro da Tabela, anexado nlogPessoa no login do usario
      *
-     * @param Tabela       Setar uma informação do tipo String no nome da Tabela
-     * @param nlogPessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     novo Login Pessoa
-     * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Login Pessoa
-     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
-     *                     Confirmação da senha Pessoa
-     * @param tipoPessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
-     *                     <b>PJ</b>
-     * @param nomePessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Nome Pessoa
-     * @param documPessoa  Setar uma informação do tipo String da Tabela Pessoa no
-     *                     documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
-     *                     so poderá anexa a infornação for de 11 digito, senão
-     *                     <b>PJ</b> so poderá anexa a infornação for de 14 digito
+     * @param Tabela Setar uma informação do tipo String no nome da Tabela
+     * @param nlogPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * novo Login Pessoa
+     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Login Pessoa
+     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
+     * na Confirmação da senha Pessoa
+     * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     * <b>PJ</b>
+     * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Nome Pessoa
+     * @param documPessoa Setar uma informação do tipo String da Tabela Pessoa
+     * no documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
+     * so poderá anexa a infornação for de 11 digito, senão
+     * <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
     public static void editarPessoa(String Tabela, String nlogPessoa, String logPessoa, String senPessoa,
             String conSenPessoa, String tipoPessoa, String nomePessoa, String documPessoa) {
@@ -356,18 +360,20 @@ public class Pessoa {
             } else {
                 Messagem.chamarTela(Messagem.VAZIO(
                         CampoVazio(Tabela, logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, documPessoa)));
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
         } catch (SQLException e) {
             Messagem.chamarTela(Tabela + " Editar: " + e);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
     /**
      * FAZER Este metodo faz a exclução da informação na Tabela
      *
-     * @param Tabela       Setar uma informação do tipo String no nome da Tabela
-     * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     novo Login Pessoa
+     * @param Tabela Setar uma informação do tipo String no nome da Tabela
+     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * novo Login Pessoa
      */
     public static void excluirPessoa(String Tabela, String logPessoa) {
         try {
@@ -429,18 +435,20 @@ public class Pessoa {
                 }
             } else {
                 Messagem.chamarTela(Messagem.VAZIO(CampoVazio(Tabela, logPessoa, null, null, null, null, null)));
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
         } catch (SQLException e) {
             Messagem.chamarTela(Tabela + " Excluir :" + e);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
     /**
      * FAZER Este metodo Pesquisa na tabela do banco de dados
      *
-     * @param Tabela    Setar uma informação do tipo String no nome da Tabela
+     * @param Tabela Setar uma informação do tipo String no nome da Tabela
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     *                  Login Pessoa
+     * Login Pessoa
      *
      */
     public static void pesquisarPessoa(String Tabela, String logPessoa) {
@@ -467,7 +475,11 @@ public class Pessoa {
                         Cliente.setTipoPessoa(rs.getString(3));
                         Cliente.setNome(rs.getString(4));
                         Cliente.setDocum(rs.getString(5));
+                        ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                     }
+                } else {
+                    Messagem.chamarTela(Messagem.VAZIO("login "));
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
             } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
                 if (!logPessoa.isEmpty()) {
@@ -481,11 +493,16 @@ public class Pessoa {
                         Fornecedor.setTipoPessoa(rs.getString(3));
                         Fornecedor.setNome(rs.getString(4));
                         Fornecedor.setDocum(rs.getString(5));
+                        ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                     }
+                } else {
+                    Messagem.chamarTela(Messagem.VAZIO("login "));
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
             }
         } catch (SQLException e) {
             Messagem.chamarTela(Tabela + " Pesquisar: " + e);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
 
     }
@@ -495,9 +512,9 @@ public class Pessoa {
      * logim Pessoa
      *
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     *                  Login Pessoa
+     * Login Pessoa
      * @return Retornar uma informação do do banco de dado tipo inteiro do ID da
-     *         pessoa
+     * pessoa
      */
     public static int obterIdPessoa(String logPessoa) {
         return obterIdPessoa(logPessoa, Pessoa.getTABELA());
@@ -507,10 +524,10 @@ public class Pessoa {
      * TA MONTANDO FALTA TESTA
      *
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     *                  Login Pessoa
-     * @param Tabela    Setar uma informação do tipo String no nome da Tabela
+     * Login Pessoa
+     * @param Tabela Setar uma informação do tipo String no nome da Tabela
      * @return Retornar uma informação do banco de dado do tipo inteiro do ID da
-     *         pessoa
+     * pessoa
      */
     public static int obterIdPessoa(String logPessoa, String Tabela) {
         int id = 0;
@@ -535,12 +552,27 @@ public class Pessoa {
             }
         } catch (Exception e) {
             Messagem.chamarTela(Tabela + " Obter id Pessoa: " + e);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
         return id;
     }
 
     /**
-     *
+     *Este Metodo Retornar boolen após Verifica o documento se tem a quantidade de digito referente ao tipo de pessoa.
+     *@param docPessoa Setar uma informação de valor String do documento da Pessoa.
+     *@param TipoPessoa Setar uma informação de valor String do Tipo de Pessoa.
+     *@return Retornar Uma informação de valor boolean da verificação de Documento mediante:
+     *<ul> 
+     <li> <b>Valor True</b></li>
+     <ol>
+     <li>docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"</li>
+     <li>ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"</li>
+     </ol>
+    <li><b>Valor False</b></li>
+    <ol>
+    <li></li>
+    </ol>
+     </ul>
      */
     private static Boolean VerificaDocumento(String docPessoa, String TipoPessoa) {
         if ((docPessoa.length() == 11 && TipoPessoa.equalsIgnoreCase("pf"))
@@ -551,8 +583,23 @@ public class Pessoa {
     }
 
     /**
-     *
+     *Este Metodo Retornar String  após Verifica o documento se tem a quantidade de digito referente ao tipo de pessoa.
+     *@param docPessoa Setar uma informação de valor String do documento da Pessoa.
+     *@param TipoPessoa Setar uma informação de valor String do Tipo de Pessoa.
+     @return Retornar uma informçaõ de valor String do erro do documento
+     *<ul> 
+     <li> <b>Valor True</b></li>
+     <ol>
+     <li>docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"</li>
+     <li>ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"</li>
+     </ol>
+    <li><b>Valor False</b></li>
+    <ol>
+    <li></li>
+    </ol>
+     </ul>
      */
+     
     private static String txtVerificaDocumento(String docPessoa, String TipoPessoa) {
         String Mess = "";
         if (docPessoa.length() < 11 && tipoPessoa.equalsIgnoreCase("pf")) {
@@ -567,28 +614,29 @@ public class Pessoa {
         return Mess;
     }
 
-    // Sets e Gets
+
     /**
      * Este metodo verificar ser Todos paramentros estão vazio e que tiver ser
-     * anexado no array interno, retornado assim um Array de String dos Campos Vazios
+     * anexado no array interno, retornado assim um Array de String dos Campos
+     * Vazios
      *
-     * @param Tabela       Setar uma informação do tipo String no nome da Tabela
-     * @param logPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Login Pessoa
-     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
-     *                     Confirmação da senha Pessoa
-     * @param tipoPessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
-     *                     <b>PJ</b>
-     * @param nomePessoa   Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Nome Pessoa
-     * @param documPessoa  Setar uma informação do tipo String da Tabela Pessoa no
-     *                     documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
-     *                     so poderá anexa a infornação for de 11 digito, senão
-     *                     <b>PJ</b> so poderá anexa a infornação for de 14 digito
-     * @return             Retornar  um array de informação de String dos Campos vazios 
+     * @param Tabela Setar uma informação do tipo String no nome da Tabela
+     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Login Pessoa
+     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
+     * na Confirmação da senha Pessoa
+     * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     * <b>PJ</b>
+     * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Nome Pessoa
+     * @param documPessoa Setar uma informação do tipo String da Tabela Pessoa
+     * no documento do Pessoa,sendo quanto o tipoPessoa se<b>PF</b>
+     * so poderá anexa a infornação for de 11 digito, senão
+     * <b>PJ</b> so poderá anexa a infornação for de 14 digito
+     * @return Retornar um array de informação de String dos Campos vazios
      */
     public static String[] CampoVazio(String Tabela, String logPessoa, String senPessoa, String conSenPessoa,
             String tipoPessoa, String nomePessoa, String documPessoa) {
@@ -643,17 +691,17 @@ public class Pessoa {
     }
 
     /**
-     * Este Metodo verifica os parametros senPessoa e conSenPessoa sao iquais e a
-     * quantidade de caracteres retornado uma String
+     * Este Metodo verifica os parametros senPessoa e conSenPessoa sao iquais e
+     * a quantidade de caracteres retornado uma String
      *
-     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
-     *                     Confirmação da senha Pessoa
-     * @param quant        Setar uma informação do tipo inteiro para informar o
-     *                     numero de Cartecter
-     * @return             Retorna Uma informação no valor de String dos campos diferentes ou
-     *                     com caracter menor a <b>quant</b>
+     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
+     * na Confirmação da senha Pessoa
+     * @param quant Setar uma informação do tipo inteiro para informar o numero
+     * de Cartecter
+     * @return Retorna Uma informação no valor de String dos campos diferentes
+     * ou com caracter menor a <b>quant</b>
      */
     public static String CampoDiferente(String senPessoa, String conSenPessoa, int quant) {
         String s = "";
@@ -670,23 +718,23 @@ public class Pessoa {
     }
 
     /**
-     * Este Metodo verifica os parametros senPessoa e conSenPessoa sao iquais e a
-     * quantidade de caracteres retornado um valor Boolean
+     * Este Metodo verifica os parametros senPessoa e conSenPessoa sao iquais e
+     * a quantidade de caracteres retornado um valor Boolean
      *
-     * @param senPessoa    Setar uma informação do tipo String da Tabela Pessoa no
-     *                     Senha Pessoa
-     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa na
-     *                     Confirmação da senha Pessoa
-     * @param quant        Setar uma informação do tipo inteiro para informar o
-     *                     numero de Cartecter
-     * @return             Retorna Uma informação no valor de boolean dos campos diferentes ou
-     *                      com caracter maior ou iqual a <b>quant</b>
-     *         <p>
-     *         se sim o valor será TRUE
-     *         </p>
-     *         <p>
-     *         se não o valor será FALSE
-     *         </p>
+     * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Senha Pessoa
+     * @param conSenPessoa Setar uma informação do tipo String da Tabela Pessoa
+     * na Confirmação da senha Pessoa
+     * @param quant Setar uma informação do tipo inteiro para informar o numero
+     * de Cartecter
+     * @return Retorna Uma informação no valor de boolean dos campos diferentes
+     * ou com caracter maior ou iqual a <b>quant</b>
+     * <p>
+     * se sim o valor será TRUE
+     * </p>
+     * <p>
+     * se não o valor será FALSE
+     * </p>
      */
     public static Boolean campoDiferente(String senPessoa, String conSenPessoa, int quant) {
         if (senPessoa.equalsIgnoreCase(conSenPessoa) && senPessoa.length() >= quant && conSenPessoa.length() >= quant) {
@@ -695,7 +743,7 @@ public class Pessoa {
             return false;
         }
     }
-
+    // Sets e Gets
     /**
      * Este Metodo Retornar uma informação do tipo inteiro do id pessoa
      *
@@ -715,11 +763,11 @@ public class Pessoa {
     }
 
     /**
-     * Este Metodo Retornar uma informação do tipo String da Tabela Pessoa no Login
-     * Pessoa
+     * Este Metodo Retornar uma informação do tipo String da Tabela Pessoa no
+     * Login Pessoa
      *
      * @return Retornar uma informação do tipo String da Tabela Pessoa no Login
-     *         Pessoa
+     * Pessoa
      */
     public static String getLogin() {
         return login;
@@ -729,19 +777,19 @@ public class Pessoa {
      * Este Metodo Setar uma informação do tipo String da Tabela Pessoa no Login
      * Pessoa
      *
-     * @param login Setar uma informação do tipo String da Tabela Pessoa no Login
-     *              Pessoa
+     * @param login Setar uma informação do tipo String da Tabela Pessoa no
+     * Login Pessoa
      */
     public static void setLogin(String login) {
         Pessoa.login = login;
     }
 
     /**
-     * Este Metodo Retornar uma informação do tipo String da Tabela Pessoa no Senha
-     * Pessoa
+     * Este Metodo Retornar uma informação do tipo String da Tabela Pessoa no
+     * Senha Pessoa
      *
      * @return Retornar uma informação do tipo String da Tabela Pessoa no Senha
-     *         Pessoa
+     * Pessoa
      */
     public static String getSenha() {
         return senha;
@@ -751,8 +799,8 @@ public class Pessoa {
      * Este Metodo Setar uma informação do tipo String da Tabela Pessoa no Senha
      * Pessoa
      *
-     * @param senha Setar uma informação do tipo String da Tabela Pessoa no Senha
-     *              Pessoa
+     * @param senha Setar uma informação do tipo String da Tabela Pessoa no
+     * Senha Pessoa
      */
     public static void setSenha(String senha) {
         Pessoa.senha = senha;
@@ -763,7 +811,7 @@ public class Pessoa {
      * Confirmação da senha Pessoa
      *
      * @return Retornar uma informação do tipo String da Tabela Pessoa na
-     *         Confirmação da senha Pessoa
+     * Confirmação da senha Pessoa
      */
     public static String getConfSenha() {
         return confSenha;
@@ -774,41 +822,41 @@ public class Pessoa {
      * Confirmação da senha Pessoa
      *
      * @param confSenha Setar uma informação do tipo String da Tabela Pessoa na
-     *                  Confirmação da senha Pessoa
+     * Confirmação da senha Pessoa
      */
     public static void setConfSenha(String confSenha) {
         Pessoa.confSenha = confSenha;
     }
 
     /**
-     * Este metodo Retornar uma informação do tipo String da Tabela Pessoa no tipo
-     * de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
+     * Este metodo Retornar uma informação do tipo String da Tabela Pessoa no
+     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
      *
-     * @return Retornar uma informação do tipo String da Tabela Pessoa no tipo de
-     *         Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
+     * @return Retornar uma informação do tipo String da Tabela Pessoa no tipo
+     * de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
      */
     public static String getTipoPessoa() {
         return tipoPessoa;
     }
 
     /**
-     * Este metodo Setar uma informação do tipo String da Tabela Pessoa no tipo de
-     * Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
+     * Este metodo Setar uma informação do tipo String da Tabela Pessoa no tipo
+     * de Pessoa, sendo que so podera utilizar <b>PF</b> ou <b>PJ</b>
      *
      * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     *                   tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
-     *                   <b>PJ</b>
+     * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
+     * <b>PJ</b>
      */
     public static void setTipoPessoa(String tipoPessoa) {
         Pessoa.tipoPessoa = tipoPessoa;
     }
 
     /**
-     * Este Metodo Retornar uma informação do tipo String da Tabela Pessoa no Nome
-     * Pessoa
+     * Este Metodo Retornar uma informação do tipo String da Tabela Pessoa no
+     * Nome Pessoa
      *
      * @return Retornar uma informação do tipo String da Tabela Pessoa no Nome
-     *         Pessoa
+     * Pessoa
      */
     public static String getNome() {
         return nome;
@@ -819,7 +867,7 @@ public class Pessoa {
      * Pessoa
      *
      * @param nome Setar uma informação do tipo String da Tabela Pessoa no Nome
-     *             Pessoa
+     * Pessoa
      */
     public static void setNome(String nome) {
         Pessoa.nome = nome;

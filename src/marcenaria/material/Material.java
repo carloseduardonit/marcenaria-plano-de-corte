@@ -12,6 +12,7 @@ import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
 import marcenaria.pessoa1.Fornecedor;
 import marcenaria.pessoa1.Pessoa;
+import marcenaria.pessoa1.cliente.Projeto;
 
 /**
  * @since 18/05/2019
@@ -25,7 +26,7 @@ public class Material {
     static ResultSetMetaData rsmd;
     static PreparedStatement pst;
     static Statement stmt;
-  
+
     private static final String TABELA = Material.class.getSimpleName();
     private static String tipoMaterial;
     private static int quantMaterial, idMaterial;
@@ -217,11 +218,13 @@ public class Material {
     /**
      **@since 18/05/2019
      * @version 1.0
-     * @param Tabela Setar uma Informação de valor String para tabela de Material
+     * @param Tabela Setar uma Informação de valor String para tabela de
+     * Material
      * @param idPessoa Setar uma Informação de valor Inteiro do ID pessoa
      * @param row Setar uma Informação de valor Inteiro da quantidade de linha
      * @param colu Setar uma Informação de valor Inteiro da quantidade de coluna
-     * @return Retornar um array de Informaçãode valor String da tabela de Produto
+     * @return Retornar um array de Informaçãode valor String da tabela de
+     * Produto
      */
     public static String[][] TabeladeMaterial(String Tabela, int idPessoa, int row, int colu) {
         Material();
@@ -266,7 +269,7 @@ public class Material {
      * @param largura Informar um valor double da largura do Material.
      * @param espessura Informar um valor double da espessura do Material.
      * @param preco Informar um valor double do preço do Material.
-     * @param ou Setar uma informação de valor boolean 
+     * @param ou Setar uma informação de valor boolean
      */
     public static void pesquisarMaterial(String Tabela, String tipoMaterial, int quantidade, double comprimento, double largura, double espessura, double preco, boolean ou) {
         try {
@@ -300,8 +303,10 @@ public class Material {
 
     /**
      * TESTADO E OK
-     *
-     **@since 18/05/2019
+     *@since 21/07/2019 acrescentado  o metodo criarProjeto().
+     * @since 20/07/2019 Correção de tabela Chapa cujo o idFornecedor não era
+     * inclusa
+     * @since 18/05/2019
      * @version 1.0
      * @param Tabela Informar um valor String para tabela de Material
      */
@@ -312,11 +317,13 @@ public class Material {
                     + " int primary key auto_increment," + "quantidade int default 0," + "comprimento double,"
                     + "largura double," + "espessura double," + "preco double, " + "tipoMaterial varchar(30)";
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                sql += ", id" + Fornecedor.getTABELA() + " int not null, foreign key (id" + Fornecedor.getTABELA()
+                sql += ", id" + Fornecedor.getTABELA() + " int not null," + "foreign key(id" + Fornecedor.getTABELA()
                         + ") references " + Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
-                sql += "," + "id" + Chapa.getTABELA() + " int not null," + "foreign key(id" + Chapa.getTABELA()
-                        + ") references chapa(id" + Chapa.getTABELA() + "))";
+                sql += "," + "id" + Chapa.getTABELA() + " int not null default 0,"+
+                "id" +Projeto.getTABELA()+" int not null default 0, "
+                +"foreign key (id" +Projeto.getTABELA()+") references "+Projeto.getTABELA()+"(id"+Projeto.getTABELA()+ 
+                "), foreign key(id" + Chapa.getTABELA() + ") references "+Chapa.getTABELA()+"(id" + Chapa.getTABELA() + "))";
             } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
                 sql += ",id" + Chapa.getTABELA() + " int default '0'," + "id" + Peca.getTABELA() + " int default 0,"
                         + "incData Timestamp," + "foreign key (id" + Chapa.getTABELA() + ") references "
@@ -334,10 +341,12 @@ public class Material {
             }
         } catch (SQLIntegrityConstraintViolationException sicve) {
             Messagem.chamarTela(sicve);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         } catch (NullPointerException ne) {
             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         } catch (HeadlessException he) {
             Messagem.chamarTela(he);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         } catch (SQLException e) {
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
                 Fornecedor.criarFornecedor();
@@ -349,6 +358,7 @@ public class Material {
                 criarMaterial(Tabela);
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
                 // primeiro tem que criar a Tabela Chapa para depois a Tabela Peça
+                Projeto.criarProjeto();
                 criarMaterial(Chapa.getTABELA());
                 criarMaterial(Tabela);
             } else {
@@ -410,7 +420,9 @@ public class Material {
             }
         } catch (HeadlessException | SQLException he) {
             Messagem.chamarTela(he);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         } catch (NullPointerException npe) {
+            Messagem.chamarTela(npe);
             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
@@ -439,7 +451,7 @@ public class Material {
                 pst.setDouble(2, espessura);
                 rs = pst.executeQuery();
                 if (rs.next()) {
-                    id = rs.getInt(1);                   
+                    id = rs.getInt(1);
                     ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
             } else {
@@ -468,6 +480,7 @@ public class Material {
             }
         } catch (Exception e) {
             Messagem.chamarTela(e);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
         return id;
     }

@@ -6,6 +6,7 @@
 package marcenaria.dado;
 
 import com.mysql.jdbc.CommunicationsException;
+import java.io.IOException;
 import java.sql.*;
 import marcenaria.Const.Messagem;
 
@@ -62,6 +63,7 @@ public class ModuloConector {
      *
      */
     private static Statement stmt = null;
+    private static int count = 0;
 
     /**
      * Este metodo faz a conexão com o banco de dados
@@ -88,13 +90,37 @@ public class ModuloConector {
             fecharConexao(conexao, rs, rsmd, pst, stmt);
         } catch (CommunicationsException ce) {
             Messagem.chamarTela("O banco de dados deve esta desligado " + ce);
+            abrirAplicação();
             fecharConexao(conexao, rs, rsmd, pst, stmt);
-        } catch (Exception e) {
-            Messagem.chamarTela("O banco de dados deve esta desligado " + e);
+            getConecction();
+        } catch (SQLException e) {
+            if (getCount() == 0) {
+                abrirAplicação();                
+                setCount(+1); 
+                Messagem.chamarTela(getCount()+" O banco de dados deve esta desligado 1 : " + e);
+            }            
+           
             fecharConexao(conexao, rs, rsmd, pst, stmt);
-            
+            getConecction();
         }
+        setCount(0);
         return conexao;
+    }
+    
+    public static void abrirAplicação() {
+        String b = "C:\\xampp\\xampp-control.exe";
+        abrirAplicação(b);
+        
+    }
+    
+    public static void abrirAplicação(String a) {
+        try {
+            Runtime r;
+            r = Runtime.getRuntime();
+            r.exec(a);
+        } catch (IOException e) {
+            Messagem.chamarTela(e);
+        }
     }
 
     /**
@@ -103,13 +129,13 @@ public class ModuloConector {
      * tem ver
      */
     public static void criarDataBase() {
-
+        
         try {
             Connection conexao = null;
             Class.forName(DRIVER);
             conexao = DriverManager.getConnection(URL, USER, PASS);
             String sql = "create database if not exist " + DATABASE;
-
+            
         } catch (Exception e) {
             Messagem.chamarTela(e);
         }
@@ -154,7 +180,8 @@ public class ModuloConector {
     /**
      *
      * Este Metodo faz o fechamento da conexao e Resultado
-     *@since 13/07/2019
+     *
+     * @since 13/07/2019
      * @param rsmd fecha o resuldado de meta dado
      * @since 01/05/2019
      * @version 1.1
@@ -171,7 +198,8 @@ public class ModuloConector {
 
     /**
      * Este Metodo faz o fechamento da conexao, Resultado e Editação
-     *@since 13/07/2019
+     *
+     * @since 13/07/2019
      * @param rsmd fecha o resuldado de meta dado
      * @since 01/05/2019
      * @param con - Fecha a conexao do banco
@@ -193,7 +221,8 @@ public class ModuloConector {
 
     /**
      * Este Metodo faz o fechamento da conexao, Resultado e Editação
-     *@since 13/07/2019
+     *
+     * @since 13/07/2019
      * @param rsmd fecha o resuldado de meta dado
      * @since 01/05/2019
      * @param con Fecha a conexao do banco
@@ -226,7 +255,7 @@ public class ModuloConector {
             Statement stmt = conexao.createStatement();
             int adicionar = stmt.executeUpdate(sql);
             if (adicionar > 0) {
-
+                
             }
         } catch (SQLException e) {
             Messagem.chamarTela(e);
@@ -357,4 +386,50 @@ public class ModuloConector {
         return 0;
     }
 
+    // Incio das Tabelas
+    /**
+     * Este Metodo criar uma tabela no banco de dados.
+     *
+     * @version 1.6
+     * @since 21/07/2019
+     * @param sql Seta uma informação de valor String da instrução MySql.
+     * @param Tabela Seta uma informação de valor String do nome da Tabela.
+     */
+    public static void criarTabela(String sql, String Tabela) {
+        try {
+            Messagem.tabelaCriada(Tabela);
+            if (Messagem.getCriada() == 0) {
+                stmt = conexao.createStatement();
+                int criar = stmt.executeUpdate(sql);
+                if (criar == 0) {
+                    Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                }
+            } else {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+            }
+        } catch (SQLException e) {
+            Messagem.chamarTela(e);
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        }
+        
+    }
+
+    /**
+     * Este Metodo deletar a tabela mo banco de dados
+     */
+    public static void deletarTabela() {
+        
+    }
+    // Fim das Tabelas
+    // Inicio dos Sets e Gets
+
+    // Inicio dos Sets e Gets
+    private static int getCount() {
+        return count;
+    }
+    
+    private static void setCount(int count) {
+        ModuloConector.count = count;
+    }
 }

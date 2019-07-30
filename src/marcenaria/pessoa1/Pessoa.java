@@ -29,14 +29,16 @@ public class Pessoa {
     public static void main(String[] args) {
         //Pessoa.setLogin("Carlos3");
         //Pessoa.setSenha("39568eu1");
-       // Pessoa.setTipoPessoa("pf");
+        // Pessoa.setTipoPessoa("pf");
         //Pessoa.setConfSenha(Pessoa.getSenha());
         //Pessoa.setNome(Pessoa.getLogin());
 
         //Fornecedor.adicionarPessoa(Pessoa.getLogin(), "12345678902");
         //Fornecedor.adicionarFornecedor(Pessoa.getLogin(), Pessoa.getSenha(), Pessoa.getConfSenha(), Pessoa.getTipoPessoa(), Pessoa.getNome(), "12345678903");
         //System.out.println(Pessoa.obterIdPessoa("rodrigo"));
-    Pessoa.exibirPessoa("carlos"); Cliente.exibirCliente("carlos"); Fornecedor.exibirFornecedor("Carlos");
+        Pessoa.exibirPessoa("carlos");
+        Cliente.exibirCliente("carlos");
+        Fornecedor.exibirFornecedor("Carlos");
 
     }
 
@@ -46,59 +48,9 @@ public class Pessoa {
     public static void Pessoa() {
         conexao = ModuloConector.getConecction();
     }
-    /** 
-     * 
-     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Login Pessoa
-    */
-    public static void exibirPessoa(String logPessoa){
-        exibirPessoa(Pessoa.getTABELA(),logPessoa);
-    }
-    /** 
-     * 
-     * @param Tabela Setar uma informação do tipo String no nome da Tabela
-     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * Login Pessoa
-    */
-    public static void exibirPessoa(String Tabela, String logPessoa){
-        String sql ="" ;
-        if(Tabela.equalsIgnoreCase(Pessoa.getTABELA())){
-            Pessoa.pesquisarPessoa(logPessoa);
-            sql = "Do Cadastro Pessoa\n\nId da Pessoa: "+Pessoa.getIdpessoa()+
-            "\nLogin da Pessoa: "+Pessoa.getLogin()+
-            "\nNome da Pessoa: "+Pessoa.getNome()+
-            "\nSenha da Pessoa: "+Pessoa.getSenha()+
-            "\nTipo de Pessoa: "+Pessoa.getTipoPessoa();
-        } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
-            Cliente.pesquisarCliente(logPessoa);
-            sql = "Do Cadastro Cliente\n\nId da Pessoa: "+Cliente.getIdpessoa()+
-            "\nId do Cliente: "+Cliente.getIdCliente()+
-            "\nLogin da Pessoa: "+Cliente.getLogin()+
-            "\nNome da Pessoa: "+Cliente.getNome()+
-            "\nSenha da Pessoa: "+Cliente.getSenha()+
-            "\nTipo de pessoa: "+Cliente.getTipoPessoa();
-            if (Cliente.getTipoPessoa().equalsIgnoreCase("pf")) {
-                sql +="\nnumero do CPF: "+Cliente.getDocum();
-            } else if (Cliente.getTipoPessoa().equalsIgnoreCase("pj")){
-                sql +="\nnumero do CNPJ: "+Cliente.getDocum();
-            }
-        } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())){
-            Fornecedor.pesquisarFornecedor(logPessoa);
-            sql = "Do Cadastro Fornecedor \n\nId da Pessoa: "+Fornecedor.getIdpessoa()+
-            "\nId do Fornecedor: "+Fornecedor.getIdFornecedor()+
-            "\nLogin da Pessoa: "+Fornecedor.getLogin()+
-            "\nNome da Pessoa: "+Fornecedor.getNome()+
-            "\nSenha da Pessoa: "+Fornecedor.getSenha()+
-            "\nTipo de pessoa: "+Fornecedor.getTipoPessoa();
-            if (Fornecedor.getTipoPessoa().equalsIgnoreCase("pf")) {
-                sql +="\nnumero do CPF: "+Fornecedor.getDocum();
-            } else if (Fornecedor.getTipoPessoa().equalsIgnoreCase("pj")){
-                sql +="\nnumero do CNPJ: "+Fornecedor.getDocum();
-            }
-        }
-        Messagem.chamarTela(sql);
-    }
-    /** */
+
+    /**
+     *      */
     public static void adicionarPessoa(String logPessoa, String docPessoa) {
         // adicionarPessoa(Pessoa.getTABELA(), logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, null);
         try {
@@ -539,11 +491,69 @@ public class Pessoa {
         }
     }
 
-    public static void pesquisarPessoa(String logPessoa){
+    /**
+     *
+     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Login Pessoa
+     */
+    public static void exibirPessoa(String logPessoa) {
+        exibirPessoa(Pessoa.getTABELA(), logPessoa);
+    }
+
+    /**
+     *
+     * @param Tabela Setar uma informação do tipo String no nome da Tabela
+     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Login Pessoa
+     */
+    public static void exibirPessoa(String Tabela, String logPessoa) {
+        String sql = "";
+        if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
+            Pessoa.pesquisarPessoa(logPessoa);
+            sql = "Do Cadastro Pessoa\n\nId da Pessoa: " + Pessoa.getIdpessoa()
+                    + "\nLogin da Pessoa: " + Pessoa.getLogin()
+                    + "\nNome da Pessoa: " + Pessoa.getNome()
+                    + "\nSenha da Pessoa: " + Pessoa.getSenha()
+                    + "\nTipo de Pessoa: " + Pessoa.getTipoPessoa();
+        } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
+            Cliente.pesquisarCliente(logPessoa);
+            sql = "Do Cadastro Cliente\n\nId da Pessoa: " + Cliente.getIdpessoa()
+                    + "\nId do Cliente: " + Cliente.getIdCliente()
+                    + "\nLogin da Pessoa: " + Cliente.getLogin()
+                    + "\nNome da Pessoa: " + Cliente.getNome()
+                    + "\nSenha da Pessoa: " + Cliente.getSenha()
+                    + "\nTipo de pessoa: " + Cliente.getTipoPessoa();
+            if (Cliente.getTipoPessoa().equalsIgnoreCase("pf")) {
+                sql += "\nnumero do CPF: " + Cliente.getDocum();
+            } else if (Cliente.getTipoPessoa().equalsIgnoreCase("pj")) {
+                sql += "\nnumero do CNPJ: " + Cliente.getDocum();
+            }
+        } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
+            Fornecedor.pesquisarFornecedor(logPessoa);
+            sql = "Do Cadastro Fornecedor \n\nId da Pessoa: " + Fornecedor.getIdpessoa()
+                    + "\nId do Fornecedor: " + Fornecedor.getIdFornecedor()
+                    + "\nLogin da Pessoa: " + Fornecedor.getLogin()
+                    + "\nNome da Pessoa: " + Fornecedor.getNome()
+                    + "\nSenha da Pessoa: " + Fornecedor.getSenha()
+                    + "\nTipo de pessoa: " + Fornecedor.getTipoPessoa();
+            if (Fornecedor.getTipoPessoa().equalsIgnoreCase("pf")) {
+                sql += "\nnumero do CPF: " + Fornecedor.getDocum();
+            } else if (Fornecedor.getTipoPessoa().equalsIgnoreCase("pj")) {
+                sql += "\nnumero do CNPJ: " + Fornecedor.getDocum();
+            }
+        }
+        Messagem.chamarTela(sql);
+    }
+
+    /**
+     * @param logPessoa
+     */
+    public static void pesquisarPessoa(String logPessoa) {
         Pessoa.pesquisarPessoa(Pessoa.getTABELA(), logPessoa);
     }
-    /**FAZER
-     *  Este metodo Pesquisa na tabela do banco de dados
+
+    /**
+     * FAZER Este metodo Pesquisa na tabela do banco de dados
      *
      * @param Tabela Setar uma informação do tipo String no nome da Tabela
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
@@ -555,7 +565,7 @@ public class Pessoa {
             String sql = "";
             if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
                 Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
-                sql ="select P.login, P.senha, P.tipoPessoa, P.nome from "+Pessoa.getTABELA()+" as P where P.id"+Pessoa.getTABELA()+" = ?";
+                sql = "select P.login, P.senha, P.tipoPessoa, P.nome from " + Pessoa.getTABELA() + " as P where P.id" + Pessoa.getTABELA() + " = ?";
             } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                 Cliente.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
                 Cliente.setIdCliente(Cliente.obterIdCliente(logPessoa));
@@ -566,19 +576,19 @@ public class Pessoa {
                 sql = "select P.login, P.senha, P.tipoPessoa, P.nome, F.docum from " + Pessoa.getTABELA() + " as P, "
                         + Fornecedor.getTABELA() + " as F where F.id" + Pessoa.getTABELA() + " = ? or P.id" + Pessoa.getTABELA() + " = ?";
             }
-            if(Tabela.equalsIgnoreCase(Pessoa.getTABELA())){
-                if(!logPessoa.isEmpty()){
+            if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
+                if (!logPessoa.isEmpty()) {
                     pst = conexao.prepareStatement(sql);
                     pst.setInt(1, Pessoa.getIdpessoa());
                     rs = pst.executeQuery();
-                    if(rs.next()){
+                    if (rs.next()) {
                         Pessoa.setLogin(rs.getString(1));
                         Pessoa.setSenha(rs.getString(2));
                         Pessoa.setTipoPessoa(rs.getString(3));
                         Pessoa.setNome(rs.getString(4));
                     }
                 }
-            }else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
+            } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                 if (!logPessoa.isEmpty()) {
                     pst = conexao.prepareStatement(sql);
                     pst.setInt(1, Cliente.getIdCliente());

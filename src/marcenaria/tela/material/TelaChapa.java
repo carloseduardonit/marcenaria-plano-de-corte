@@ -7,6 +7,7 @@ package marcenaria.tela.material;
 
 import marcenaria.dado.ModuloConector;
 import marcenaria.material.Chapa;
+import marcenaria.pessoa1.Layout;
 import marcenaria.tela.pessoa.Control;
 
 /**
@@ -57,6 +58,12 @@ public class TelaChapa extends javax.swing.JInternalFrame {
         lblQuantidade = new javax.swing.JLabel();
 
         jButton3.setText("ADD");
+
+        setMaximumSize(Layout.getMaximo());
+        setMinimumSize(Layout.getMaximo()
+        );
+        setPreferredSize(Layout.getMaximo()
+        );
 
         tbChapa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

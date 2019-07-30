@@ -58,8 +58,8 @@ Marcenaria m = new Marcenaria();
         setMaximizable(true);
         setTitle(Fornecedor.getTABELA());
         setMaximumSize(Layout.getMaximo());
-        setMinimumSize(Layout.getMinimo());
-        setPreferredSize(Layout.getPerfil());
+        setMinimumSize(Layout.getMaximo());
+        setPreferredSize(Layout.getMaximo());
 
         cbTipoPessoa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NI", "PF", "PJ" }));
         cbTipoPessoa.addActionListener(new java.awt.event.ActionListener() {
@@ -155,7 +155,7 @@ Marcenaria m = new Marcenaria();
                                     .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtConfSenha1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,7 +184,7 @@ Marcenaria m = new Marcenaria();
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDocumento)
                     .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnADD)
                     .addComponent(btnEDIT)
@@ -192,7 +192,7 @@ Marcenaria m = new Marcenaria();
                     .addComponent(btnDELETE)))
         );
 
-        pack();
+        setBounds(0, 0, 347, 264);
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbTipoPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoPessoaActionPerformed

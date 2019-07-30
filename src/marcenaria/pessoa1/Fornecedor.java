@@ -17,6 +17,20 @@ public class Fornecedor extends Pessoa {
     private static final String TABELA = Fornecedor.class.getSimpleName();
 
     /**
+     *
+     */
+    public static void criarFornecedor() {
+        Pessoa.criarPessoa(getTABELA());
+    }
+
+    /**
+     * Este metodo faz a exclução da informação na Tabela
+     */
+    public static void deletarFornecedor() {
+        Pessoa.deletarPessoa(getTABELA());
+    }
+
+    /**
      * Este metodo inserer informação na tabela Fornecedor utilizado um metodo
      * auxiliar da classe <b>Pessoa</b> no metodo <b>adicionarPessoa(String
      * Tabela, String logPessoa, String senPessoa, String conSenPessoa, String
@@ -40,22 +54,8 @@ public class Fornecedor extends Pessoa {
      */
     public static void adicionarFornecedor(String logFornecedor, String senFornecedor, String consenFornecedor,
             String tipoPessoa, String nomeFornecedor, String documFornecedor) {
-        Pessoa.adicionarPessoa(getTABELA(), logFornecedor, senFornecedor, consenFornecedor, tipoPessoa, nomeFornecedor,
+        Pessoa.adicionarPessoa(Fornecedor.getTABELA(), logFornecedor, senFornecedor, consenFornecedor, tipoPessoa, nomeFornecedor,
                 documFornecedor);
-    }
-
-    /**
-     *
-     */
-    public static void criarFornecedor() {
-        Pessoa.criarPessoa(getTABELA());
-    }
-
-    /**
-     * Este metodo faz a exclução da informação na Tabela
-     */
-    public static void deletarFornecedor() {
-        Pessoa.deletarPessoa(getTABELA());
     }
 
     /**
@@ -94,7 +94,15 @@ public class Fornecedor extends Pessoa {
     public static void excluirFornecedor(String logFornecedor) {
         Pessoa.excluirPessoa(Fornecedor.getTABELA(), logFornecedor);
     }
-
+    /**
+     * TA MONTANDO FALTA TESTA
+     *
+     * @param logFornecedor Setar uma informação do tipo String da Tabela
+     * Fornecedor no Login Fornecedor
+     */
+ public static void exibirFornecedor(String logFornecedor){
+     Pessoa.exibirPessoa(Fornecedor.getTABELA(),logFornecedor);
+ }
     /**
      * TA MONTANDO FALTA TESTA
      *
@@ -115,7 +123,8 @@ public class Fornecedor extends Pessoa {
     }
 
     // Sets e Gets
-    /**
+    /**Este metodo Retornar uma informação do tipo inteiro da Tabela Fornecedor no
+     * ID Fornecedor
      * @return Retornar uma informação do tipo inteiro da Tabela Fornecedor no
      * ID Fornecedor
      */
@@ -124,7 +133,7 @@ public class Fornecedor extends Pessoa {
     }
 
     /**
-     * Setar Informação de valor inteiro do ID do fornecedor
+     * Este metodo Setar Informação de valor inteiro do ID do fornecedor
      *
      * @param idFornecedor Setar Informação de valor inteiro do ID do fornecedor
      */
@@ -177,7 +186,8 @@ public class Fornecedor extends Pessoa {
     }
 
     /**
-     *
+     *Este Metodo Retornar uma informação do tipo String da Tabela Fornecedor com
+     * nome da tabela
      * @return Retornar uma informação do tipo String da Tabela Fornecedor com
      * nome da tabela
      */

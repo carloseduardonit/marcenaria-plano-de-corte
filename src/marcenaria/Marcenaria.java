@@ -8,6 +8,7 @@ package marcenaria;
 import marcenaria.material.Material;
 import marcenaria.pessoa1.Layout;
 import marcenaria.pessoa1.Pessoa;
+import marcenaria.pessoa1.cliente.Projeto;
 import marcenaria.tela.material.TelaChapa;
 import marcenaria.tela.material.TelaPeca;
 import marcenaria.tela.material.TelaPedaco;
@@ -26,6 +27,7 @@ public class Marcenaria extends javax.swing.JFrame {
     static TelaChapa tcp = new TelaChapa();
     static TelaPeca tpc = new TelaPeca();
     static TelaPedaco tpd = new TelaPedaco();
+
     /**
      * Creates new form Marcenaria
      */
@@ -56,7 +58,7 @@ public class Marcenaria extends javax.swing.JFrame {
         miPeca = new javax.swing.JMenuItem();
         miPedaco = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        miLimpaBanco = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(700, 700));
@@ -124,13 +126,13 @@ public class Marcenaria extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
-        jMenuItem1.setText("Limpa Banco");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        miLimpaBanco.setText("Limpa Banco");
+        miLimpaBanco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                miLimpaBancoActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        jMenu2.add(miLimpaBanco);
 
         jMenuBar1.add(jMenu2);
 
@@ -157,36 +159,68 @@ public class Marcenaria extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void miClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miClienteActionPerformed
-        tf.dispose();
-        tc.setVisible(true);
-        dpMarcenaria.add(tc);
+        fechareAbre(tc);
     }//GEN-LAST:event_miClienteActionPerformed
 
     private void miFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miFornecedorActionPerformed
-        tc.dispose();
-        tf.setVisible(true);
-        dpMarcenaria.add(tf);
+        fechareAbre(tf);
     }//GEN-LAST:event_miFornecedorActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void miLimpaBancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miLimpaBancoActionPerformed
         Pessoa.deletarPessoa();
         Material.deletarMaterial();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        Projeto.deletarProjeto();
+    }//GEN-LAST:event_miLimpaBancoActionPerformed
 
     private void miProdChapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miProdChapaActionPerformed
-        tcp.setVisible(true);
-        dpMarcenaria.add(tcp);
+        fechareAbre(tcp);
     }//GEN-LAST:event_miProdChapaActionPerformed
 
     private void miPecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPecaActionPerformed
-        tpc.setVisible(true);
-        dpMarcenaria.add(tpc);
+       fechareAbre(tpc);
     }//GEN-LAST:event_miPecaActionPerformed
 
     private void miPedacoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPedacoActionPerformed
-        tpd.setVisible(true);
-        dpMarcenaria.add(tpd);
+        fechareAbre(tpd);
     }//GEN-LAST:event_miPedacoActionPerformed
+    public void fechareAbre(Object o) {
+        if (o.equals(tc)) {
+            tf.dispose();
+            tcp.dispose();
+            tpc.dispose();
+            tpd.dispose();
+            tc.setVisible(true);
+            dpMarcenaria.add(tc);
+        } else if (o.equals(tf)) {
+            tc.dispose();
+            tcp.dispose();
+            tpc.dispose();
+            tpd.dispose();
+            tf.setVisible(true);
+            dpMarcenaria.add(tf);
+        } else if (o.equals(tcp)) {
+            tf.dispose();
+            tc.dispose();
+            tpc.dispose();
+            tpd.dispose();
+            tcp.setVisible(true);
+            dpMarcenaria.add(tcp);
+        } else if (o.equals(tpc)) {
+            tf.dispose();
+            tcp.dispose();
+            tc.dispose();
+            tpd.dispose();
+            tpc.setVisible(true);
+            dpMarcenaria.add(tpc);
+        } else if (o.equals(tpd)) {
+            tf.dispose();
+            tcp.dispose();
+            tpc.dispose();
+            tc.dispose();
+            tpd.setVisible(true);
+            dpMarcenaria.add(tpd);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -230,9 +264,9 @@ public class Marcenaria extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem miCliente;
     private javax.swing.JMenuItem miFornecedor;
+    private javax.swing.JMenuItem miLimpaBanco;
     private javax.swing.JMenuItem miPeca;
     private javax.swing.JMenuItem miPedaco;
     private javax.swing.JMenuItem miProdChapa;

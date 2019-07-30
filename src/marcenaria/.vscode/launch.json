@@ -4,6 +4,18 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Pessoa",
+            "request": "launch",
+            "mainClass": "marcenaria.pessoa1.Pessoa"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Cliente",
+            "request": "launch",
+            "mainClass": "marcenaria.pessoa1.Cliente"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - Projeto",
             "request": "launch",
             "mainClass": "marcenaria.pessoa1.cliente.Projeto"

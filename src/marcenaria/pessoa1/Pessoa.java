@@ -26,11 +26,100 @@ public class Pessoa {
     private static ResultSetMetaData rsmd;
     private static Statement stmt;
 
+    public static void main(String[] args) {
+        //Pessoa.setLogin("Carlos3");
+        //Pessoa.setSenha("39568eu1");
+       // Pessoa.setTipoPessoa("pf");
+        //Pessoa.setConfSenha(Pessoa.getSenha());
+        //Pessoa.setNome(Pessoa.getLogin());
+
+        //Fornecedor.adicionarPessoa(Pessoa.getLogin(), "12345678902");
+        //Fornecedor.adicionarFornecedor(Pessoa.getLogin(), Pessoa.getSenha(), Pessoa.getConfSenha(), Pessoa.getTipoPessoa(), Pessoa.getNome(), "12345678903");
+        //System.out.println(Pessoa.obterIdPessoa("rodrigo"));
+    Pessoa.exibirPessoa("carlos"); Cliente.exibirCliente("carlos"); Fornecedor.exibirFornecedor("Carlos");
+
+    }
+
     /**
      * Este Metodo faz a conexao com o banco de dado
      */
     public static void Pessoa() {
         conexao = ModuloConector.getConecction();
+    }
+    /** 
+     * 
+     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Login Pessoa
+    */
+    public static void exibirPessoa(String logPessoa){
+        exibirPessoa(Pessoa.getTABELA(),logPessoa);
+    }
+    /** 
+     * 
+     * @param Tabela Setar uma informação do tipo String no nome da Tabela
+     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Login Pessoa
+    */
+    public static void exibirPessoa(String Tabela, String logPessoa){
+        String sql ="" ;
+        if(Tabela.equalsIgnoreCase(Pessoa.getTABELA())){
+            Pessoa.pesquisarPessoa(logPessoa);
+            sql = "Do Cadastro Pessoa\n\nId da Pessoa: "+Pessoa.getIdpessoa()+
+            "\nLogin da Pessoa: "+Pessoa.getLogin()+
+            "\nNome da Pessoa: "+Pessoa.getNome()+
+            "\nSenha da Pessoa: "+Pessoa.getSenha()+
+            "\nTipo de Pessoa: "+Pessoa.getTipoPessoa();
+        } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
+            Cliente.pesquisarCliente(logPessoa);
+            sql = "Do Cadastro Cliente\n\nId da Pessoa: "+Cliente.getIdpessoa()+
+            "\nId do Cliente: "+Cliente.getIdCliente()+
+            "\nLogin da Pessoa: "+Cliente.getLogin()+
+            "\nNome da Pessoa: "+Cliente.getNome()+
+            "\nSenha da Pessoa: "+Cliente.getSenha()+
+            "\nTipo de pessoa: "+Cliente.getTipoPessoa();
+            if (Cliente.getTipoPessoa().equalsIgnoreCase("pf")) {
+                sql +="\nnumero do CPF: "+Cliente.getDocum();
+            } else if (Cliente.getTipoPessoa().equalsIgnoreCase("pj")){
+                sql +="\nnumero do CNPJ: "+Cliente.getDocum();
+            }
+        } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())){
+            Fornecedor.pesquisarFornecedor(logPessoa);
+            sql = "Do Cadastro Fornecedor \n\nId da Pessoa: "+Fornecedor.getIdpessoa()+
+            "\nId do Fornecedor: "+Fornecedor.getIdFornecedor()+
+            "\nLogin da Pessoa: "+Fornecedor.getLogin()+
+            "\nNome da Pessoa: "+Fornecedor.getNome()+
+            "\nSenha da Pessoa: "+Fornecedor.getSenha()+
+            "\nTipo de pessoa: "+Fornecedor.getTipoPessoa();
+            if (Fornecedor.getTipoPessoa().equalsIgnoreCase("pf")) {
+                sql +="\nnumero do CPF: "+Fornecedor.getDocum();
+            } else if (Fornecedor.getTipoPessoa().equalsIgnoreCase("pj")){
+                sql +="\nnumero do CNPJ: "+Fornecedor.getDocum();
+            }
+        }
+        Messagem.chamarTela(sql);
+    }
+    /** */
+    public static void adicionarPessoa(String logPessoa, String docPessoa) {
+        // adicionarPessoa(Pessoa.getTABELA(), logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, null);
+        try {
+            Pessoa();
+            String sql = "insert into " + Fornecedor.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA() + ", login, docum )  values (?,?,?)";
+            int id = Pessoa.obterIdPessoa(logPessoa);
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, id);
+            pst.setString(2, logPessoa);
+            pst.setString(3, docPessoa);
+
+            int ADD = pst.executeUpdate();
+            if (ADD > 0) {
+                Messagem.ADICIONADO(sql);
+            }
+        } catch (SQLException e) {
+            Messagem.chamarTela(e);
+
+        } finally {
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        }
     }
 
     /**
@@ -60,51 +149,53 @@ public class Pessoa {
             int idPessoa = 0;
             String sql = "";
             if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
-                if (Pessoa.obterIdPessoa(logPessoa) == 0) {
-                    sql = "insert into " + Pessoa.getTABELA().toLowerCase()
-                            + "(login,senha,tipoPessoa,nome)  values (?,?,?,?)";
-                }
+                //if (Pessoa.obterIdPessoa(logPessoa) == 0) {
+                sql = "insert into " + Pessoa.getTABELA() + " (login, senha, tipoPessoa, nome) values (?,?,?,?)";
+                //}
             } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
-                Pessoa.adicionarPessoa(Pessoa.getTABELA(), logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa,
-                        documPessoa);
-                idPessoa = Pessoa.obterIdPessoa(logPessoa);
-                sql = "insert into " + Cliente.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA()
-                        + ",login, docum) values (?,?,?)";
+                if (obterIdPessoa(logPessoa) == 0) {
+                    Pessoa.adicionarPessoa(Pessoa.getTABELA(), logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, documPessoa);
+                }
+                sql = "insert into " + Cliente.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA() + ", login, docum) values (?,?,?)";
             } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
-                Pessoa.adicionarPessoa(Pessoa.getTABELA(), logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa,
-                        documPessoa);
-                idPessoa = Pessoa.obterIdPessoa(logPessoa);
-                sql = "insert into " + Fornecedor.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA()
-                        + ", login, docum )  values (?,?,?)";
+                if (obterIdPessoa(logPessoa) == 0) {
+                    Pessoa.adicionarPessoa(Pessoa.getTABELA(), logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, documPessoa);
+                }
+                sql = "insert into " + Fornecedor.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA() + ", login, docum )  values (?,?,?)";
             }
             if (!logPessoa.isEmpty() && !senPessoa.isEmpty() && !conSenPessoa.isEmpty() && !tipoPessoa.isEmpty()
-                    && !nomePessoa.isEmpty() && !documPessoa.isEmpty()) {
-                pst = conexao.prepareStatement(sql);
-                if (senPessoa.equals(conSenPessoa) && Tabela.equalsIgnoreCase(Pessoa.getTABELA())
-                        && Pessoa.obterIdPessoa(logPessoa) == 0) {
+                    && !nomePessoa.isEmpty()) {
+                if (senPessoa.equals(conSenPessoa) && Tabela.equalsIgnoreCase(Pessoa.getTABELA()) && obterIdPessoa(logPessoa) == 0) {
+                    pst = conexao.prepareStatement(sql);
                     pst.setString(1, logPessoa);
                     pst.setString(2, senPessoa);
                     pst.setString(3, tipoPessoa);
                     pst.setString(4, nomePessoa);
                     int adicionado = pst.executeUpdate();
-                    if (adicionado == 0) {
+                    if (adicionado > 0) {
                         Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
+                        ModuloConector.fecharConexao(conexao, rs, rsmd, pst, pst);
+                    } else {
                         ModuloConector.fecharConexao(conexao, rs, rsmd, pst, pst);
                     }
                 } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                     if (Pessoa.VerificaDocumento(documPessoa, tipoPessoa)) {
+                        idPessoa = Pessoa.obterIdPessoa(logPessoa);
+                        pst = conexao.prepareStatement(sql);
                         if (Fornecedor.obterIdFornecedor(logPessoa) != 0) {
                             Fornecedor.pesquisarFornecedor(logPessoa);
-                            pst.setInt(1, Fornecedor.getIdpessoa());
+                            pst = conexao.prepareStatement(sql);
+                            pst.setInt(1, idPessoa);
                             pst.setString(2, Fornecedor.getLogin());
                             pst.setString(3, Fornecedor.getDocum());
                         } else {
+                            pst = conexao.prepareStatement(sql);
                             pst.setInt(1, idPessoa);
                             pst.setString(2, logPessoa);
                             pst.setString(3, documPessoa);
                         }
                         int adicionado = pst.executeUpdate();
-                        if (adicionado == 0) {
+                        if (adicionado > 0) {
                             Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
                             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, pst);
                         }
@@ -113,18 +204,22 @@ public class Pessoa {
                     }
                 } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
                     if (Pessoa.VerificaDocumento(documPessoa, tipoPessoa)) {
-                        if (Cliente.obterIdCliente(logPessoa) != 0) {
+                        idPessoa = Pessoa.obterIdPessoa(logPessoa);
+                        pst = conexao.prepareStatement(sql);
+                        if (Cliente.obterIdCliente(logPessoa) > 0) {
                             Cliente.pesquisarCliente(logPessoa);
-                            pst.setInt(1, Cliente.getIdpessoa());
+                            pst = conexao.prepareStatement(sql);
+                            pst.setInt(1, idPessoa);
                             pst.setString(2, Cliente.getLogin());
                             pst.setString(3, Cliente.getDocum());
                         } else {
+                            pst = conexao.prepareStatement(sql);
                             pst.setInt(1, idPessoa);
                             pst.setString(2, logPessoa);
                             pst.setString(3, documPessoa);
                         }
                         int adicionado = pst.executeUpdate();
-                        if (adicionado == 0) {
+                        if (adicionado > 0) {
                             Messagem.chamarTela(Messagem.ADICIONADO(Tabela));
                             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                         }
@@ -138,6 +233,7 @@ public class Pessoa {
                 ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
         } catch (SQLException e) {
+            System.out.println(e);
             Messagem.chamarTela(Tabela + " Adicionar: " + e);
             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
@@ -443,8 +539,11 @@ public class Pessoa {
         }
     }
 
-    /**
-     * FAZER Este metodo Pesquisa na tabela do banco de dados
+    public static void pesquisarPessoa(String logPessoa){
+        Pessoa.pesquisarPessoa(Pessoa.getTABELA(), logPessoa);
+    }
+    /**FAZER
+     *  Este metodo Pesquisa na tabela do banco de dados
      *
      * @param Tabela Setar uma informação do tipo String no nome da Tabela
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
@@ -454,19 +553,36 @@ public class Pessoa {
     public static void pesquisarPessoa(String Tabela, String logPessoa) {
         try {
             String sql = "";
-            if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
+            if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
+                Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
+                sql ="select P.login, P.senha, P.tipoPessoa, P.nome from "+Pessoa.getTABELA()+" as P where P.id"+Pessoa.getTABELA()+" = ?";
+            } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
+                Cliente.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
                 Cliente.setIdCliente(Cliente.obterIdCliente(logPessoa));
                 sql = "select P.login, P.senha, P.tipoPessoa, P.nome, C.docum from " + Pessoa.getTABELA() + " as P, "
-                        + Cliente.getTABELA() + " as C where  C.id" + Pessoa.getTABELA() + " = ?";
+                        + Cliente.getTABELA() + " as C where  C.id" + Pessoa.getTABELA() + " = ? or P.id" + Pessoa.getTABELA() + " = ?";
             } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
                 Fornecedor.setIdFornecedor(Fornecedor.obterIdFornecedor(logPessoa));
                 sql = "select P.login, P.senha, P.tipoPessoa, P.nome, F.docum from " + Pessoa.getTABELA() + " as P, "
-                        + Fornecedor.getTABELA() + " as F where F.id" + Pessoa.getTABELA() + " = ?";
+                        + Fornecedor.getTABELA() + " as F where F.id" + Pessoa.getTABELA() + " = ? or P.id" + Pessoa.getTABELA() + " = ?";
             }
-            if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
+            if(Tabela.equalsIgnoreCase(Pessoa.getTABELA())){
+                if(!logPessoa.isEmpty()){
+                    pst = conexao.prepareStatement(sql);
+                    pst.setInt(1, Pessoa.getIdpessoa());
+                    rs = pst.executeQuery();
+                    if(rs.next()){
+                        Pessoa.setLogin(rs.getString(1));
+                        Pessoa.setSenha(rs.getString(2));
+                        Pessoa.setTipoPessoa(rs.getString(3));
+                        Pessoa.setNome(rs.getString(4));
+                    }
+                }
+            }else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                 if (!logPessoa.isEmpty()) {
                     pst = conexao.prepareStatement(sql);
                     pst.setInt(1, Cliente.getIdCliente());
+                    pst.setInt(2, Cliente.getIdpessoa());
                     rs = pst.executeQuery();
                     if (rs.next()) {
                         Cliente.setLogin(rs.getString(1));
@@ -485,6 +601,7 @@ public class Pessoa {
                 if (!logPessoa.isEmpty()) {
                     pst = conexao.prepareStatement(sql);
                     pst.setInt(1, Fornecedor.getIdFornecedor());
+                    pst.setInt(2, Fornecedor.getIdpessoa());
                     rs = pst.executeQuery();
                     if (rs.next()) {
                         Fornecedor.setLogin(rs.getString(1));
@@ -558,21 +675,25 @@ public class Pessoa {
     }
 
     /**
-     *Este Metodo Retornar boolen após Verifica o documento se tem a quantidade de digito referente ao tipo de pessoa.
-     *@param docPessoa Setar uma informação de valor String do documento da Pessoa.
-     *@param TipoPessoa Setar uma informação de valor String do Tipo de Pessoa.
-     *@return Retornar Uma informação de valor boolean da verificação de Documento mediante:
-     *<ul> 
-     <li> <b>Valor True</b></li>
-     <ol>
-     <li>docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"</li>
-     <li>ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"</li>
-     </ol>
-    <li><b>Valor False</b></li>
-    <ol>
-    <li></li>
-    </ol>
-     </ul>
+     * Este Metodo Retornar boolen após Verifica o documento se tem a quantidade
+     * de digito referente ao tipo de pessoa.
+     *
+     * @param docPessoa Setar uma informação de valor String do documento da
+     * Pessoa.
+     * @param TipoPessoa Setar uma informação de valor String do Tipo de Pessoa.
+     * @return Retornar Uma informação de valor boolean da verificação de
+     * Documento mediante:
+     * <ul>
+     * <li> <b>Valor True</b></li>
+     * <ol>
+     * <li>docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"</li>
+     * <li>ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"</li>
+     * </ol>
+     * <li><b>Valor False</b></li>
+     * <ol>
+     * <li></li>
+     * </ol>
+     * </ul>
      */
     private static Boolean VerificaDocumento(String docPessoa, String TipoPessoa) {
         if ((docPessoa.length() == 11 && TipoPessoa.equalsIgnoreCase("pf"))
@@ -583,23 +704,25 @@ public class Pessoa {
     }
 
     /**
-     *Este Metodo Retornar String  após Verifica o documento se tem a quantidade de digito referente ao tipo de pessoa.
-     *@param docPessoa Setar uma informação de valor String do documento da Pessoa.
-     *@param TipoPessoa Setar uma informação de valor String do Tipo de Pessoa.
-     @return Retornar uma informçaõ de valor String do erro do documento
-     *<ul> 
-     <li> <b>Valor True</b></li>
-     <ol>
-     <li>docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"</li>
-     <li>ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"</li>
-     </ol>
-    <li><b>Valor False</b></li>
-    <ol>
-    <li></li>
-    </ol>
-     </ul>
+     * Este Metodo Retornar String após Verifica o documento se tem a quantidade
+     * de digito referente ao tipo de pessoa.
+     *
+     * @param docPessoa Setar uma informação de valor String do documento da
+     * Pessoa.
+     * @param TipoPessoa Setar uma informação de valor String do Tipo de Pessoa.
+     * @return Retornar uma informçaõ de valor String do erro do documento
+     * <ul>
+     * <li> <b>Valor True</b></li>
+     * <ol>
+     * <li>docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"</li>
+     * <li>ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"</li>
+     * </ol>
+     * <li><b>Valor False</b></li>
+     * <ol>
+     * <li></li>
+     * </ol>
+     * </ul>
      */
-     
     private static String txtVerificaDocumento(String docPessoa, String TipoPessoa) {
         String Mess = "";
         if (docPessoa.length() < 11 && tipoPessoa.equalsIgnoreCase("pf")) {
@@ -613,7 +736,6 @@ public class Pessoa {
         }
         return Mess;
     }
-
 
     /**
      * Este metodo verificar ser Todos paramentros estão vazio e que tiver ser
@@ -743,6 +865,7 @@ public class Pessoa {
             return false;
         }
     }
+
     // Sets e Gets
     /**
      * Este Metodo Retornar uma informação do tipo inteiro do id pessoa

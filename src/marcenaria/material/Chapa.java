@@ -53,15 +53,16 @@ public class Chapa {
      * @param args para teste
      */
     public static void main(String[] args) {
-        deletadaChapa();
-        criadaChapa();
+        //deletadaChapa();
+        //criadaChapa();
         //Peca.criadaPeca();
         // setComprChapa(220.0);
         ///setLargChapa(110.0);
         //setEspesChapa(1.8);
         //setPrecoChapa(150.0);
         //inserirChapa();
-        //adicionarChapa(5, 220, 160, 0.18, 280, "MDF", "Carlos");
+       Fornecedor.adicionarFornecedor("Carlos", "39568eu1", "39568eu1", "pf", "Carlos", "12345678901");
+       adicionarChapa(5, 220, 160, 0.18, 280, "MDF", "Carlos");
     }
 
     /** <b>Este Metodo faz Criação da Tabela Chapa utilizando uma classe  e metodo auxiliar</b>

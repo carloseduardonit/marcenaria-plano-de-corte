@@ -77,7 +77,7 @@ public class Control {
      */
     public static void ADDFornecedor(JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
-        if (Cliente.campoDiferente(senha.getText(), conSenha.getText(), getTcs())) {
+        if (Fornecedor.campoDiferente(senha.getText(), conSenha.getText(), getTcs())) {
             Fornecedor.adicionarFornecedor(login.getText(), senha.getText(), conSenha.getText(),
                     TipoPessoa.getSelectedItem().toString(), nome.getText(), documento.getText());
         } else {

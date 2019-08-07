@@ -7,7 +7,7 @@ package marcenaria.material;
 
 import java.sql.*;
 import marcenaria.dado.ModuloConector;
-import marcenaria.pessoa1.Fornecedor;
+import marcenaria.pessoa.Fornecedor;
 
 /**
  * @since 16/05/2019

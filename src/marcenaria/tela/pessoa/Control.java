@@ -15,8 +15,8 @@ import marcenaria.Marcenaria;
 import marcenaria.material.Chapa;
 import marcenaria.material.Peca;
 import marcenaria.material.Pedaco;
-import marcenaria.pessoa1.Cliente;
-import marcenaria.pessoa1.Fornecedor;
+import marcenaria.pessoa.Cliente;
+import marcenaria.pessoa.Fornecedor;
 
 /**
  *

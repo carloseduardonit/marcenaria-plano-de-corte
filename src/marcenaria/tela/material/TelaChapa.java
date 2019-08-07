@@ -7,7 +7,7 @@ package marcenaria.tela.material;
 
 import marcenaria.dado.ModuloConector;
 import marcenaria.material.Chapa;
-import marcenaria.pessoa1.Layout;
+import marcenaria.pessoa.Layout;
 import marcenaria.tela.pessoa.Control;
 
 /**

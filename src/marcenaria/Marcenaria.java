@@ -6,9 +6,9 @@
 package marcenaria;
 
 import marcenaria.material.Material;
-import marcenaria.pessoa1.Layout;
-import marcenaria.pessoa1.Pessoa;
-import marcenaria.pessoa1.cliente.Projeto;
+import marcenaria.pessoa.Layout;
+import marcenaria.pessoa.Pessoa;
+import marcenaria.pessoa.cliente.Projeto;
 import marcenaria.tela.material.TelaChapa;
 import marcenaria.tela.material.TelaPeca;
 import marcenaria.tela.material.TelaPedaco;

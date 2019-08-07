@@ -7,8 +7,8 @@ package marcenaria.tela.pessoa;
 
 import marcenaria.Marcenaria;
 import marcenaria.dado.ModuloConector;
-import marcenaria.pessoa1.Cliente;
-import marcenaria.pessoa1.Layout;
+import marcenaria.pessoa.Cliente;
+import marcenaria.pessoa.Layout;
 
 /**
  *

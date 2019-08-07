@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package marcenaria.pessoa1.cliente;
+package marcenaria.pessoa.cliente;
 
 import java.sql.*;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
-import marcenaria.pessoa1.Cliente;
+import marcenaria.pessoa.Cliente;
 
 /**
  * @since 21/07/2019

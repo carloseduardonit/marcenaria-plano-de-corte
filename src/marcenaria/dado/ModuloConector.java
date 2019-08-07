@@ -409,7 +409,7 @@ public class ModuloConector {
                 ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
         } catch (SQLException e) {
-            Messagem.chamarTela(e);
+            Messagem.chamarTela(Tabela+" erro Metodo CriarTabela: "+e);
             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
         
@@ -417,9 +417,24 @@ public class ModuloConector {
 
     /**
      * Este Metodo deletar a tabela mo banco de dados
+     * @param Tabela
      */
-    public static void deletarTabela() {
-        
+    public static void deletarTabela(String Tabela) {
+        try {
+            String sql ="delete table if exists "+Tabela;
+            Messagem.deletadaTabela(Tabela);
+            if (Messagem.getDeleta()==0) {
+                stmt = conexao.createStatement();
+                int DEL = stmt.executeUpdate(sql);
+                if(DEL >0){
+                   Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
+                }
+            }
+        } catch (SQLException e) {
+            Messagem.chamarTela(Tabela+" erro Metodo DeletaTabela: "+e);
+        }finally{
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        }
     }
     // Fim das Tabelas
     // Inicio dos Sets e Gets

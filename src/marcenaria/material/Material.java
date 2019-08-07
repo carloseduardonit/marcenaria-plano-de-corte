@@ -10,9 +10,9 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
-import marcenaria.pessoa1.Fornecedor;
-import marcenaria.pessoa1.Pessoa;
-import marcenaria.pessoa1.cliente.Projeto;
+import marcenaria.pessoa.Fornecedor;
+import marcenaria.pessoa.Pessoa;
+import marcenaria.pessoa.cliente.Projeto;
 
 /**
  * @since 18/05/2019

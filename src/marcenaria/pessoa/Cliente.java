@@ -209,39 +209,39 @@ public class Cliente extends Pessoa {
      */
     public static void excluirCliente(String logCliente, boolean Mensagem) {
         if (Cliente.existeraCliente(logCliente)) {
+            int excluir = -2, excluido = excluir;
             try {
-                Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logCliente)); 
+                Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logCliente));
                 Cliente.setIdCliente(Cliente.obterIdPessoatoCliente(logCliente));
-                cliente();
-                String sql = "delete from " + Cliente.getTABELA() + " where id" + Pessoa.getTABELA() + " = ?  or id" + Cliente.getTABELA() + " = ?", s = Cliente.exibirClientetoString(logCliente);
-               
-                int excluir = -2;
+                String sql = "delete from " + Cliente.getTABELA() + " where id" + Pessoa.getTABELA() + " =  ? or id" + Cliente.getTABELA() + " = ?", s = Cliente.exibirClientetoString(logCliente);
                 if (Mensagem) {
                     excluir = JOptionPane.showConfirmDialog(null, s, Cliente.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
-                } else{
-                    excluir =JOptionPane.OK_OPTION;
+                } else {
+                    excluir = JOptionPane.OK_OPTION;
                 }
-                if (excluir == JOptionPane.OK_OPTION ) {
-                pst = conexao.prepareStatement(sql);
-                pst.setInt(1, Pessoa.getIdpessoa());
-                pst.setInt(2, Cliente.getIdCliente());
-                    int excluido = pst.executeUpdate(sql);
-                    System.out.println("" + excluido);
-                    if (excluido >= 0 && Mensagem) {
+                if (excluir == JOptionPane.OK_OPTION) {
+                    cliente();
+                    pst = conexao.prepareStatement(sql);
+                    pst.setInt(1, Pessoa.getIdpessoa());
+                    pst.setInt(2, Cliente.getIdCliente());
+                    excluido = pst.executeUpdate();
+                    if (excluido > 0 && Mensagem) {
                         Messagem.chamarTela(Messagem.EXCLUIDO(s));
-                        int pes = JOptionPane.showConfirmDialog(null, "Deseja excluido todos os dados", sql, JOptionPane.OK_CANCEL_OPTION);
-                        if (pes == JOptionPane.OK_OPTION) {
-                            Pessoa.excluirPessoa(logCliente, false);
-                        }
                     }
                 }
             } catch (Exception e) {
                 Messagem.chamarTela(Cliente.getTABELA() + " Excluir: " + e);
             } finally {
                 ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                if (excluido > 0 && Mensagem) {
+                    int pes = JOptionPane.showConfirmDialog(null, "Deseja excluir todos os dados  " + Pessoa.getTABELA() + ": " + logCliente, Pessoa.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
+                    if (pes == JOptionPane.OK_OPTION) {
+                        Pessoa.excluirPessoa(logCliente, false);
+                    }
+                }
             }
         } else {
-            Messagem.chamarTela(Cliente.getTABELA() + " " + logCliente + " Não existe !!!");
+            Messagem.chamarTela(Cliente.getTABELA() + ": " + logCliente + " Não existe !!!");
         }
     }
 
@@ -304,7 +304,7 @@ public class Cliente extends Pessoa {
     }
 
     /**
-     * ok  Este metodo Pesquisa na tabela Cliente do banco de dados
+     * ok Este metodo Pesquisa na tabela Cliente do banco de dados
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente

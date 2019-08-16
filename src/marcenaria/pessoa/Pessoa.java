@@ -139,8 +139,8 @@ public class Pessoa {
      * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
      * Nome Pessoa
      */
-    public static void editarPessoa( String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa, String nomePessoa) {
-        Pessoa.editarPessoa( logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, false);
+    public static void editarPessoa(String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa, String nomePessoa) {
+        Pessoa.editarPessoa(logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, false);
     }
 
     /**
@@ -214,19 +214,22 @@ public class Pessoa {
      */
     public static void excluirPessoa(String logPessoa, boolean mensagem) {
         if (existeraPessoa(logPessoa)) {
-            if (Cliente.existeraCliente(logPessoa) || Fornecedor.existeroFornecedor(logPessoa)) {
-                Cliente.excluirCliente(logPessoa, mensagem);
-                Fornecedor.excluirFornecedor(logPessoa, mensagem);
+            if (Cliente.existeraCliente(logPessoa)) {
+                Cliente.excluirCliente(logPessoa);
+            }
+            if (Fornecedor.existeroFornecedor(logPessoa)) {
+                Fornecedor.excluirFornecedor(logPessoa);
             }
             try {
                 Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
                 String sql = "delete from " + Pessoa.getTABELA() + " where id" + Pessoa.getTABELA() + " = ? ", s = Pessoa.exibirPessoatoString(logPessoa);
-                
+
                 int excluir = JOptionPane.showConfirmDialog(null, s, Pessoa.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
-                if (excluir == JOptionPane.OK_OPTION) {pessoa();
-                pst = conexao.prepareStatement(sql);
-                pst.setInt(1, Pessoa.getIdpessoa());
-                    int excluido = pst.executeUpdate(sql);
+                if (excluir == JOptionPane.OK_OPTION) {
+                    pessoa();
+                    pst = conexao.prepareStatement(sql);
+                    pst.setInt(1, Pessoa.getIdpessoa());
+                    int excluido = pst.executeUpdate();
                     System.out.println("" + excluido);
                     if (excluido > 0 && mensagem) {
                         Messagem.chamarTela(Messagem.EXCLUIDO(s));
@@ -236,6 +239,7 @@ public class Pessoa {
                 Messagem.chamarTela(Pessoa.getTABELA() + " Excluir: " + e);
             } finally {
                 ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                
             }
         } else {
             if (mensagem) {
@@ -386,18 +390,16 @@ public class Pessoa {
     }
 
     // Incio dos metodos de controle
-    
-
     /**
      *
      * @return
      */
-
     public static String[] obterlogPessoa() {
         String sql = "select login from " + Pessoa.getTABELA();
         return obterlogPessoa(Pessoa.getTABELA(), sql);
     }
-/**
+
+    /**
      *
      * @param Tabela
      * @param sql
@@ -508,12 +510,12 @@ public class Pessoa {
      * <b>PJ</b> so poderá anexa a infornação for de 14 digito
      * @return Retornar um array de informação de String dos Campos vazios
      */
-    public static String[] CampoVazio( String logPessoa, String senPessoa, String conSenPessoa,
+    public static String[] CampoVazio(String logPessoa, String senPessoa, String conSenPessoa,
             String tipoPessoa, String nomePessoa, String documPessoa) {
         String[] campo = new String[7];
-        boolean  lp = false, sp = false, csp = false, tp = false, np = false, dp = false;
+        boolean lp = false, sp = false, csp = false, tp = false, np = false, dp = false;
         for (int i = 0; i < campo.length;) {
-             if (logPessoa.isEmpty()
+            if (logPessoa.isEmpty()
                     && !lp) {
                 lp = true;
                 campo[i] = "login";
@@ -530,7 +532,7 @@ public class Pessoa {
                 tp = true;
                 campo[i] = "Tipo de Pessoa";
                 i++;
-            }else if (nomePessoa.isEmpty() && !np) {
+            } else if (nomePessoa.isEmpty() && !np) {
                 if (tipoPessoa.equalsIgnoreCase("pf")) {
                     campo[i] = "Nome completo";
                     i++;
@@ -542,7 +544,7 @@ public class Pessoa {
                     i++;
                 }
                 np = true;
-            }else if (documPessoa.isEmpty() && !dp) {
+            } else if (documPessoa.isEmpty() && !dp) {
                 if (tipoPessoa.equalsIgnoreCase("pf")) {
                     campo[i] = "CPF";
                     i++;
@@ -554,7 +556,7 @@ public class Pessoa {
                     i++;
                 }
                 dp = true;
-            }else{
+            } else {
                 i++;
             }
         }
@@ -763,6 +765,5 @@ public class Pessoa {
         return TABELA;
     }
 //  Fim dos Sets e Gets
-
 
 }

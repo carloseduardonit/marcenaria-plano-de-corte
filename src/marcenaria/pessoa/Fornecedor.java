@@ -206,35 +206,36 @@ public class Fornecedor extends Pessoa {
      */
     public static void excluirFornecedor(String logFornecedor, boolean Mensagem) {
         if (Fornecedor.existeroFornecedor(logFornecedor)) {
+            int excluir = -2, excluido = excluir;
+            String sql = "delete from " + Fornecedor.getTABELA() + " where id" + Pessoa.getTABELA() + " = ?  or id" + Fornecedor.getTABELA() + " = ?", s = Fornecedor.exibirFornecedortoString(logFornecedor), p = Pessoa.exibirPessoatoString(logFornecedor);
             try {
                 Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logFornecedor));
                 Fornecedor.setIdFornecedor(Fornecedor.obterIdPessoatoFornecedor(logFornecedor));
-                String sql = "delete from " + Fornecedor.getTABELA() + " where id" + Pessoa.getTABELA() + " = ?  or id" + Fornecedor.getTABELA() + " = ?", s = Fornecedor.exibirFornecedortoString(logFornecedor), p = Pessoa.exibirPessoatoString(tipoPessoa);
-                int excluir = -2;
                 if (Mensagem) {
                     excluir = JOptionPane.showConfirmDialog(null, s, Fornecedor.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
-                }else{
+                } else {
                     excluir = JOptionPane.OK_OPTION;
                 }
-                if (excluir == JOptionPane.OK_OPTION ) {
+                if (excluir == JOptionPane.OK_OPTION) {
                     fornecedor();
                     pst = conexao.prepareStatement(sql);
                     pst.setInt(1, Pessoa.getIdpessoa());
                     pst.setInt(2, Fornecedor.getIdFornecedor());
-                    int excluido = pst.executeUpdate(sql);
-                    if (excluido >= 0 && Mensagem) {
+                    excluido = pst.executeUpdate();
+                    if (excluido >= 0 && Mensagem || !Mensagem) {
                         Messagem.chamarTela(Messagem.EXCLUIDO(s));
-                        //ver melhorias                        
-                        int pes = JOptionPane.showConfirmDialog(null, p + "Deseja excluido todos os dados", Pessoa.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
-                        if (pes == JOptionPane.OK_OPTION) {
-                            Pessoa.excluirPessoa(logFornecedor);
-                        }
                     }
                 }
             } catch (SQLException e) {
                 Messagem.chamarTela(Fornecedor.getTABELA() + " Excluir: " + e);
             } finally {
                 ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                if (excluido >= 0 && Mensagem) {
+                    int pes = JOptionPane.showConfirmDialog(null, p + "\nDeseja excluido todos os dados", Pessoa.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
+                    if (pes == JOptionPane.OK_OPTION) {
+                        Pessoa.excluirPessoa(logFornecedor, false);
+                    }
+                }
             }
         } else {
             Messagem.chamarTela(Fornecedor.getTABELA() + " " + logFornecedor + " Não existe !!!");
@@ -299,7 +300,7 @@ public class Fornecedor extends Pessoa {
     }
 
     /**
-     * OK  Este metodo Pesquisa na tabela Fornecedor do banco de dados
+     * OK Este metodo Pesquisa na tabela Fornecedor do banco de dados
      *
      * @param logFornecedor Setar uma informação do tipo String da Tabela
      * Fornecedor no Login Fornecedor

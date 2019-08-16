@@ -96,7 +96,7 @@ public class Messagem {
     }
 
     /**
-     * Este metodo obtem uma Array de valor String e retonar uma Informação com
+     * ok Este metodo obtem uma Array de valor String e retonar uma Informação com
      * valor do tipo String dos campos vazio
      *
      * @version 1.2
@@ -105,8 +105,13 @@ public class Messagem {
      */
     public static final String VAZIO(String[] va) {
         String mens = "Campos vazios:\n";
-        for (int i = 0; i < va.length; i++) {
-            if (i < va.length - 1) {
+        int ar = 0;
+        for (String v :va){
+           if(v != null){
+            ar++;}
+        }
+        for (int i = 0; i < ar; i++) {
+            if (i < ar - 1) {
                 mens += va[i] + ";\n";
             } else {
                 mens += va[i] + ".";
@@ -269,7 +274,7 @@ public class Messagem {
 //Tela
 //Gets e Sets
 
-    /**
+    /**ok
      * Este metodo Retornar um valor inteiro na Variavel de Controle de
      * Deletação.onde o getDeleta():
      * <ul>
@@ -286,7 +291,7 @@ public class Messagem {
         return deleta;
     }
 
-    /**
+    /**ok
      * Este metodo Setar Informar um valor inteiro na Variavel de Controle de
      * Deletação.
      *
@@ -298,7 +303,7 @@ public class Messagem {
         Messagem.deleta = deleta;
     }
 
-    /**
+    /** ok
      * Este metodo Retornar um valor inteiro na Variavel de Controle de Criação.
      * onde o getCriada():
      * <ul>
@@ -316,7 +321,7 @@ public class Messagem {
     }
 
     /**
-     * Este metodo Setar Informar um valor inteiro na Variavel de Controle de
+     * ok Este metodo Setar Informar um valor inteiro na Variavel de Controle de
      * Criação.
      *
      * @version 1.3

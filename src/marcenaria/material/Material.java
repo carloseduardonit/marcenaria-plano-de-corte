@@ -83,7 +83,7 @@ public class Material {
             pst.setDouble(5, preco);
             pst.setString(6, tipoMaterial);
             if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                pst.setInt(7, Fornecedor.obterIdFornecedor(Fornecedo));// verificar
+                pst.setInt(7, Fornecedor.obterIdPessoatoFornecedor(Fornecedo));// verificar
             } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
                 pst.setInt(7, Chapa.obterIdChapa(tipoMaterial, espessura));
             } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {

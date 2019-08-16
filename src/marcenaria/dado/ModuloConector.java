@@ -349,7 +349,7 @@ public class ModuloConector {
      * linha.
      */
     public static int quantLinha(String tabela) {
-        String sql = "selec * from " + tabela;
+        String sql = "select * from " + tabela;
         return quantLinha(tabela, sql);
     }
 
@@ -367,18 +367,17 @@ public class ModuloConector {
     public static int quantLinha(String tabela, String sql) {
         try {
             conector();
-            if (VerificarNaoExistirTabela(tabela)) {
+            if (!VerificarNaoExistirTabela(tabela)) {
                 pst = conexao.prepareStatement(sql);
-                pst.setString(1, tabela);
                 rs = pst.executeQuery();
-                stmt = rs.getStatement();
+                rsmd = rs.getMetaData();
                 if (rs.next()) {
-                    return stmt.getMaxRows();
+                    
                 } else {
-                    Messagem.chamarTela("");
+                    Messagem.chamarTela("0");
                 }
             } else {
-                Messagem.chamarTela("");
+                Messagem.chamarTela("1");
             }
         } catch (SQLException e) {
             Messagem.chamarTela("Metodo QuantLinha da Classe ModuloConector: " + e);
@@ -397,7 +396,8 @@ public class ModuloConector {
      */
     public static void criarTabela(String sql, String Tabela) {
         try {
-            Messagem.tabelaCriada(Tabela);
+            conector();
+            Messagem.criadoTabela(Tabela);
             if (Messagem.getCriada() == 0) {
                 stmt = conexao.createStatement();
                 int criar = stmt.executeUpdate(sql);
@@ -405,8 +405,6 @@ public class ModuloConector {
                     Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
                     ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
-            } else {
-                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
         } catch (SQLException e) {
             Messagem.chamarTela(Tabela+" erro Metodo CriarTabela: "+e);
@@ -415,13 +413,14 @@ public class ModuloConector {
         
     }
 
-    /**
+    /** ok
      * Este Metodo deletar a tabela mo banco de dados
      * @param Tabela
      */
     public static void deletarTabela(String Tabela) {
         try {
-            String sql ="delete table if exists "+Tabela;
+            conector();
+            String sql ="drop table if exists "+Tabela;
             Messagem.deletadaTabela(Tabela);
             if (Messagem.getDeleta()==0) {
                 stmt = conexao.createStatement();

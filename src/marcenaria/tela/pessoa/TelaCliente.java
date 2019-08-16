@@ -200,7 +200,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnADDActionPerformed
 
     private void btnEDITActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEDITActionPerformed
-        Control.EDITCliente(txtLogin, txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+        Control.EDITCliente(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
         Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btnEDITActionPerformed
 

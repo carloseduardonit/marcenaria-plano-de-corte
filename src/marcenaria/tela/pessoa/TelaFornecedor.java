@@ -10,6 +10,7 @@ import marcenaria.dado.ModuloConector;
 import marcenaria.pessoa.Fornecedor;
 import marcenaria.pessoa.Layout;
 
+
 /**
  *
  * @author Carlos
@@ -205,7 +206,7 @@ Marcenaria m = new Marcenaria();
     }//GEN-LAST:event_btnADDActionPerformed
 
     private void btnEDITActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEDITActionPerformed
-     Control.EDITFornecedor(txtLogin, txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
+     Control.EDITFornecedor( txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
      Control.LimpaDados(txtLogin, txtSenha, txtConfSenha1, cbTipoPessoa, txtNome, txtDocumento);
     }//GEN-LAST:event_btnEDITActionPerformed
 

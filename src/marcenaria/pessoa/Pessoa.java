@@ -48,10 +48,10 @@ public class Pessoa {
      */
     public static void deletarPessoa() {
         if (!ModuloConector.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
-            ModuloConector.deletarTabela(Fornecedor.getTABELA());
+            Fornecedor.deletarFornecedor();
         }
         if (!ModuloConector.VerificarNaoExistirTabela(Cliente.getTABELA())) {
-            ModuloConector.deletarTabela(Cliente.getTABELA());
+            Cliente.deletarCliente();
         }
         ModuloConector.deletarTabela(Pessoa.getTABELA());
     }
@@ -139,8 +139,8 @@ public class Pessoa {
      * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
      * Nome Pessoa
      */
-    public static void editarPessoa(String nlogPessoa, String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa, String nomePessoa) {
-        Pessoa.editarPessoa(nlogPessoa, logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, false);
+    public static void editarPessoa( String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa, String nomePessoa) {
+        Pessoa.editarPessoa( logPessoa, senPessoa, conSenPessoa, tipoPessoa, nomePessoa, false);
     }
 
     /**
@@ -165,21 +165,20 @@ public class Pessoa {
      * @param mensagem
      *
      */
-    public static void editarPessoa(String nlogPessoa, String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa, String nomePessoa, boolean mensagem) {
+    public static void editarPessoa(String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa, String nomePessoa, boolean mensagem) {
         if (existeraPessoa(logPessoa)) {
             try {
                 Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
-                String sql = "uptade " + Pessoa.getTABELA() + " set login =?, senha=?, tipoPessoa=?, nome=? where id" + Pessoa.getTABELA() + " = ?", mens = Pessoa.exibirPessoatoString(logPessoa), mens1;
+                String sql = "update " + Pessoa.getTABELA().toLowerCase() + " set senha = ?, tipoPessoa = ?, nome = ? where id" + Pessoa.getTABELA() + " = ?", mens = Pessoa.exibirPessoatoString(logPessoa), mens1;
                 pessoa();
                 pst = conexao.prepareStatement(sql);
-                pst.setString(1, nlogPessoa);
-                pst.setString(2, senPessoa);
-                pst.setString(3, tipoPessoa);
-                pst.setString(4, nomePessoa);
-                pst.setInt(5, Pessoa.getIdpessoa());
+                pst.setString(1, senPessoa);
+                pst.setString(2, tipoPessoa);
+                pst.setString(3, nomePessoa);
+                pst.setInt(4, Pessoa.getIdpessoa());
                 int editada = pst.executeUpdate();
                 if (editada > 0 && mensagem) {
-                    mens1 = Pessoa.exibirPessoatoString(nlogPessoa);
+                    mens1 = Pessoa.exibirPessoatoString(logPessoa);
                     Messagem.chamarTela(Messagem.EDITADO("Antigo " + mens + "\n Novo " + mens1));
                 }
             } catch (SQLException e) {
@@ -202,7 +201,7 @@ public class Pessoa {
      * novo Login Pessoa
      */
     public static void excluirPessoa(String logPessoa) {
-        Pessoa.excluirPessoa(logPessoa, false);
+        Pessoa.excluirPessoa(logPessoa, true);
     }
 
     /**
@@ -215,14 +214,18 @@ public class Pessoa {
      */
     public static void excluirPessoa(String logPessoa, boolean mensagem) {
         if (existeraPessoa(logPessoa)) {
+            if (Cliente.existeraCliente(logPessoa) || Fornecedor.existeroFornecedor(logPessoa)) {
+                Cliente.excluirCliente(logPessoa, mensagem);
+                Fornecedor.excluirFornecedor(logPessoa, mensagem);
+            }
             try {
                 Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logPessoa));
                 String sql = "delete from " + Pessoa.getTABELA() + " where id" + Pessoa.getTABELA() + " = ? ", s = Pessoa.exibirPessoatoString(logPessoa);
-                pessoa();
+                
+                int excluir = JOptionPane.showConfirmDialog(null, s, Pessoa.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
+                if (excluir == JOptionPane.OK_OPTION) {pessoa();
                 pst = conexao.prepareStatement(sql);
                 pst.setInt(1, Pessoa.getIdpessoa());
-                int excluir = JOptionPane.showConfirmDialog(null, s, Pessoa.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
-                if (excluir == JOptionPane.OK_OPTION) {
                     int excluido = pst.executeUpdate(sql);
                     System.out.println("" + excluido);
                     if (excluido > 0 && mensagem) {
@@ -283,7 +286,6 @@ public class Pessoa {
             }
             if (!Pessoa.getSenha().isEmpty()) {
                 sql += "\nSenha da Pessoa: " + Pessoa.getSenha();
-
             }
             if (!Pessoa.getTipoPessoa().isEmpty()) {
                 sql += "\nTipo de Pessoa: " + Pessoa.getTipoPessoa();
@@ -293,7 +295,7 @@ public class Pessoa {
     }
 
     /**
-     * ok Este metodo Pesquisa na tabela do banco de dados
+     * ok Este metodo Pesquisa na tabela Pessoa do banco de dados
      *
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
      * Login Pessoa
@@ -339,22 +341,27 @@ public class Pessoa {
     public static int obterIdPessoa(String Tabela, String logPessoa) {
         int id = 0;
         try {
-            pessoa();
+
             String sql = "";
             if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
                 sql = "select id" + Pessoa.getTABELA() + " from " + Pessoa.getTABELA() + " where login = ?";
             } else if (Tabela.equalsIgnoreCase(Cliente.getTABELA())) {
                 sql = "select id" + Pessoa.getTABELA() + " from " + Cliente.getTABELA() + " where login = ?";
-            } else if (Tabela.equalsIgnoreCase(Pessoa.getTABELA())) {
-                sql = "select id" + Pessoa.getTABELA() + " from " + Pessoa.getTABELA() + " where login = ? ";
+            } else if (Tabela.equalsIgnoreCase(Fornecedor.getTABELA())) {
+                sql = "select id" + Pessoa.getTABELA() + " from " + Fornecedor.getTABELA() + " where login = ? ";
+            } else {
+                Messagem.chamarTela("Problema com tabela");
+                logPessoa = "";
             }
             if (!logPessoa.isEmpty()) {
+                pessoa();
                 pst = conexao.prepareStatement(sql);
                 pst.setString(1, logPessoa);
                 rs = pst.executeQuery();
                 if (rs.next()) {
                     id = rs.getInt(1);
                 }
+                return id;
             }
         } catch (SQLException e) {
             Messagem.chamarTela(Tabela + " Obter id Pessoa: " + e);
@@ -377,10 +384,47 @@ public class Pessoa {
     public static int obterIdPessoa(String logPessoa) {
         return obterIdPessoa(Pessoa.getTABELA(), logPessoa);
     }
+
     // Incio dos metodos de controle
+    
 
     /**
-     * ok Este Metodo Retornar boolen após Verifica o documento se tem a
+     *
+     * @return
+     */
+
+    public static String[] obterlogPessoa() {
+        String sql = "select login from " + Pessoa.getTABELA();
+        return obterlogPessoa(Pessoa.getTABELA(), sql);
+    }
+/**
+     *
+     * @param Tabela
+     * @param sql
+     * @return
+     */
+    public static String[] obterlogPessoa(String Tabela, String sql) {
+        int quantidadePessoa = ModuloConector.quantLinha(TABELA, sql);
+        String[] login = new String[quantidadePessoa];
+        try {
+            pessoa();
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            for (int i = 0; i < quantidadePessoa; i++) {
+                if (rs.next()) {
+                    login[i] = rs.getString(1);
+                }
+            }
+            return login;
+        } catch (SQLException e) {
+            Messagem.chamarTela(Tabela + " obterlogPessoa: " + e);
+        }
+        return login;
+
+    }
+
+    /**
+     * ok Este Metodo Retornar boolean após Verifica o documento se tem a
      * quantidade de digito referente ao tipo de pessoa.
      *
      * @param docPessoa Setar uma informação de valor String do documento da
@@ -400,7 +444,7 @@ public class Pessoa {
      * </ol>
      * </ul>
      */
-    private static Boolean VerificaDocumento(String docPessoa, String TipoPessoa) {
+    public static Boolean VerificaDocumento(String docPessoa, String TipoPessoa) {
         if ((docPessoa.length() == 11 && TipoPessoa.equalsIgnoreCase("pf"))
                 || (docPessoa.length() == 14 && TipoPessoa.equalsIgnoreCase("pj"))) {
             return true;
@@ -428,7 +472,7 @@ public class Pessoa {
      * </ol>
      * </ul>
      */
-    private static String txtVerificaDocumento(String docPessoa, String TipoPessoa) {
+    public static String txtVerificaDocumento(String docPessoa, String TipoPessoa) {
         String Mess = "";
         if (docPessoa.length() < 11 && tipoPessoa.equalsIgnoreCase("pf")) {
             Mess = "CPF falta " + (11 - docPessoa.length()) + "digitos";
@@ -447,7 +491,6 @@ public class Pessoa {
      * ser anexado no array interno, retornado assim um Array de String dos
      * Campos Vazios
      *
-     * @param Tabela Setar uma informação do tipo String no nome da Tabela
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
      * Login Pessoa
      * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
@@ -465,28 +508,29 @@ public class Pessoa {
      * <b>PJ</b> so poderá anexa a infornação for de 14 digito
      * @return Retornar um array de informação de String dos Campos vazios
      */
-    public static String[] CampoVazio(String logPessoa, String senPessoa, String conSenPessoa,
+    public static String[] CampoVazio( String logPessoa, String senPessoa, String conSenPessoa,
             String tipoPessoa, String nomePessoa, String documPessoa) {
         String[] campo = new String[7];
+        boolean  lp = false, sp = false, csp = false, tp = false, np = false, dp = false;
         for (int i = 0; i < campo.length;) {
-
-            if (logPessoa.isEmpty()) {
+             if (logPessoa.isEmpty()
+                    && !lp) {
+                lp = true;
                 campo[i] = "login";
                 i++;
-            }
-            if (senPessoa.isEmpty()) {
+            } else if (senPessoa.isEmpty() && !sp) {
+                sp = true;
                 campo[i] = "Senha";
                 i++;
-            }
-            if (conSenPessoa.isEmpty()) {
+            } else if (conSenPessoa.isEmpty() && !csp) {
+                csp = true;
                 campo[i] = "Confimação de Senha";
                 i++;
-            }
-            if (tipoPessoa.isEmpty()) {
+            } else if (tipoPessoa.isEmpty() && !tp) {
+                tp = true;
                 campo[i] = "Tipo de Pessoa";
                 i++;
-            }
-            if (nomePessoa.isEmpty()) {
+            }else if (nomePessoa.isEmpty() && !np) {
                 if (tipoPessoa.equalsIgnoreCase("pf")) {
                     campo[i] = "Nome completo";
                     i++;
@@ -497,8 +541,8 @@ public class Pessoa {
                     campo[i] = "Nome";
                     i++;
                 }
-            }
-            if (documPessoa.isEmpty()) {
+                np = true;
+            }else if (documPessoa.isEmpty() && !dp) {
                 if (tipoPessoa.equalsIgnoreCase("pf")) {
                     campo[i] = "CPF";
                     i++;
@@ -509,6 +553,9 @@ public class Pessoa {
                     campo[i] = "CPF ou CNPJ";
                     i++;
                 }
+                dp = true;
+            }else{
+                i++;
             }
         }
         return campo;
@@ -567,9 +614,11 @@ public class Pessoa {
             return false;
         }
     }
+
     /**
      * @param logPessoa
-     * @return */
+     * @return
+     */
     public static Boolean existeraPessoa(String logPessoa) {
         return obterIdPessoa(logPessoa) > 0;
     }
@@ -714,4 +763,6 @@ public class Pessoa {
         return TABELA;
     }
 //  Fim dos Sets e Gets
+
+
 }

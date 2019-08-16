@@ -129,11 +129,10 @@ public class Control {
      */
     public static void EDITChapa(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
             JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
-        Chapa.editarChapa();
+        Chapa.editarChapa(Fornecedor.getText());
     }
 
     /**
-     * @param nlogin Setar uma informação de valor JText de novo login
      * @param login Setar uma informação de valor JText de login
      * @param senha Setar uma informação de valor JText de senha
      * @param conSenha Setar uma informação de valor JText de confimação de
@@ -142,10 +141,10 @@ public class Control {
      * @param nome Setar uma informação de valor JText de nome
      * @param documento Setar uma informação de valor JText de documento
      */
-    public static void EDITCliente(JTextField nlogin, JTextField login, JTextField senha, JTextField conSenha,
+    public static void EDITCliente( JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
         if (Cliente.campoDiferente(senha.getText(), conSenha.getText(), getTcs())) {
-            Cliente.editarCliente(nlogin.getText(), login.getText(), senha.getText(), conSenha.getText(),
+            Cliente.editarCliente(login.getText(), senha.getText(), conSenha.getText(),
                     TipoPessoa.getSelectedItem().toString(), nome.getText(), documento.getText());
         } else {
             Messagem.chamarTela(Cliente.CampoDiferente(senha.getText(), conSenha.getText(), getTcs()));
@@ -162,10 +161,10 @@ public class Control {
      * @param nome Setar uma informação de valor JText de nome
      * @param documento Setar uma informação de valor JText de documento
      */
-    public static void EDITFornecedor(JTextField nlogin, JTextField login, JTextField senha, JTextField conSenha,
+    public static void EDITFornecedor( JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
         // if (Cliente.campoDiferente(senha.getText(), conSenha.getText(), getTcs())) {
-        Fornecedor.editarFornecedor(nlogin.getText(), login.getText(), senha.getText(), conSenha.getText(),
+        Fornecedor.editarFornecedor( login.getText(), senha.getText(), conSenha.getText(),
                 TipoPessoa.getSelectedItem().toString(), nome.getText(), documento.getText());
         LimpaDados(login, senha, conSenha, TipoPessoa, nome, documento);
         // } else {

@@ -7,7 +7,7 @@ package marcenaria.material;
 
 import java.sql.*;
 import marcenaria.dado.ModuloConector;
-import marcenaria.pessoa.Fornecedor;
+
 
 /**
  * @since 16/05/2019
@@ -61,7 +61,7 @@ public class Chapa {
         //setEspesChapa(1.8);
         //setPrecoChapa(150.0);
         //inserirChapa();
-       Fornecedor.adicionarFornecedor("Carlos", "39568eu1", "39568eu1", "pf", "Carlos", "12345678901");
+
        adicionarChapa(5, 220, 160, 0.18, 280, "MDF", "Carlos");
     }
 
@@ -87,14 +87,15 @@ public class Chapa {
     /**
      * Tem que faze-lo
      *
+     * @param fornecedor
      * @since 01/05/2019
      * @version 1.0Testa
      *
      * @param tipoMateria ti
      * @param pos po
      */
-    public static void adicionarChapa(String tipoMateria, int pos) {
-        Material.adicionarMaterial(getTABELA(), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa(), getTipoMateria(pos), Fornecedor.getLogin());
+    public static void adicionarChapa(String tipoMateria, int pos, String fornecedor) {
+        Material.adicionarMaterial(getTABELA(), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa(), getTipoMateria(pos), fornecedor );
     }
 
     /**
@@ -125,12 +126,13 @@ public class Chapa {
     /**
      * Tem que faze-lo
      *
+     * @param fornecedor
      * @since 01/05/2019
      * @version 1.0
      */
-    public static void editarChapa() {
+    public static void editarChapa(String fornecedor) {
         setTipoMateria();
-        Material.editarMaterial(getTABELA(), getTipoMateria(0), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa(), Fornecedor.getLogin());
+        Material.editarMaterial(getTABELA(), getTipoMateria(0), getQuantChapa(), getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa(), fornecedor);
     }
 
     /**

@@ -9,6 +9,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.pessoa.cliente.Projeto;
 
 /**
  *
@@ -38,7 +39,7 @@ public class Cliente extends Pessoa {
     }
 
     /**
-     * TA MONTANDO FALTA TESTA Este Metodo
+     * ok TA MONTANDO FALTA TESTA Este Metodo
      */
     public static void criarCliente() {
         String sql = "create table if not exists " + Cliente.getTABELA() + "(id" + Pessoa.getTABELA() + " int not null unique, " + "login varchar(15) not  null unique, "
@@ -46,17 +47,20 @@ public class Cliente extends Pessoa {
                 + "docum varchar(14) not null unique, " + "foreign key (login) references "
                 + Pessoa.getTABELA().toLowerCase() + "(login)," + "foreign key (id" + Pessoa.getTABELA()
                 + ") references " + Pessoa.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + "))";
-        if (!ModuloConector.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
+        if (ModuloConector.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
             Pessoa.criarPessoa();
         }
         ModuloConector.criarTabela(sql, Cliente.getTABELA());
     }
 
     /**
-     * TA MONTANDO FALTA TESTA Este Metodo
+     * ok
      */
     public static void deletarCliente() {
-        ModuloConector.deletarTabela(getTABELA());
+        if (!ModuloConector.VerificarNaoExistirTabela(Projeto.getTABELA())) {
+            Projeto.deletarProjeto();
+        }
+        ModuloConector.deletarTabela(Cliente.getTABELA());
     }
 
     /**
@@ -81,42 +85,56 @@ public class Cliente extends Pessoa {
      * anexa a infornação for de 11 digito, senão <b>PJ</b> so poderá anexa a
      * infornação for de 14 digito
      */
-    public static void adicionarCliente(String logCliente, String senCliente, String conSenCliente, String tipoPessoa,
-            String nomeCliente, String documCliente) {
-        int idPessoac = Pessoa.obterIdPessoa(logCliente);
-        try {
-            cliente();
-            String sql = "insert into " + Cliente.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA() + ", login, docum) values (?,?,?)";
-            if (idPessoac > 0) {
+    public static void adicionarCliente(String logCliente, String senCliente, String conSenCliente, String tipoPessoa, String nomeCliente, String documCliente) {
+        Pessoa.adicionarPessoa(logCliente, senCliente, conSenCliente, tipoPessoa, nomeCliente);
+        int idPessoa = Pessoa.obterIdPessoa(logCliente), idFornecedor = Fornecedor.obterIdPessoatoFornecedor(logCliente);
+        if (!existeraCliente(logCliente)) {
+            if (!logCliente.isEmpty() && !senCliente.isEmpty() && !conSenCliente.isEmpty() && !tipoPessoa.isEmpty() && !nomeCliente.isEmpty() && !documCliente.isEmpty()) {
                 Fornecedor.pesquisarFornecedor(logCliente);
-                pst = conexao.prepareStatement(sql);
-                pst.setInt(1, idPessoac);
-                pst.setString(2, Fornecedor.getLogin());
-                pst.setString(3, Fornecedor.getDocum());
-                // ver melhoria
+                try {
+                    cliente();
+                    String sql = "insert into " + Cliente.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA() + ", login, docum) values (?,?,?)";
+                    if (idFornecedor > 0) {
+                        if (Fornecedor.getLogin().equalsIgnoreCase(logCliente) && Fornecedor.getDocum().equalsIgnoreCase(documCliente)) {
+                            pst = conexao.prepareStatement(sql);
+                            pst.setInt(1, idPessoa);
+                            pst.setString(2, Fornecedor.getLogin());
+                            pst.setString(3, Fornecedor.getDocum());
+                        } else {
+                            int res = JOptionPane.showConfirmDialog(null, "docunento salvo no Sistema: " + Fornecedor.getDocum() + "\ndocumento digitado:" + documCliente, Cliente.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
+                            if (res == JOptionPane.OK_OPTION) {
+                                pst = conexao.prepareStatement(sql);
+                                pst.setInt(1, idPessoa);
+                                pst.setString(2, Fornecedor.getLogin());
+                                pst.setString(3, Fornecedor.getDocum());
+                            }
+                        }
+                    } else {
+                        pst = conexao.prepareStatement(sql);
+                        pst.setInt(1, idPessoa);
+                        pst.setString(2, logCliente);
+                        pst.setString(3, documCliente);
+                    }
+                    int adicionado = pst.executeUpdate();
+                    if (adicionado > 0) {
+                        Messagem.chamarTela(Messagem.ADICIONADO(Cliente.exibirClientetoString(logCliente)));
+                    }
+                } catch (SQLException e) {
+                    Messagem.chamarTela(Cliente.getTABELA() + " Adicionar: " + e);
+                } finally {
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                }
             } else {
-                Pessoa.adicionarPessoa(logCliente, senCliente, conSenCliente, tipoPessoa, nomeCliente, false);
-                pst = conexao.prepareStatement(sql);
-                pst.setInt(1, idPessoac);
-                pst.setString(2, logCliente);
-                pst.setString(3, documCliente);
+                Messagem.chamarTela(Messagem.VAZIO(Pessoa.CampoVazio(logCliente, senCliente, conSenCliente, tipoPessoa, nomeCliente, documCliente)));
             }
-            int adicionado = pst.executeUpdate();
-            if (adicionado > 0) {
-                Messagem.chamarTela(Messagem.ADICIONADO(Cliente.exibirClientetoString(logCliente)));
-            }
-        } catch (SQLException e) {
-            Messagem.chamarTela(Cliente.getTABELA() + " Adicionar: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        } else {
+            Messagem.chamarTela(Cliente.getTABELA() + " " + logCliente + " Já existe !!!");
         }
     }
 
     /**
      * TA MONTANDO FALTA TESTA Este Metodo
      *
-     * @param nlogCliente Setar uma informação do tipo String da Tabela Cliente
-     * no novo Login Cliente
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
      * @param senCliente Setar uma informação do tipo String da Tabela Cliente
@@ -133,35 +151,42 @@ public class Cliente extends Pessoa {
      * anexa a infornação for de 11 digito, senão <b>PJ</b> so poderá anexa a
      * infornação for de 14 digito
      */
-    public static void editarCliente(String nlogCliente, String logCliente, String senCliente, String conSenCliente,
+    public static void editarCliente(String logCliente, String senCliente, String conSenCliente,
             String tipoPessoa, String nomeCliente, String documCliente) {
-        try {
-            if (!nlogCliente.isEmpty() && !logCliente.isEmpty() && !senCliente.isEmpty()
+        if (Cliente.existeraCliente(logCliente)) {
+            if (!logCliente.isEmpty() && !senCliente.isEmpty()
                     && !conSenCliente.isEmpty() && !tipoPessoa.isEmpty() && !nomeCliente.isEmpty()
                     && !documCliente.isEmpty()) {
-                Pessoa.editarPessoa(nlogCliente, logCliente, senCliente, conSenCliente, tipoPessoa, nomeCliente,false);
-                Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logCliente));
-                Cliente.setIdCliente(Cliente.obterIdCliente(logCliente));
-                cliente();
-                String sql = "uptade " + Cliente.getTABELA() + " set login = ?, docum = ? where id" + Pessoa.getTABELA() + " = ? or id" + Cliente.getTABELA() + " = ?", mens = Cliente.exibirClientetoString(logCliente), mens1;
-                pst = conexao.prepareStatement(sql);
-                pst.setString(1, nlogCliente);
-                pst.setString(2, documCliente);
-                pst.setInt(3, Pessoa.getIdpessoa());
-                pst.setInt(4, Cliente.getIdCliente());
-                int editada = pst.executeUpdate();
-                if (editada == 0) {
-                    mens1 = Cliente.exibirClientetoString(nlogCliente);
-                    Messagem.chamarTela(Messagem.EDITADO(" Antigo " + mens + "\n Novo " + mens1));
+                if (Pessoa.VerificaDocumento(documCliente, tipoPessoa)) {
+                    try {
+                        Pessoa.editarPessoa(logCliente, senCliente, conSenCliente, tipoPessoa, nomeCliente, false);
+                        Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logCliente));
+                        Cliente.setIdCliente(Cliente.obterIdPessoatoCliente(logCliente));
+                        String sql = "update " + Cliente.getTABELA().toLowerCase() + " set  docum = ? where id" + Pessoa.getTABELA() + " = ? or id" + Cliente.getTABELA() + " = ?", mens = Cliente.exibirClientetoString(logCliente), mens1;
+                        cliente();
+                        pst = conexao.prepareStatement(sql);
+                        pst.setString(1, documCliente);
+                        pst.setInt(2, Pessoa.getIdpessoa());
+                        pst.setInt(3, Cliente.getIdCliente());
+                        int editada = pst.executeUpdate();
+                        if (editada > 0) {
+                            mens1 = Cliente.exibirClientetoString(logCliente);
+                            Messagem.chamarTela(Messagem.EDITADO(" Antigo " + mens + "\n Novo " + mens1));
+                        }
+                    } catch (SQLException e) {
+                        Messagem.chamarTela(Cliente.getTABELA() + " Editar: " + e);
+                    } finally {
+                        ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                    }
+                } else {
+                    Messagem.chamarTela(Pessoa.txtVerificaDocumento(documCliente, tipoPessoa));
                 }
-            }else{
+            } else {
                 Messagem.chamarTela(Messagem.VAZIO(
-                        CampoVazio( logCliente, senCliente, conSenCliente, tipoPessoa, nomeCliente, documCliente)));
+                        CampoVazio(logCliente, senCliente, conSenCliente, tipoPessoa, nomeCliente, documCliente)));
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela(Cliente.getTABELA() + " Editar: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        } else {
+            Messagem.chamarTela(Cliente.getTABELA() + " " + logCliente + " Não existe !!!");
         }
     }
 
@@ -172,30 +197,51 @@ public class Cliente extends Pessoa {
      * no Login Cliente
      */
     public static void excluirCliente(String logCliente) {
-        try {
-            cliente();
-            Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logCliente));
-            Cliente.setIdCliente(Cliente.obterIdCliente(logCliente));
-            String sql = "delete from " + Cliente.getTABELA() + " where id" + Pessoa.getTABELA() + " = ?  or id" + Cliente.getTABELA() + " = ?", s = Cliente.exibirClientetoString(logCliente);
-            pst.setInt(1, Pessoa.getIdpessoa());
-            pst.setInt(2, Cliente.getIdCliente());
-            int excluir = JOptionPane.showConfirmDialog(null, s, Cliente.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
-            if (excluir == JOptionPane.OK_OPTION) {
-                int excluido = pst.executeUpdate(sql);
-                System.out.println("" + excluido);
-                if (excluido >= 0) {
-                    Messagem.chamarTela(Messagem.EXCLUIDO(s));
-                    int pes = JOptionPane.showConfirmDialog(null, "Deseja excluido todos os dados", sql,
-                            JOptionPane.OK_CANCEL_OPTION);
-                    if (pes == JOptionPane.OK_OPTION) {
-                        Pessoa.excluirPessoa(logCliente);
+        excluirCliente(logCliente, true);
+    }
+
+    /**
+     * TA MONTANDO FALTA TESTA Este Metodo
+     *
+     * @param logCliente Setar uma informação do tipo String da Tabela Cliente
+     * no Login Cliente
+     * @param Mensagem
+     */
+    public static void excluirCliente(String logCliente, boolean Mensagem) {
+        if (Cliente.existeraCliente(logCliente)) {
+            try {
+                Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logCliente)); 
+                Cliente.setIdCliente(Cliente.obterIdPessoatoCliente(logCliente));
+                cliente();
+                String sql = "delete from " + Cliente.getTABELA() + " where id" + Pessoa.getTABELA() + " = ?  or id" + Cliente.getTABELA() + " = ?", s = Cliente.exibirClientetoString(logCliente);
+               
+                int excluir = -2;
+                if (Mensagem) {
+                    excluir = JOptionPane.showConfirmDialog(null, s, Cliente.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
+                } else{
+                    excluir =JOptionPane.OK_OPTION;
+                }
+                if (excluir == JOptionPane.OK_OPTION ) {
+                pst = conexao.prepareStatement(sql);
+                pst.setInt(1, Pessoa.getIdpessoa());
+                pst.setInt(2, Cliente.getIdCliente());
+                    int excluido = pst.executeUpdate(sql);
+                    System.out.println("" + excluido);
+                    if (excluido >= 0 && Mensagem) {
+                        Messagem.chamarTela(Messagem.EXCLUIDO(s));
+                        int pes = JOptionPane.showConfirmDialog(null, "Deseja excluido todos os dados", sql, JOptionPane.OK_CANCEL_OPTION);
+                        if (pes == JOptionPane.OK_OPTION) {
+                            Pessoa.excluirPessoa(logCliente, false);
+                        }
                     }
                 }
+            } catch (Exception e) {
+                Messagem.chamarTela(Cliente.getTABELA() + " Excluir: " + e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } catch (Exception e) {
-            Messagem.chamarTela(Cliente.getTABELA() + " Excluir: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        } else {
+            Messagem.chamarTela(Cliente.getTABELA() + " " + logCliente + " Não existe !!!");
         }
     }
 
@@ -258,7 +304,7 @@ public class Cliente extends Pessoa {
     }
 
     /**
-     * TA MONTANDO FALTA TESTA Este Metodo
+     * ok  Este metodo Pesquisa na tabela Cliente do banco de dados
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
@@ -267,7 +313,7 @@ public class Cliente extends Pessoa {
         try {
             cliente();
             Cliente.setIdpessoa(Pessoa.obterIdPessoa(logCliente));
-            Cliente.setIdCliente(Cliente.obterIdCliente(logCliente));
+            Cliente.setIdCliente(Cliente.obterIdPessoatoCliente(logCliente));
             String sql = "select P.login, P.senha, P.tipoPessoa, P.nome, C.docum from " + Pessoa.getTABELA() + " as P, "
                     + Cliente.getTABELA() + " as C where  C.id" + Pessoa.getTABELA() + " = ? or P.id" + Pessoa.getTABELA() + " = ?";
             if (!logCliente.isEmpty()) {
@@ -300,8 +346,16 @@ public class Cliente extends Pessoa {
      * no Login Cliente
      * @return Retornar o id da Tabela Cliente atraves do Login.
      */
-    public static int obterIdCliente(String logCliente) {
+    public static int obterIdPessoatoCliente(String logCliente) {
         return Pessoa.obterIdPessoa(Cliente.getTABELA(), logCliente);
+    }
+
+    /**
+     * @param logCliente
+     * @return
+     */
+    public static Boolean existeraCliente(String logCliente) {
+        return obterIdPessoatoCliente(logCliente) > 0;
     }
     // Sets e Gets
 

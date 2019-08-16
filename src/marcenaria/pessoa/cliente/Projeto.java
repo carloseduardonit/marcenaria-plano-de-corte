@@ -51,28 +51,18 @@ public class Projeto {
      * varchar(20)," + "descricao"+getTABELA()+ " varchar(20),"]
      */
     public static void criarProjeto() {
-        try {
-            Proj();
-            String sql = "create table if not exists " + getTABELA()
-                    + "( id" + getTABELA() + " int auto_increment primary key, "
-                    + "nome" + getTABELA() + " varchar(20),"
-                    + "descricao" + getTABELA() + " varchar(20),"
+      if (ModuloConector.VerificarNaoExistirTabela(Cliente.getTABELA())){
+          Cliente.criarCliente();
+      }
+            String sql = "create table if not exists " + Projeto.getTABELA()
+                    + "( id" + Projeto.getTABELA() + " int auto_increment primary key, "
+                    + "nome" + Projeto.getTABELA() + " varchar(20),"
+                    + "descricao" + Projeto.getTABELA() + " varchar(20),"
                     + "id" + Cliente.getTABELA() + " int not null, "
-                    + "preco" + getTABELA() + " double default 0, "
+                    + "preco" + Projeto.getTABELA() + " double default 0, "
                     + "foreign key (id" + Cliente.getTABELA() + ") references " + Cliente.getTABELA().toLowerCase() + " (id" + Cliente.getTABELA() + ") )";
-            Messagem.criadoTabela(TABELA);
-            if (Messagem.getCriada() == 0) {
-                stmt = conexao.createStatement();
-                int criar = stmt.executeUpdate(sql);
-                if (criar == 0) {
-                    Messagem.chamarTela(Messagem.tabelaCriada(getTABELA()));
-                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-                }
-            }
-        } catch (SQLException e) {
-            Messagem.chamarTela(e);
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-        }
+            ModuloConector.criarTabela(sql, Projeto.getTABELA());
+        
     }
 
     /**

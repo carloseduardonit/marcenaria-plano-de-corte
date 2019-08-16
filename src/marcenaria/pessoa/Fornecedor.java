@@ -9,6 +9,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.material.Chapa;
 
 /**
  * 16/06/2019
@@ -26,29 +27,36 @@ public class Fornecedor extends Pessoa {
     private static ResultSetMetaData rsmd;
     private static Statement stmt;
 
+    /**
+     *
+     */
     private static void fornecedor() {
         conexao = ModuloConector.getConecction();
     }
 
     /**
-     *
+     * ok Este metodo faz a exclução da informação na Tabela
      */
     public static void criarFornecedor() {
         String sql = "create table if not exists " + Fornecedor.getTABELA() + "(id" + Pessoa.getTABELA() + " int not null unique, " + "login varchar(15) not  null unique, "
-                + "id" + Cliente.getTABELA() + " int  auto_increment primary key, "
+                + "id" + Fornecedor.getTABELA() + " int  auto_increment primary key, "
                 + "docum varchar(14) not null unique, " + "foreign key (login) references "
                 + Pessoa.getTABELA().toLowerCase() + "(login)," + "foreign key (id" + Pessoa.getTABELA()
                 + ") references " + Pessoa.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + "))";
-        if (!ModuloConector.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
+        if (ModuloConector.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
             Pessoa.criarPessoa();
         }
         ModuloConector.criarTabela(sql, Fornecedor.getTABELA());
     }
 
     /**
-     * Este metodo faz a exclução da informação na Tabela
+     * ok Este metodo faz a exclução da informação na Tabela
      */
     public static void deletarFornecedor() {
+        if (!ModuloConector.VerificarNaoExistirTabela(Chapa.getTABELA())) {
+            Chapa.deletadaChapa();
+            deletarFornecedor();
+        }
         ModuloConector.deletarTabela(Fornecedor.getTABELA());
     }
 
@@ -74,41 +82,57 @@ public class Fornecedor extends Pessoa {
      * se<b>PF</b> so poderá anexa a infornação for de 11 digito, senão
      * <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
-    public static void adicionarFornecedor(String logFornecedor, String senFornecedor, String consenFornecedor,
-            String tipoPessoa, String nomeFornecedor, String documFornecedor) {
-        try {
-            int idPessoa = Pessoa.obterIdPessoa(logFornecedor);
-            fornecedor();
-            String sql = "insert into " + Fornecedor.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA() + ", login, docum )  values (?,?,?)";
-            if (idPessoa > 0) {
-                Cliente.pesquisarCliente(logFornecedor);
-                pst = conexao.prepareStatement(sql);
-                pst.setInt(1, idPessoa);
-                pst.setString(2, Cliente.getLogin());
-                pst.setString(3, Cliente.getDocum());
+    public static void adicionarFornecedor(String logFornecedor, String senFornecedor, String consenFornecedor, String tipoPessoa, String nomeFornecedor, String documFornecedor) {
+        int idCliente = Cliente.obterIdPessoatoCliente(logFornecedor);
+        Pessoa.adicionarPessoa(logFornecedor, senFornecedor, consenFornecedor, tipoPessoa, nomeFornecedor);
+        int idPessoa = Pessoa.obterIdPessoa(logFornecedor);
+        if (!existeroFornecedor(logFornecedor)) {
+            if (!logFornecedor.isEmpty() && !senFornecedor.isEmpty() & !consenFornecedor.isEmpty() && !tipoPessoa.isEmpty() && !nomeFornecedor.isEmpty() && !documFornecedor.isEmpty()) {
+                try {
+                    fornecedor();
+                    String sql = "insert into " + Fornecedor.getTABELA().toLowerCase() + " (id" + Pessoa.getTABELA() + ", login, docum )  values (?,?,?)";
+                    if (idCliente > 0) {
+                        Cliente.pesquisarCliente(logFornecedor);
+                        if (Cliente.getLogin().equalsIgnoreCase(logFornecedor) && Cliente.getDocum().equalsIgnoreCase(documFornecedor)) {
+                            pst = conexao.prepareStatement(sql);
+                            pst.setInt(1, idPessoa);
+                            pst.setString(2, Cliente.getLogin());
+                            pst.setString(3, Cliente.getDocum());
+                        } else {
+                            int res = JOptionPane.showConfirmDialog(null, "docunento salvo no Sistema: " + Cliente.getDocum() + "\ndocumento digitado:" + documFornecedor, Cliente.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
+                            if (res == JOptionPane.OK_OPTION) {
+                                pst = conexao.prepareStatement(sql);
+                                pst.setInt(1, idPessoa);
+                                pst.setString(2, Cliente.getLogin());
+                                pst.setString(3, Cliente.getDocum());
+                            }
+                        }
+                    } else {
+                        pst = conexao.prepareStatement(sql);
+                        pst.setInt(1, idPessoa);
+                        pst.setString(2, logFornecedor);
+                        pst.setString(3, documFornecedor);
+                    }
+                    int adicionado = pst.executeUpdate();
+                    if (adicionado > 0) {
+                        Messagem.chamarTela(Messagem.ADICIONADO(Fornecedor.exibirFornecedortoString(logFornecedor)));
+                    }
+                } catch (SQLException e) {
+                    Messagem.chamarTela(Fornecedor.getTABELA() + " Adicionar: " + e);
+                } finally {
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                }
             } else {
-                Pessoa.adicionarPessoa(logFornecedor, senFornecedor, consenFornecedor, tipoPessoa, nomeFornecedor, false);
-                pst = conexao.prepareStatement(sql);
-                pst.setInt(1, idPessoa);
-                pst.setString(2, logFornecedor);
-                pst.setString(3, documFornecedor);
+                Messagem.chamarTela(Messagem.VAZIO(Pessoa.CampoVazio(logFornecedor, senFornecedor, consenFornecedor, tipoPessoa, nomeFornecedor, documFornecedor)));
             }
-            int adicionado = pst.executeUpdate();
-            if (adicionado > 0) {
-                Messagem.chamarTela(Messagem.ADICIONADO(Fornecedor.exibirFornecedortoString(logFornecedor)));
-            }
-        } catch (SQLException e) {
-            Messagem.chamarTela(Fornecedor.getTABELA() + " Adicionar: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        } else {
+            Messagem.chamarTela(Fornecedor.getTABELA() + " " + logFornecedor + " Já existe !!!");
         }
     }
 
     /**
      * TA MONTANDO FALTA TESTA
      *
-     * @param nlogFornecedor Setar uma informação do tipo String da Tabela
-     * Fornecedor no novo Login Fornecedor
      * @param logFornecedor Setar uma informação do tipo String da Tabela
      * Fornecedor no Login Fornecedor
      * @param senFornecedor Setar uma informação do tipo String da Tabela
@@ -125,34 +149,41 @@ public class Fornecedor extends Pessoa {
      * se<b>PF</b> so poderá anexa a infornação for de 11 digito, senão
      * <b>PJ</b> so poderá anexa a infornação for de 14 digito
      */
-    public static void editarFornecedor(String nlogFornecedor, String logFornecedor, String senFornecedor, String conSenFornecedor, String tipoPessoa, String nomeFornecedor, String documFornecedor) {
-        try {
-            if (!nlogFornecedor.isEmpty() && !logFornecedor.isEmpty() && !senFornecedor.isEmpty()
+    public static void editarFornecedor(String logFornecedor, String senFornecedor, String conSenFornecedor, String tipoPessoa, String nomeFornecedor, String documFornecedor) {
+        if (Fornecedor.existeroFornecedor(logFornecedor)) {
+            if (!logFornecedor.isEmpty() && !senFornecedor.isEmpty()
                     && !conSenFornecedor.isEmpty() && !tipoPessoa.isEmpty()
                     && !nomeFornecedor.isEmpty() && !documFornecedor.isEmpty()) {
-                Pessoa.editarPessoa(nlogFornecedor, logFornecedor, senFornecedor, conSenFornecedor, tipoPessoa, nomeFornecedor);
-                Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logFornecedor));
-                Fornecedor.setIdFornecedor(Fornecedor.obterIdFornecedor(logFornecedor));
-                String sql = "uptade " + Fornecedor.getTABELA() + " set login = ?, docum = ? where id" + Pessoa.getTABELA() + " = ? or id" + Fornecedor.getTABELA() + " = ?", mens = Fornecedor.exibirFornecedortoString(logFornecedor), mens1;
-                fornecedor();
-                pst = conexao.prepareStatement(sql);
-                pst.setString(1, nlogFornecedor);
-                pst.setString(2, documFornecedor);
-                pst.setInt(3, Pessoa.getIdpessoa());
-                pst.setInt(4, Fornecedor.getIdFornecedor());
-                int editada = pst.executeUpdate();
-                if (editada == 0) {
-                    mens1 = Fornecedor.exibirFornecedortoString(nlogFornecedor);
-                    Messagem.chamarTela(Messagem.EDITADO(" Antigo " + mens + "\n Novo " + mens1));
+                if (VerificaDocumento(documFornecedor, tipoPessoa)) {
+                    try {
+                        Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logFornecedor));
+                        Pessoa.editarPessoa(logFornecedor, senFornecedor, conSenFornecedor, tipoPessoa, nomeFornecedor);
+                        Fornecedor.setIdFornecedor(Fornecedor.obterIdPessoatoFornecedor(logFornecedor));
+                        String sql = "update " + Fornecedor.getTABELA().toLowerCase() + " set docum = ? where id" + Pessoa.getTABELA() + " = ? or id" + Fornecedor.getTABELA() + " = ?", mens = Fornecedor.exibirFornecedortoString(logFornecedor), mens1;
+                        fornecedor();
+                        pst = conexao.prepareStatement(sql);
+                        pst.setString(1, documFornecedor);
+                        pst.setInt(2, Pessoa.getIdpessoa());
+                        pst.setInt(3, Fornecedor.getIdFornecedor());
+                        int editada = pst.executeUpdate();
+                        if (editada > 0) {
+                            mens1 = Fornecedor.exibirFornecedortoString(logFornecedor);
+                            Messagem.chamarTela(Messagem.EDITADO(" Antigo " + mens + "\n Novo " + mens1));
+                        }
+                    } catch (SQLException e) {
+                        Messagem.chamarTela(Fornecedor.getTABELA() + " Editar: " + e);
+                    } finally {
+                        ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                    }
+                } else {
+                    Messagem.chamarTela(Pessoa.txtVerificaDocumento(documFornecedor, tipoPessoa));
                 }
             } else {
                 Messagem.chamarTela(Messagem.VAZIO(
                         CampoVazio(logFornecedor, senFornecedor, conSenFornecedor, tipoPessoa, nomeFornecedor, documFornecedor)));
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela(Fornecedor.getTABELA() + " Editar: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        } else {
+            Messagem.chamarTela(Fornecedor.getTABELA() + " " + logFornecedor + " Não existe !!!");
         }
     }
 
@@ -163,30 +194,50 @@ public class Fornecedor extends Pessoa {
      * Fornecedor no Login Fornecedor
      */
     public static void excluirFornecedor(String logFornecedor) {
-        try {
-            Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logFornecedor));
-            Fornecedor.setIdFornecedor(Fornecedor.obterIdFornecedor(logFornecedor));
-            String sql = "delete from " + Fornecedor.getTABELA() + " where id" + Pessoa.getTABELA() + " = ?  or id" + Fornecedor.getTABELA() + " = ?", s = Fornecedor.exibirFornecedortoString(logFornecedor), p = Pessoa.exibirPessoatoString(tipoPessoa);
-            int excluir = JOptionPane.showConfirmDialog(null, s, Fornecedor.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
-            if (excluir == JOptionPane.OK_OPTION) {
-                fornecedor();
-                pst = conexao.prepareStatement(sql);
-                pst.setInt(1, Pessoa.getIdpessoa());
-                pst.setInt(2, Fornecedor.getIdFornecedor());
-                int excluido = pst.executeUpdate(sql);
-                if (excluido >= 0) {
-                    Messagem.chamarTela(Messagem.EXCLUIDO(s));
-                    //ver melhorias
-                    int pes = JOptionPane.showConfirmDialog(null, p + "Deseja excluido todos os dados", Pessoa.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
-                    if (pes == JOptionPane.OK_OPTION) {
-                        Pessoa.excluirPessoa(logFornecedor);
+        excluirFornecedor(logFornecedor, true);
+    }
+
+    /**
+     * TA MONTANDO FALTA TESTA
+     *
+     * @param logFornecedor Setar uma informação do tipo String da Tabela
+     * Fornecedor no Login Fornecedor
+     * @param Mensagem
+     */
+    public static void excluirFornecedor(String logFornecedor, boolean Mensagem) {
+        if (Fornecedor.existeroFornecedor(logFornecedor)) {
+            try {
+                Pessoa.setIdpessoa(Pessoa.obterIdPessoa(logFornecedor));
+                Fornecedor.setIdFornecedor(Fornecedor.obterIdPessoatoFornecedor(logFornecedor));
+                String sql = "delete from " + Fornecedor.getTABELA() + " where id" + Pessoa.getTABELA() + " = ?  or id" + Fornecedor.getTABELA() + " = ?", s = Fornecedor.exibirFornecedortoString(logFornecedor), p = Pessoa.exibirPessoatoString(tipoPessoa);
+                int excluir = -2;
+                if (Mensagem) {
+                    excluir = JOptionPane.showConfirmDialog(null, s, Fornecedor.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
+                }else{
+                    excluir = JOptionPane.OK_OPTION;
+                }
+                if (excluir == JOptionPane.OK_OPTION ) {
+                    fornecedor();
+                    pst = conexao.prepareStatement(sql);
+                    pst.setInt(1, Pessoa.getIdpessoa());
+                    pst.setInt(2, Fornecedor.getIdFornecedor());
+                    int excluido = pst.executeUpdate(sql);
+                    if (excluido >= 0 && Mensagem) {
+                        Messagem.chamarTela(Messagem.EXCLUIDO(s));
+                        //ver melhorias                        
+                        int pes = JOptionPane.showConfirmDialog(null, p + "Deseja excluido todos os dados", Pessoa.getTABELA(), JOptionPane.OK_CANCEL_OPTION);
+                        if (pes == JOptionPane.OK_OPTION) {
+                            Pessoa.excluirPessoa(logFornecedor);
+                        }
                     }
                 }
+            } catch (SQLException e) {
+                Messagem.chamarTela(Fornecedor.getTABELA() + " Excluir: " + e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela(Fornecedor.getTABELA() + " Excluir: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        } else {
+            Messagem.chamarTela(Fornecedor.getTABELA() + " " + logFornecedor + " Não existe !!!");
         }
     }
 
@@ -248,7 +299,7 @@ public class Fornecedor extends Pessoa {
     }
 
     /**
-     * TA MONTANDO FALTA TESTA
+     * OK  Este metodo Pesquisa na tabela Fornecedor do banco de dados
      *
      * @param logFornecedor Setar uma informação do tipo String da Tabela
      * Fornecedor no Login Fornecedor
@@ -256,7 +307,7 @@ public class Fornecedor extends Pessoa {
     public static void pesquisarFornecedor(String logFornecedor) {
         try {
             Fornecedor.setIdpessoa(Fornecedor.obterIdPessoa(logFornecedor));
-            Fornecedor.setIdFornecedor(Fornecedor.obterIdFornecedor(logFornecedor));
+            Fornecedor.setIdFornecedor(Fornecedor.obterIdPessoatoFornecedor(logFornecedor));
             String sql = "select P.login, P.senha, P.tipoPessoa, P.nome, F.docum from " + Pessoa.getTABELA() + " as P, "
                     + Fornecedor.getTABELA() + " as F where F.id" + Pessoa.getTABELA() + " = ? or P.id" + Pessoa.getTABELA() + " = ?";
             if (!logFornecedor.isEmpty()) {
@@ -293,8 +344,16 @@ public class Fornecedor extends Pessoa {
      * Fornecedor no Login Fornecedor
      * @return Retornar o id da Tabela Fornecedor atraves do Login.
      */
-    public static int obterIdFornecedor(String logFornecedor) {
-        return Pessoa.obterIdPessoa(logFornecedor, Fornecedor.getTABELA());
+    public static int obterIdPessoatoFornecedor(String logFornecedor) {
+        return Pessoa.obterIdPessoa(Fornecedor.getTABELA(), logFornecedor);
+    }
+
+    /**
+     * @param logFornecedor
+     * @return
+     */
+    public static Boolean existeroFornecedor(String logFornecedor) {
+        return obterIdPessoatoFornecedor(logFornecedor) > 0;
     }
 
     // Sets e Gets

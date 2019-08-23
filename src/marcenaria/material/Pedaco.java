@@ -20,27 +20,16 @@ public class Pedaco {
     private static double comp, larg, espe, prec;
     private static Date incData;
     private static final String TABELA = Pedaco.class.getSimpleName();
-    static Connection conexao;
-    static ResultSet rs;
-    static ResultSetMetaData rsmd;
-    static PreparedStatement pst;
-    static Statement stmt;
-
-    /**/
-    /**
-     * <b>Este metodo e para utilização para teste.</b>
-     *
-     * @param args Metodo de teste
-     */
-    public static void main(String[] args) {
-        criadoPedaco();
-        Chapa.deletadaChapa();
-    }
+    private static Connection conexao;
+    private static ResultSet rs;
+    private static ResultSetMetaData rsmd;
+    private static PreparedStatement pst;
+    private static Statement stmt;
 
     /** <b>Este Metodo abre a conexão com o bano de dados.</b>
      *
      */
-    private static void Pedaco() {
+    private static void pedaco() {
         conexao = ModuloConector.getConecction();
     }
 
@@ -49,7 +38,27 @@ public class Pedaco {
      * <b> Este Metodo faz a criação da tabela Pedaço no banco.</b>
      */
     public static void criadoPedaco() {
-        Material.criarMaterial(getTABELA());
+        if (ModuloConector.VerificarNaoExistirTabela(Chapa.getTABELA())) {
+            Chapa.criadaChapa();
+        }
+        if (ModuloConector.VerificarNaoExistirTabela(Peca.getTABELA())) {
+            Peca.criadaPeca();
+        }
+        String sql = "create table if not exists " + Pedaco.getTABELA()
+                + "(id" + Pedaco.getTABELA() + " int primary key auto_increment,"
+                + "quantidade int default 0,"
+                + "comprimento double,"
+                + "largura double,"
+                + "espessura double,"
+                + "preco double, "
+                + "tipoMaterial varchar(30),"
+                + "id" + Chapa.getTABELA() + " int default '0',"
+                + "id" + Peca.getTABELA() + " int default 0,"
+                + "incData Timestamp,"
+                + "foreign key (id" + Chapa.getTABELA() + ") references " + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), "
+                + "foreign key (id" + Peca.getTABELA() + ") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
+        ModuloConector.criarTabela(sql, Pedaco.getTABELA());
+
     }
 
     /**
@@ -61,7 +70,7 @@ public class Pedaco {
      * </p>
      */
     public static void deletaPedaco() {
-        Material.deletarMaterial(TABELA);
+        ModuloConector.deletarTabela(Pedaco.getTABELA());
     }
 
     /**
@@ -73,9 +82,39 @@ public class Pedaco {
      * @param tipoMaterial Informar um valor double da largura da Pedaço.
      * @param largPedaco Informar um valor double da largura da Pedaço.
      * @param espePedaco Informar um valor double da espessura do Pedaço.
+     * @param idChapa
+     * @param idPeca
      */
-    public static void adicionarPedaco(int quantPeca, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial) {
-        Material.adicionarMaterial(getTABELA(), quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial,null);
+    public static void adicionarPedaco(int quantPeca, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial, int idChapa, int idPeca) {
+        if (!Pedaco.HaCampoVazio(quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial, idChapa, idPeca)) {
+            try {
+                String sql = "insert into " + Pedaco.getTABELA()
+                        + "(quantidade, comprimento, largura, espessura, preco, tipoMaterial, id"
+                        + Chapa.getTABELA() + ", id" + Peca.getTABELA()
+                        + ") values (?,?,?,?,?,?,?,?)";
+                pedaco();
+                pst = conexao.prepareStatement(sql);
+                pst.setInt(1, quantPeca);
+                pst.setDouble(2, compPedaco);
+                pst.setDouble(3, largPedaco);
+                pst.setDouble(4, espePedaco);
+                pst.setDouble(5, precPedaco);
+                pst.setString(6, tipoMaterial);
+                pst.setInt(7, idChapa);
+                pst.setInt(8, idPeca);
+                int adicionar = pst.executeUpdate();
+                if (adicionar > 0) {
+                    Messagem.chamarTela(Messagem.ADICIONADO(sql));
+                }
+            } catch (SQLException e) {
+                Messagem.chamarTela(e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+            }
+        } else {
+            Messagem.chamarTela(Messagem.VAZIO(Pedaco.CampoVazio(quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial, idChapa, idPeca)));
+        }
+        // Material.adicionarMaterial(getTABELA(), quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial, null);
     }
 
     /**
@@ -90,22 +129,21 @@ public class Pedaco {
      */
     public static void editarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData) {
         try {
-            Pedaco();
+            pedaco();
             String sql = "";
-
             pst = conexao.prepareStatement(sql);
             pst.setDouble(1, compPedaco);
             pst.setDouble(2, largPedaco);
             pst.setDouble(3, espePedaco);
+            pst.setDouble(4, 0);
             int editar = pst.executeUpdate();
             if (editar == 0) {
-                ModuloConector.fecharConexao(conexao, rs,rsmd, pst, stmt);
                 Messagem.chamarTela(Messagem.EDITADO(sql));
             }
-        } catch (NullPointerException e) {
+        } catch (SQLException e) {
             Messagem.chamarTela(e);
-        } catch (Exception e) {
-            Messagem.chamarTela(e);
+        } finally {
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
@@ -121,13 +159,13 @@ public class Pedaco {
      */
     public static void excluirPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData) {
         try {
-            Pedaco();
+            pedaco();
             String sql = "delete from " + TABELA + " where espe = ?";
             pst = conexao.prepareStatement(sql);
             pst.setDouble(1, espePedaco);
             int excluir = pst.executeUpdate();
             if (excluir == 0) {
-                ModuloConector.fecharConexao(conexao, rs,rsmd, pst, stmt);
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 Messagem.chamarTela(Messagem.EXCLUIDO(sql));
             }
         } catch (NullPointerException e) {
@@ -155,9 +193,9 @@ public class Pedaco {
      * <p>
      * senão adicionar na String interna a expresão ="and".</p>
      */
-    public static void pesquisarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData, boolean ou) {
+    public static void pesquisarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco,String tipoMaterial, Date incData, boolean ou) {
         try {
-            Pedaco();
+            pedaco();
             int qt = 0, cqt, lqt, eqt;
             boolean c, l, e;
             String a;
@@ -166,7 +204,7 @@ public class Pedaco {
             } else {
                 a = "or";
             }
-            String sql = "select idchapa from " + TABELA + " where ";
+            String sql = "select * from " + TABELA + " where ";
             if (String.valueOf(compPedaco).equals(null) == false && !String.valueOf(espePedaco).isEmpty()) {
                 if (qt == 0) {
                     sql += "comp = ?";
@@ -226,17 +264,84 @@ public class Pedaco {
                 setLarg(rs.getDouble(4));
                 setEspe(rs.getDouble(5));
                 setIncData(rs.getDate(6));
-                ModuloConector.fecharConexao(conexao, rs,rsmd, pst, stmt);
+
             }
         } catch (NullPointerException e) {
             Messagem.chamarTela("Nulo");
         } catch (SQLException e) {
             Messagem.chamarTela(e);
+        } finally {
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
+    private static boolean HaCampoVazio(int quantPeca, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial, int idChapa, int idPeca) {
+        return String.valueOf(quantPeca).isEmpty() && String.valueOf(compPedaco).isEmpty() && String.valueOf(largPedaco).isEmpty() && String.valueOf(espePedaco).isEmpty() && String.valueOf(precPedaco).isEmpty() && tipoMaterial.isEmpty() && String.valueOf(idChapa).isEmpty() && String.valueOf(idPeca).isEmpty();
+    }
+
+    private static String[] CampoVazio(int quantPeca, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial, int idChapa, int idPeca) {
+        String[] vazio = new String[8];
+        boolean qp = false, cp = false, lp = false, ep = false, pp = false, tm = false, ic = false, ip = false;
+        for (int i = 0; i < vazio.length; i++) {
+            if (String.valueOf(quantPeca).isEmpty() && !qp) {
+                vazio[i] = "";
+                qp = true;
+            } else if (String.valueOf(compPedaco).isEmpty() && !cp) {
+                vazio[i] = "";
+                cp = true;
+            } else if (String.valueOf(largPedaco).isEmpty() && !lp) {
+                vazio[i] = "";
+                lp = true;
+            } else if (String.valueOf(espePedaco).isEmpty() && !ep) {
+                vazio[i] = "";
+                ep = true;
+            } else if (String.valueOf(precPedaco).isEmpty() && !pp) {
+                vazio[i] = "";
+                pp = true;
+            } else if (tipoMaterial.isEmpty() && !tm) {
+                vazio[i] = "";
+                tm = true;
+            } else if (String.valueOf(idChapa).isEmpty() && !ic) {
+                vazio[i] = "";
+                ic = true;
+            } else if (String.valueOf(idPeca).isEmpty() && !ip) {
+                vazio[i] = "";
+                ip = true;
+            }
+        }
+        return vazio;
+    }
+
+    private static void exibirPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco,String tipoMaterial, Date incData, boolean ou) {
+        Messagem.chamarTela(exibirPedacotoString(idChapa, idPeca, compPedaco, largPedaco, espePedaco,tipoMaterial, incData, ou));
+
+    }
+
+    private static String exibirPedacotoString(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco,String tipoMaterial, Date incData, boolean ou) {
+        String exibe = "";
+        pesquisarPedaco(idChapa, idPeca, compPedaco, largPedaco, espePedaco,tipoMaterial, incData, ou);
+        if (Peca.getIdPeca() > 0 && Peca.getComprimento() > 0.0 && Peca.getLargura() > 0.0 && Peca.getEspessura() > 0.0 && Peca.getPreco() > 0.0) {
+
+        } else {
+
+        }
+        return exibe;
+    }
+
+    /**
+     *
+     * @param tipoMaterial
+     * @param espessura
+     * @return
+     */
     public static int obterIdPedaco(String tipoMaterial, double espessura) {
         return Material.obterIdMaterial(getTABELA(), tipoMaterial, espessura);
+    }
+
+    public static boolean temPedaco(double compPedaco, double largPedaco, double espePedaco,String tipoMaterial) {
+        pesquisarPedaco(0, 0, compPedaco, largPedaco, espePedaco,tipoMaterial, null, true);
+        return getComp() >= compPedaco && getLarg() >= largPedaco && getEspe() >= espePedaco;
+
     }
 // Gets e Sets
 

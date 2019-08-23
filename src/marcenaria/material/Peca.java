@@ -7,6 +7,9 @@ package marcenaria.material;
 
 import java.sql.*;
 import marcenaria.Const.Messagem;
+import marcenaria.dado.ModuloConector;
+import marcenaria.pessoa.Fornecedor;
+import marcenaria.pessoa.cliente.Projeto;
 
 /**
  * @since 16/05/2019
@@ -21,22 +24,24 @@ public class Peca {
      */
     int[][][][] peca = new int[quantPeca][quantPeca][quantPeca][quantPeca];
     private static Double largura, comprimento, espessura, preco;
-    private static int idPeca, quantPeca;
+    private static int idPeca, quantPeca, index;
     private static final String TABELA = Peca.class.getSimpleName();
     private static String[] tipoMateria = new String[2];
     private static double[][] sobra = new double[10][2];
-    static Connection conexao;
-    static PreparedStatement pst;
-    static ResultSet rs;
-    static Statement stmt;
+    private static Connection conexao;
+    private static PreparedStatement pst;
+    private static ResultSet rs;
+    private static ResultSetMetaData rsmd;
+    private static Statement stmt;
 
-    /** <b>Este metodo e para utilização para teste.</b>
+    /**
+     * Este metodo realiza a conexao com o banco de dado
      *
-     * @param args Informar um valor String para tabela de Material
+     * @since 16/05/2019
+     * @version 1.0
      */
-    public static void main(String[] args) {
-       
-        adicionarPeca(5, 220, 160, 0.18, 280.50, "MDF","lab");
+    private static void peca() {
+        conexao = ModuloConector.getConecction();
     }
 
     /**
@@ -47,7 +52,25 @@ public class Peca {
      *
      */
     public static void criadaPeca() {
-        Material.criarMaterial(TABELA);
+        if (ModuloConector.VerificarNaoExistirTabela(Chapa.getTABELA())) {
+            Chapa.criadaChapa();
+        }
+        if (ModuloConector.VerificarNaoExistirTabela(Projeto.getTABELA())) {
+            Projeto.criarProjeto();
+        }
+        String sql = "create table if not exists " + Peca.getTABELA()
+                + "(id" + Peca.getTABELA() + " int primary key auto_increment,"
+                + "quantidade int default 0,"
+                + "comprimento double,"
+                + "largura double,"
+                + "espessura double,"
+                + "preco double, "
+                + "tipoMaterial varchar(30),"
+                + "id" + Chapa.getTABELA() + " int not null default 0,"
+                + "id" + Projeto.getTABELA() + " int not null default 0, "
+                + "foreign key (id" + Projeto.getTABELA() + ") references " + Projeto.getTABELA() + "(id" + Projeto.getTABELA()
+                + "), foreign key(id" + Chapa.getTABELA() + ") references " + Chapa.getTABELA() + "(id" + Chapa.getTABELA() + "))";
+        ModuloConector.criarTabela(sql, Peca.getTABELA());
     }
 
     /**
@@ -58,21 +81,10 @@ public class Peca {
      *
      */
     public static void deletadaPeca() {
-        Material.deletarMaterial(TABELA);
-    }
-
-    /** <b>Este metodo faz adição na tabela Peça.</b>
-     * <p>
-     * Utilizar um metodo da classe Material como Metodo auxiliar o metodo
-     * adicionarMaterial((String Tabelaterial, int quantidade, double
-     * comprimento, double largura, double espessura, double preco, String
-     * tipoMa).</p>
-     *
-     * @param fornecedor Setar Informação de valor String  do nome do fornecedor
-     */
-    public static void adicionarPeca(String fornecedor) {
-        setTipoMateria();
-        Material.adicionarMaterial(getTABELA(), getQuantPeca(), getComprimento(), getLargura(), getEspessura(), getPreco(), getTipoMateria(0),fornecedor);
+        if (!ModuloConector.VerificarNaoExistirTabela(Pedaco.getTABELA())) {
+            Pedaco.deletaPedaco();
+        }
+        ModuloConector.deletarTabela(Peca.getTABELA());
     }
 
     /** <b>Este metodo faz adição na tabela Peça.</b>
@@ -84,58 +96,243 @@ public class Peca {
      * @param quanPeca Setar informação de valor inteiro da quantidade de Peça
      * @param compPeca Setar informação de valor double do Comprimento da Peça
      * @param largPeca Setar informação de valor double da largura da Peça
-     * @param espePeca Setar informação de valor double de espessura da  Peça
+     * @param espePeca Setar informação de valor double de espessura da Peça
      * @param precPeca Setar informação de valor double de preço da Peça
-     * @param fornecedor Setar Informação de valor String  do nome do fornecedor
-     * @param tipoMaterial Setar Informação de valor String tipo de Material da Peça
+     * @param fornecedor Setar Informação de valor String do nome do fornecedor
+     * @param tipoMaterial Setar Informação de valor String tipo de Material da
+     * Peça
      */
-    public static void adicionarPeca(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial,String fornecedor) {
-        Material.adicionarMaterial(getTABELA(), quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial,fornecedor);
+    public static void adicionarPeca(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial, String fornecedor) {
+        if (!Peca.HaCampoVazio(quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial, fornecedor)) {
+            int idChapa = 0;
+            try {
+                String sql = "insert into " + Peca.getTABELA() + "(quantidade,comprimento,largura,espessura,preco, tipoMaterial,id"
+                        + Chapa.getTABELA() + ") values (?,?,?,?,?,?,?)";
+                peca();
+                pst = conexao.prepareStatement(sql);
+                pst.setInt(1, quanPeca);
+                pst.setDouble(2, compPeca);
+                pst.setDouble(3, largPeca);
+                pst.setDouble(4, espePeca);
+                pst.setDouble(4, precPeca);
+                pst.setInt(5, idChapa);
+                int adicionar = pst.executeUpdate();
+                if (adicionar > 0) {
+                    Messagem.chamarTela(Messagem.ADICIONADO(sql));
+                }
+            } catch (SQLException e) {
+                Messagem.chamarTela(e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+            }
+        } else {
+            Messagem.chamarTela(Messagem.VAZIO(Peca.campoVazio(quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial, fornecedor)));
+        }
+
     }
 
-    /** com erro
+    /**
+     * com erro
      * <b>Este metodo faz Edição na tabela Peça.</b>
      * <p>
      * Utilizar um metodo da classe Material como Metodo auxiliar o metodo
      * editarMaterial(String Tabela, String tipoMaterial, int quantidade, double
      * comprimento, double largura, double espessura, double preco).</p>
      *
-     * @param fornecedor Setar Informação de valor String  do nome do fornecedor
+     * @param quanPeca Setar informação de valor inteiro da quantidade de Peça
+     * @param compPeca Setar informação de valor double do Comprimento da Peça
+     * @param largPeca Setar informação de valor double da largura da Peça
+     * @param espePeca Setar informação de valor double de espessura da Peça
+     * @param precPeca Setar informação de valor double de preço da Peça
+     * @param fornecedor Setar Informação de valor String do nome do fornecedor
+     * @param tipoMaterial Setar Informação de valor String tipo de Material da
+     * Peça
      */
-    public static void editarPeca(String fornecedor) {
-        setTipoMateria();
-        Material.editarMaterial(getTABELA(), getTipoMateria(1), getQuantPeca(), getComprimento(), getLargura(), getEspessura(), getPreco(),fornecedor);
+    public static void editarPeca(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial, String fornecedor) {
+        if (!HaCampoVazio(quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial, fornecedor)) {
+            if (Fornecedor.existeroFornecedor(fornecedor)) {
+                int idFornecedor = Fornecedor.obterIdPessoa(fornecedor);
+                try {
+                    String sql = "update from " + Peca.getTABELA() + " set quantidade = ?,comprimento = ? ,largura = ?,espessura =?, preco = ?, tipoMaterial = ? where id" + Fornecedor.getTABELA() + " = ?";
+                    peca();
+                    pst = conexao.prepareStatement(sql);
+                    pst.setInt(1, quanPeca);
+                    pst.setDouble(2, compPeca);
+                    pst.setDouble(3, largPeca);
+                    pst.setDouble(4, espePeca);
+                    pst.setDouble(5, precPeca);
+                    pst.setString(6, tipoMaterial);
+                    pst.setInt(7, idFornecedor);
+                    int editado = pst.executeUpdate();
+                    if (editado > 0) {
+                        Messagem.chamarTela(Messagem.EDITADO(sql));
+                    }
+                } catch (SQLException e) {
+                    Messagem.chamarTela(e);
+                } finally {
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                }
+            } else {
+                Messagem.chamarTela("");
+            }
+        } else {
+            Messagem.chamarTela("");
+        }
+        //setTipoMateria();
+        // Material.editarMaterial(getTABELA(), getTipoMateria(1), getQuantPeca(), getComprimento(), getLargura(), getEspessura(), getPreco(), fornecedor);
     }
 
     /**
      * <b>Este metodo faz a Exclução na tabela Peça.</b><p>
      * Utilizar um metodo da classe Material como Metodo auxiliar o metodo
      * excluirMaterial(String Tabela, String tipoMaterial, int quantidade,
-     * double comprimento, double largura, double espessura, double preco,String fornecedo).</p>
-     * @param fornecedor Setar Informação de valor String  do nome do fornecedor
+     * double comprimento, double largura, double espessura, double preco,String
+     * fornecedo).</p>
+     *
+     * @param quanPeca Setar informação de valor inteiro da quantidade de Peça
+     * @param compPeca Setar informação de valor double do Comprimento da Peça
+     * @param largPeca Setar informação de valor double da largura da Peça
+     * @param espePeca Setar informação de valor double de espessura da Peça
+     * @param precPeca Setar informação de valor double de preço da Peça
+     * @param fornecedor Setar Informação de valor String do nome do fornecedor
+     * @param tipoMaterial Setar Informação de valor String tipo de Material da
+     * Peça
      */
-    public static void excluirPeca(String fornecedor) {
-        Material.excluirMaterial(TABELA, TABELA, quantPeca, 0, 0, 0, 0,fornecedor);
+    public static void excluirPeca(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial, String fornecedor) {
+        if (!Peca.HaCampoVazio(quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial, fornecedor)) {
+            try {
+                String sql = "";
+                peca();
+                pst = conexao.prepareStatement(sql);
+                pst.setString(1, fornecedor);
+                int excluir = pst.executeUpdate();
+                if (excluir > 0) {
+                    Messagem.chamarTela(Messagem.EXCLUIDO(sql));
+                }
+            } catch (SQLException e) {
+                Messagem.chamarTela(e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+            }
+        } else {
+            Messagem.chamarTela(Peca.campoVazio(quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial, fornecedor));
+        }
+        //Material.excluirMaterial(TABELA, TABELA, quantPeca, 0, 0, 0, 0, fornecedor);
     }
 
     /** <b>Este metodo faz Pesquisar na tabela Peça.</b>
      * <p>
      * Utilizar um metodo da classe Material como Metodo auxiliar o metodo</p>
+     *
+     * @param quanPeca Setar informação de valor inteiro da quantidade de Peça
+     * @param compPeca Setar informação de valor double do Comprimento da Peça
+     * @param largPeca Setar informação de valor double da largura da Peça
+     * @param espePeca Setar informação de valor double de espessura da Peça
+     * @param precPeca Setar informação de valor double de preço da Peça
+     * @param fornecedor Setar Informação de valor String do nome do fornecedor
+     * @param tipoMaterial Setar Informação de valor String tipo de Material da
+     * Peça
      */
-    public static void pesquisarPeca() {
-
+    public static void pesquisarPeca(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial, String fornecedor) {
+        if (!Peca.HaCampoVazio(quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial, fornecedor)) {
+            try {
+                String sql = "";
+                peca();
+                pst = conexao.prepareStatement(sql);
+                pst.setString(1, fornecedor);
+                rs = pst.executeQuery();
+                if (rs.next()) {
+                    setQuantPeca(rs.getInt(1));
+                    setComprimento(rs.getDouble(1));
+                    setLargura(rs.getDouble(2));
+                    setEspessura(rs.getDouble(3));
+                    setPreco(rs.getDouble(4));
+                    setTipoMateria(rs.getString(5));
+                }
+            } catch (SQLException e) {
+                Messagem.chamarTela(e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+            }
+        } else {
+            Messagem.chamarTela(Peca.campoVazio(quanPeca, compPeca, largPeca, espePeca, precPeca, tipoMaterial, fornecedor));
+        }
     }
 
     public static int obterIdPeca(String tipoMaterial, double espessura) {
         return Material.obterIdMaterial(Peca.getTABELA(), tipoMaterial, espessura);
     }
 
+    /** <b>Este metodo .</b>
+     * <p>
+     * </p>
+     *
+     * @param quanPeca Setar informação de valor inteiro da quantidade de Peça
+     * @param compPeca Setar informação de valor double do Comprimento da Peça
+     * @param largPeca Setar informação de valor double da largura da Peça
+     * @param espePeca Setar informação de valor double de espessura da Peça
+     * @param precPeca Setar informação de valor double de preço da Peça
+     * @param fornecedor Setar Informação de valor String do nome do fornecedor
+     * @param tipoMaterial Setar Informação de valor String tipo de Material da
+     * Peça
+     */
+    private static String[] campoVazio(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial, String fornecedor) {
+        String[] vazio = new String[7];
+        boolean qp = false, cp = false, lp = false, ep = false, pp = false, tm = false, f = false;
+        for (int i = 0; i < vazio.length; i++) {
+            if (String.valueOf(quanPeca).isEmpty() && !qp) {
+                vazio[i] = "\nquantidade de peça";
+                qp = true;
+            } else if (String.valueOf(compPeca).isEmpty() && !cp) {
+                vazio[i] = "\ncomprimento de peça";
+                cp = true;
+            } else if (String.valueOf(largPeca).isEmpty() && !lp) {
+                vazio[i] = "\nlargura de peça";
+                lp = true;
+            } else if (String.valueOf(espePeca).isEmpty() && !ep) {
+                vazio[i] = "\nespessura de peça";
+                ep = true;
+            } else if (String.valueOf(precPeca).isEmpty() && !pp) {
+                vazio[i] = "\nPreço da Peça";
+                pp = true;
+            } else if (tipoMaterial.isEmpty() && !tm) {
+                vazio[i] = "\ntipo de materia da Peça";
+                tm = true;
+            } else if (fornecedor.isEmpty() && !f) {
+                vazio[i] = "\nFornecedor da peça";
+                f = true;
+            }
+        }
+        return vazio;
+    }
+
+    /** <b>Este metodo .</b>
+     * <p>
+     * </p>
+     *
+     * @param quanPeca Setar informação de valor inteiro da quantidade de Peça
+     * @param compPeca Setar informação de valor double do Comprimento da Peça
+     * @param largPeca Setar informação de valor double da largura da Peça
+     * @param espePeca Setar informação de valor double de espessura da Peça
+     * @param precPeca Setar informação de valor double de preço da Peça
+     * @param fornecedor Setar Informação de valor String do nome do fornecedor
+     * @param tipoMaterial Setar Informação de valor String tipo de Material da
+     * Peça
+     * @return
+     */
+    public static boolean HaCampoVazio(int quanPeca, double compPeca, double largPeca, double espePeca, double precPeca, String tipoMaterial, String fornecedor) {
+        return String.valueOf(quanPeca).isEmpty() && String.valueOf(compPeca).isEmpty() && String.valueOf(largPeca).isEmpty() && String.valueOf(espePeca).isEmpty() && String.valueOf(precPeca).isEmpty() && tipoMaterial.isEmpty() && fornecedor.isEmpty();
+    }
+
     /**
      * Estou preparando soma as peça Se 109,5X79,5
      *
-     * @param compChapa Setar uma informaÇão de valor double do comprimento da Chapa.
-     * @param largChapa Setar uma informação de valor double da largura da Chapa.
-     * @param compPeca Setar uma informaÇão de valor double do comprimento da Peça.
+     * @param compChapa Setar uma informaÇão de valor double do comprimento da
+     * Chapa.
+     * @param largChapa Setar uma informação de valor double da largura da
+     * Chapa.
+     * @param compPeca Setar uma informaÇão de valor double do comprimento da
+     * Peça.
      * @param largPeca Setar uma informação de valor double da largura da Peça.
      * @param serra Setar uma informação de valor double da Espessura da Serra.
      */
@@ -165,9 +362,12 @@ public class Peca {
     /**
      * PREPARADO
      *
-     * @param compChapa Setar uma informaÇão de valor double do comprimento da Chapa.
-     * @param largChapa Setar uma informação de valor double da largura da Chapa.
-     * @param compPeca Setar uma informaÇão de valor double do comprimento da Peça.
+     * @param compChapa Setar uma informaÇão de valor double do comprimento da
+     * Chapa.
+     * @param largChapa Setar uma informação de valor double da largura da
+     * Chapa.
+     * @param compPeca Setar uma informaÇão de valor double do comprimento da
+     * Peça.
      * @param largPeca Setar uma informação de valor double da largura da Peça.
      * @param serra Setar uma informação de valor double da Espessura da Serra.
      */
@@ -194,9 +394,12 @@ public class Peca {
     }
 
     /**
-     *  @param compChapa Setar uma informaÇão de valor double do comprimento da Chapa.
-     * @param largChapa Setar uma informação de valor double da largura da Chapa.
-     * @param compPeca Setar uma informaÇão de valor double do comprimento da Peça.
+     * @param compChapa Setar uma informaÇão de valor double do comprimento da
+     * Chapa.
+     * @param largChapa Setar uma informação de valor double da largura da
+     * Chapa.
+     * @param compPeca Setar uma informaÇão de valor double do comprimento da
+     * Peça.
      * @param largPeca Setar uma informação de valor double da largura da Peça.
      * @param serra Setar uma informação de valor double da Espessura da Serra.
      */
@@ -352,6 +555,24 @@ public class Peca {
     public static void setTipoMateria() {
         Peca.tipoMateria[0] = "Compensado";
         Peca.tipoMateria[1] = "MDF";
+    }
+
+    /**
+     * <b>Este Metodo Setar Informação um array de String sendo:</b>
+     * <p>
+     * <b>0</b> iqual a <b>Compensado</b>;</p>
+     * <p>
+     * <b>1</b> iqual a <b>MDF</b>.</p>
+     *
+     * @param tipoMateria
+     */
+    public static void setTipoMateria(String tipoMateria) {
+        if (index < Peca.tipoMateria.length) {
+            Peca.tipoMateria[index] = tipoMateria;
+            index++;
+        } else {
+            index = 0;
+        }
     }
 
     /** <b>Este Metodo setar Informação em uma Array de String.</b>

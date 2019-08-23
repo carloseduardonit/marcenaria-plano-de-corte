@@ -5,7 +5,6 @@
  */
 package marcenaria;
 
-import marcenaria.material.Material;
 import marcenaria.pessoa.Layout;
 import marcenaria.pessoa.Pessoa;
 import marcenaria.pessoa.cliente.Projeto;
@@ -168,7 +167,7 @@ public class Marcenaria extends javax.swing.JFrame {
 
     private void miLimpaBancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miLimpaBancoActionPerformed
         Pessoa.deletarPessoa();
-        Material.deletarMaterial();
+        
         Projeto.deletarProjeto();
     }//GEN-LAST:event_miLimpaBancoActionPerformed
 

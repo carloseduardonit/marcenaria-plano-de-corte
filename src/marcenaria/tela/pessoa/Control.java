@@ -95,7 +95,8 @@ public class Control {
      */
     public static void ADDPedaco(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
             JTextField Espessura, JTextField Preco) {
-        Pedaco.adicionarPedaco(Control.deJTextparaInt(Quantidade), Control.deJTextparaDouble(Comprimento),
+        Pedaco.adicionarPedaco(Control.deJTextparaInt(Quantidade),
+                Control.deJTextparaDouble(Comprimento),
                 Control.deJTextparaDouble(Largura), Control.deJTextparaDouble(Espessura),
                 Control.deJTextparaDouble(Preco), Produto.getText());
     }

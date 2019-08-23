@@ -8,6 +8,7 @@ package marcenaria.pessoa.cliente;
 import java.sql.*;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.material.Peca;
 import marcenaria.pessoa.Cliente;
 
 /**
@@ -16,14 +17,6 @@ import marcenaria.pessoa.Cliente;
  */
 public class Projeto {
 
-    public static void main(String[] args) {
-        criarProjeto();
-        deletarProjeto();
-        setIdCliente(1);
-        setNomeProjeto("Banheiro");
-        setDescricaoProjeto("projeto ");
-        adicionarProjeto(getNomeProjeto(), getDescricaoProjeto(), getIdCliente(), getPrecoProjeto());
-    }
     private static Connection conexao;
     private static ResultSet rs;
     private static ResultSetMetaData rsmd;
@@ -41,6 +34,7 @@ public class Projeto {
         conexao = ModuloConector.getConecction();
     }
 //Incio da Manipulação do Banco de dados.
+
     /**
      * Este metodo faz a criação a tabela de nome Projeto
      *
@@ -51,18 +45,18 @@ public class Projeto {
      * varchar(20)," + "descricao"+getTABELA()+ " varchar(20),"]
      */
     public static void criarProjeto() {
-      if (ModuloConector.VerificarNaoExistirTabela(Cliente.getTABELA())){
-          Cliente.criarCliente();
-      }
-            String sql = "create table if not exists " + Projeto.getTABELA()
-                    + "( id" + Projeto.getTABELA() + " int auto_increment primary key, "
-                    + "nome" + Projeto.getTABELA() + " varchar(20),"
-                    + "descricao" + Projeto.getTABELA() + " varchar(20),"
-                    + "id" + Cliente.getTABELA() + " int not null, "
-                    + "preco" + Projeto.getTABELA() + " double default 0, "
-                    + "foreign key (id" + Cliente.getTABELA() + ") references " + Cliente.getTABELA().toLowerCase() + " (id" + Cliente.getTABELA() + ") )";
-            ModuloConector.criarTabela(sql, Projeto.getTABELA());
-        
+        if (ModuloConector.VerificarNaoExistirTabela(Cliente.getTABELA())) {
+            Cliente.criarCliente();
+        }
+        String sql = "create table if not exists " + Projeto.getTABELA()
+                + "( id" + Projeto.getTABELA() + " int auto_increment primary key, "
+                + "nome" + Projeto.getTABELA() + " varchar(20),"
+                + "descricao" + Projeto.getTABELA() + " varchar(20),"
+                + "id" + Cliente.getTABELA() + " int not null, "
+                + "preco" + Projeto.getTABELA() + " double default 0, "
+                + "foreign key (id" + Cliente.getTABELA() + ") references " + Cliente.getTABELA().toLowerCase() + " (id" + Cliente.getTABELA() + ") )";
+        ModuloConector.criarTabela(sql, Projeto.getTABELA());
+
     }
 
     /**
@@ -73,27 +67,14 @@ public class Projeto {
      * @version 1.0
      */
     public static void deletarProjeto() {
-        try {
-            Proj();
-            String sql = "drop table if exists " + getTABELA();
-            Messagem.deletadaTabela(getTABELA());
-            if (Messagem.getDeleta() == 0) {
-                stmt = conexao.createStatement();
-                int deletar = stmt.executeUpdate(sql);
-                if (deletar == 0) {
-                    Messagem.chamarTela(Messagem.tabelaDeletada(getTABELA()));
-                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-                } else {
-                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-                }
-            }
-        } catch (SQLException e) {
-            Messagem.chamarTela(e);
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        if (!ModuloConector.VerificarNaoExistirTabela(Peca.getTABELA())) {
+            Peca.deletadaPeca();
         }
+        ModuloConector.deletarTabela(Projeto.getTABELA());
     }
 //Fim da Manipulação do Banco de dados.
 //Incio da Manipulação da Tabela do Banco de dados.
+
     /**
      * Este metodo faz a inserção na tabela de nome Projeto
      *
@@ -256,6 +237,7 @@ public class Projeto {
         }
     }
 //Fim da Manipulação da Tabela do Banco de dados.
+
     public static String sqlString(boolean ou, int tipo, int idProjeto, int idCliente, double precoProjeto) {
         String sql = "", a;
         if (ou) {
@@ -394,7 +376,8 @@ public class Projeto {
     }
 
     /**
-     * Este Metodo Retornar uma informação de valor String da descriçao do projeto.
+     * Este Metodo Retornar uma informação de valor String da descriçao do
+     * projeto.
      *
      *
      * @since 24/07/2019

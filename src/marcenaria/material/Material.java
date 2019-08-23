@@ -5,14 +5,12 @@
  */
 package marcenaria.material;
 
-import java.awt.HeadlessException;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
 import marcenaria.pessoa.Fornecedor;
 import marcenaria.pessoa.Pessoa;
-import marcenaria.pessoa.cliente.Projeto;
 
 /**
  * @since 18/05/2019
@@ -60,53 +58,7 @@ public class Material {
      */
     public static void adicionarMaterial(String Tabela, int quantidade, double comprimento, double largura,
             double espessura, double preco, String tipoMaterial, String Fornecedo) {
-        try {
-            Material();
-            String sql = "";
-            if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                // Verificar
-                sql = "insert into " + Tabela + "(quantidade, comprimento, largura, espessura, preco, tipoMaterial, id"
-                        + Fornecedor.getTABELA() + ") values (?,?,?,?,?,?,?)";
-            } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
-                //
-                sql = "insert into " + Tabela + "(quantidade,comprimento,largura,espessura,preco, tipoMaterial,id"
-                        + Chapa.getTABELA() + ") values (?,?,?,?,?,?,?)";
-            } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
-                sql = "insert into " + Tabela + "(quantidade,comprimento,largura,espessura,preco, tipoMaterial,id"
-                        + Chapa.getTABELA() + "id" + Peca.getTABELA() + ") values (?,?,?,?,?,?,?)";
-            }
-            pst = conexao.prepareStatement(sql);
-            pst.setInt(1, quantidade);
-            pst.setDouble(2, comprimento);
-            pst.setDouble(3, largura);
-            pst.setDouble(4, espessura);
-            pst.setDouble(5, preco);
-            pst.setString(6, tipoMaterial);
-            if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                pst.setInt(7, Fornecedor.obterIdPessoatoFornecedor(Fornecedo));// verificar
-            } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
-                pst.setInt(7, Chapa.obterIdChapa(tipoMaterial, espessura));
-            } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
-                pst.setInt(7, Chapa.obterIdChapa(tipoMaterial, espessura));
-                pst.setInt(8, Peca.obterIdPeca(tipoMaterial, espessura));
-            }
-            if ((Tabela.equalsIgnoreCase(Chapa.getTABELA()))
-                    || (Tabela.equalsIgnoreCase(Peca.getTABELA()) && Chapa.obterIdChapa(tipoMaterial, espessura) > 0)
-                    || (Tabela.equalsIgnoreCase(Pedaco.getTABELA()) && (Chapa.obterIdChapa(tipoMaterial, espessura) > 0
-                    || Peca.obterIdPeca(tipoMaterial, espessura) > 0))) {
-                int inserido = pst.executeUpdate();
-                if (inserido > 0) {
-                    Messagem.chamarTela("Foi inserido na Tabela " + Tabela + " a quantidade de " + quantidade
-                            + " como as Medidas :" + comprimento + "X" + largura + "X" + espessura + " CM.");
-                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-                }
-            } else {
-                adicionarMaterial(Tabela, quantidade, comprimento, largura, espessura, preco, tipoMaterial, Fornecedo);
-            }
-        } catch (NullPointerException npe) {
-        } catch (HeadlessException | SQLException e) {
-            Messagem.chamarTela(e);
-        }
+       
     }
 
     /**
@@ -298,132 +250,6 @@ public class Material {
             }
         } catch (Exception e) {
             Messagem.chamarTela(e);
-        }
-    }
-
-    /**
-     * TESTADO E OK
-     *@since 21/07/2019 acrescentado  o metodo criarProjeto().
-     * @since 20/07/2019 Correção de tabela Chapa cujo o idFornecedor não era
-     * inclusa
-     * @since 18/05/2019
-     * @version 1.0
-     * @param Tabela Informar um valor String para tabela de Material
-     */
-    public static void criarMaterial(String Tabela) {
-        try {
-            Material();
-            String sql = "create table if not exists " + Tabela + "(" + "id" + Tabela
-                    + " int primary key auto_increment," + "quantidade int default 0," + "comprimento double,"
-                    + "largura double," + "espessura double," + "preco double, " + "tipoMaterial varchar(30)";
-            if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                sql += ", id" + Fornecedor.getTABELA() + " int not null," + "foreign key(id" + Fornecedor.getTABELA()
-                        + ") references " + Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
-            } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
-                sql += "," + "id" + Chapa.getTABELA() + " int not null default 0,"+
-                "id" +Projeto.getTABELA()+" int not null default 0, "
-                +"foreign key (id" +Projeto.getTABELA()+") references "+Projeto.getTABELA()+"(id"+Projeto.getTABELA()+ 
-                "), foreign key(id" + Chapa.getTABELA() + ") references "+Chapa.getTABELA()+"(id" + Chapa.getTABELA() + "))";
-            } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
-                sql += ",id" + Chapa.getTABELA() + " int default '0'," + "id" + Peca.getTABELA() + " int default 0,"
-                        + "incData Timestamp," + "foreign key (id" + Chapa.getTABELA() + ") references "
-                        + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), " + "foreign key (id" + Peca.getTABELA()
-                        + ") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
-            }
-            stmt = conexao.createStatement();
-            Messagem.criadoTabela(Tabela);
-            if (Messagem.getCriada() == JOptionPane.OK_OPTION) {
-                int adicionada = stmt.executeUpdate(sql);
-                if (adicionada == 0) {
-                    Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
-                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-                }
-            }
-        } catch (SQLIntegrityConstraintViolationException sicve) {
-            Messagem.chamarTela(sicve);
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-        } catch (NullPointerException ne) {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-        } catch (HeadlessException he) {
-            Messagem.chamarTela(he);
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-        } catch (SQLException e) {
-            if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                Fornecedor.criarFornecedor();
-            } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
-                // primeiro tem que criar a Tabela Chapa para depois a Tabela Peça para depois
-                // Tabela Pedaco
-                criarMaterial(Chapa.getTABELA());
-                criarMaterial(Peca.getTABELA());
-                criarMaterial(Tabela);
-            } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
-                // primeiro tem que criar a Tabela Chapa para depois a Tabela Peça
-                Projeto.criarProjeto();
-                criarMaterial(Chapa.getTABELA());
-                criarMaterial(Tabela);
-            } else {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-    }
-
-    /**
-     * TESTADO E OK
-     *
-     **@since 18/05/2019
-     * @version 1.0
-     */
-    public static void deletarMaterial() {
-        Material.deletarMaterial(Material.getTABELA());
-    }
-
-    /**
-     * TESTADO E OK
-     *
-     **@since 18/05/2019
-     * @version 1.0
-     * @param Tabela Informar um valor String para tabela de Material
-     */
-    public static void deletarMaterial(String Tabela) {
-        try {
-            Material();
-            String sql = "drop table if exists " + Tabela;
-            stmt = conexao.createStatement();
-            int deleta = JOptionPane.showConfirmDialog(null, "Desejar excluir a  tabela " + Tabela, Tabela,
-                    JOptionPane.OK_CANCEL_OPTION);
-            // System.out.println(deleta + "X" + JOptionPane.OK_OPTION);
-            if (deleta == JOptionPane.OK_OPTION) {
-                int deletado = stmt.executeUpdate(sql);
-                // System.out.println("" + deletado);
-                if (deletado == 0) {
-                    JOptionPane.showMessageDialog(null, "Foi Exclui com sucesso  a tabela " + Tabela);
-                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-                }
-            }
-        } catch (SQLIntegrityConstraintViolationException e) {
-            if (Tabela.equalsIgnoreCase(Material.getTABELA())) {
-                Pedaco.deletaPedaco();
-                Peca.deletadaPeca();
-                Chapa.deletadaChapa();
-            } else if (Tabela.equalsIgnoreCase(Chapa.getTABELA())) {
-                // Primeiro deleta a Tabela Peca depois a Tabela Chapa
-                deletarMaterial(Pedaco.getTABELA());
-                deletarMaterial(Peca.getTABELA());
-                deletarMaterial(Tabela);
-            } else if (Tabela.equalsIgnoreCase(Peca.getTABELA())) {
-                deletarMaterial(Pedaco.getTABELA());
-                deletarMaterial(Tabela);
-            } else if (Tabela.equalsIgnoreCase(Pedaco.getTABELA())) {
-                deletarMaterial(Tabela);
-            } else {
-                Messagem.chamarTela(Tabela + " esta  não foi criada o elseif");
-            }
-        } catch (HeadlessException | SQLException he) {
-            Messagem.chamarTela(he);
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-        } catch (NullPointerException npe) {
-            Messagem.chamarTela(npe);
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 

@@ -17,14 +17,6 @@ import marcenaria.pessoa.cliente.Projeto;
  */
 public class Cliente extends Pessoa {
 
-    public static void main(String[] args) {
-        Cliente.setLogin("Carlos");
-        Cliente.setSenha("39568eu1");
-        Cliente.setTipoPessoa("pf");
-        Cliente.setNome(Cliente.getLogin());
-        Cliente.setDocum("12345678901");
-        adicionarCliente(Cliente.getLogin(), Cliente.getSenha(), Cliente.getSenha(), Cliente.getTipoPessoa(), Cliente.getNome(), Cliente.getDocum());
-    }
     private static final String TABELA = Cliente.class.getSimpleName();
     private static int cpf, idCliente;
     private static String tipoPessoa, docum;
@@ -39,7 +31,7 @@ public class Cliente extends Pessoa {
     }
 
     /**
-     * ok TA MONTANDO FALTA TESTA Este Metodo
+     * ok  Este Metodo criar a tabela Cliente.
      */
     public static void criarCliente() {
         String sql = "create table if not exists " + Cliente.getTABELA() + "(id" + Pessoa.getTABELA() + " int not null unique, " + "login varchar(15) not  null unique, "
@@ -54,7 +46,7 @@ public class Cliente extends Pessoa {
     }
 
     /**
-     * ok
+     * ok Este Metodo deletar a tabela Cliente.
      */
     public static void deletarCliente() {
         if (!ModuloConector.VerificarNaoExistirTabela(Projeto.getTABELA())) {
@@ -63,11 +55,7 @@ public class Cliente extends Pessoa {
         ModuloConector.deletarTabela(Cliente.getTABELA());
     }
 
-    /**
-     * Este metodo inserer informação na tabela Cliente utilizado um metodo
-     * auxiliar da classe <b>Pessoa</b> no metodo <b>adicionarPessoa(String
-     * Tabela, String logPessoa, String senPessoa, String conSenPessoa, String
-     * tipoPessoa, String nomePessoa, String documPessoa)</b>
+    /**ok Este metodo inserer informação na tabela Cliente. 
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
@@ -132,8 +120,7 @@ public class Cliente extends Pessoa {
         }
     }
 
-    /**
-     * TA MONTANDO FALTA TESTA Este Metodo
+    /** ok Este Metodo editar informação na tabela Cliente. 
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
@@ -190,8 +177,7 @@ public class Cliente extends Pessoa {
         }
     }
 
-    /**
-     * TA MONTANDO FALTA TESTA Este Metodo
+    /**ok Este Metodo  deletar a informação na tabela Cliente. 
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
@@ -200,12 +186,11 @@ public class Cliente extends Pessoa {
         excluirCliente(logCliente, true);
     }
 
-    /**
-     * TA MONTANDO FALTA TESTA Este Metodo
+    /** ok Este Metodo  deletar a informação na tabela Cliente. 
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
-     * @param Mensagem
+     * @param Mensagem Setar uma informação do tipo boolean no metodo para exibir determinada mensagem
      */
     public static void excluirCliente(String logCliente, boolean Mensagem) {
         if (Cliente.existeraCliente(logCliente)) {
@@ -339,20 +324,21 @@ public class Cliente extends Pessoa {
         }
     }
 
-    /**
-     * Este Metodo
+    /** ok Este Metodo Retornar o id da pessoa da Tabela Cliente atraves do Login.
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
-     * @return Retornar o id da Tabela Cliente atraves do Login.
+     * @return Retornar o id da pessoa da Tabela Cliente atraves do Login.
      */
     public static int obterIdPessoatoCliente(String logCliente) {
         return Pessoa.obterIdPessoa(Cliente.getTABELA(), logCliente);
     }
 
-    /**
-     * @param logCliente
-     * @return
+    /**Ok Este Metodo Retornar uma informação de valor Boolean da Tabela Cliente
+     * atraves do Login.
+     * @param logCliente Setar uma informação do tipo String da Tabela Cliente
+     * no Login Cliente.
+     * @return Retornar uma informação  de valor Boolean da Tabela Cliente atraves do Login.
      */
     public static Boolean existeraCliente(String logCliente) {
         return obterIdPessoatoCliente(logCliente) > 0;

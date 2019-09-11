@@ -6,6 +6,10 @@
 package marcenaria.material;
 
 import java.sql.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
 import marcenaria.pessoa.Fornecedor;
@@ -21,11 +25,11 @@ public class Chapa {
      * Variaveis do tipo Double para largura , comprimento, espessura, preço da
      * chapa
      */
-    private static Double largChapa, comprChapa, espesChapa, precoChapa;
+    private static double largChapa = 0.0, comprChapa = 0.0, espesChapa = 0.0, precoChapa = 0.0;
     /**
      * Variaveis do tipo inteiro para id e quantidade da chapa;
      */
-    private static int idChapa, quantChapa, index = 1;
+    private static int idChapa = 0, quantChapa = 0, index = 1;
     /**
      * Variaveis do tipo String para nome da Tabela Chapa;
      */
@@ -33,12 +37,15 @@ public class Chapa {
     /**
      * Array do tipo String para tipo de materia da Chapa;
      */
-    private static String[] tipoMateria = new String[2];
+    private static String tipoMateria;
     private static Connection conexao;
     private static ResultSet rs;
     private static ResultSetMetaData rsmd;
     private static PreparedStatement pst;
     private static Statement stmt;
+    private static DecimalFormat df = new DecimalFormat("###,##.00");
+    private static Locale ptBr = new Locale("pt", "br");
+    private static NumberFormat moeda = NumberFormat.getInstance(ptBr);
 
     /**
      * Este metodo realiza a conexao com o banco de dado
@@ -61,11 +68,16 @@ public class Chapa {
         if (ModuloConector.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
             Fornecedor.criarFornecedor();
         }
-        String sql = "create table if not exists " + Chapa.getTABELA() + "( id" + Chapa.getTABELA()
-                + " int primary key auto_increment," + "quantidade int default 0," + "comprimento double,"
-                + "largura double," + "espessura double," + "preco double, " + "tipoMaterial varchar(30), " + "id"
-                + Fornecedor.getTABELA() + " int not null default 0," + "foreign key(id" + Fornecedor.getTABELA()
-                + ") references " + Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
+        String sql = "create table if not exists " + Chapa.getTABELA()
+                + "( id" + Chapa.getTABELA() + " int primary key auto_increment,"
+                + "quantidade int default 0,"
+                + "comprimento double (7,2),"
+                + "largura double (7,2),"
+                + "espessura double(4,2),"
+                + "preco double (10,2), "
+                + "tipoMaterial varchar(30), "
+                + "id" + Fornecedor.getTABELA() + " int not null default 0,"
+                + "foreign key(id" + Fornecedor.getTABELA() + ") references " + Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
         ModuloConector.criarTabela(sql, Chapa.getTABELA());
     }
 
@@ -107,11 +119,8 @@ public class Chapa {
      * Chapa
      */
     public static void adicionarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
-
-        if (!Chapa.HaCampoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)) {
-
+        if (Chapa.NaoHaCampoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)) {
             if (Fornecedor.existeroFornecedor(fornecedor)) {
-
                 int idFornecedor = Fornecedor.obterIdFornecedortoFornecedor(fornecedor);
                 try {
                     String sql = "insert into " + Chapa.getTABELA()
@@ -131,7 +140,7 @@ public class Chapa {
                         Messagem.chamarTela(Messagem.ADICIONADO(sql));
                     }
                 } catch (SQLException e) {
-                    Messagem.chamarTela(e);
+                    Messagem.chamarTela(Chapa.getTABELA() + " Adicionar: " + e);
                 } finally {
                     ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
@@ -139,12 +148,8 @@ public class Chapa {
                 Messagem.chamarTela("Fornecedor Nao existe");
             }
         } else {
-
             Messagem.chamarTela(Messagem.VAZIO(Chapa.campoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)));
         }
-
-        // Material.adicionarMaterial(getTABELA(), quantChapa, compChapa, largChapa,
-        // espeChapa, precChapa, tipoMaterial, fornecedor);
     }
 
     /**
@@ -162,47 +167,79 @@ public class Chapa {
      * materia da Chapa
      * @param fornecedor Setar uma informação de valor String do fornecedor da
      * Chapa
+     * @param ou
      * @since 01/05/2019
      * @version 1.0
      */
-    public static void editarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa,
-            double precChapa, String tipoMaterial, String fornecedor) {
-        if (Chapa.HaCampoVazio(quantChapa, compChapa, largChapa, espeChapa, espeChapa, tipoMaterial, fornecedor)) {
+    public static void editarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
+        System.out.println("a1");
+        Chapa.editarChapa(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor, false);
+    }
+
+    /**
+     * Tem que faze-lo
+     *
+     * @param quantChapa Setar uma informação de valor inteiro da quantidade de
+     * Chapa
+     * @param compChapa Setar uma informação de valor double do comprimento de
+     * Chapa
+     * @param largChapa Setar uma informação de valor double do largura de Chapa
+     * @param espeChapa Setar uma informação de valor double do espessura de
+     * Chapa
+     * @param precChapa Setar uma informação de valor double do Preço da Chapa
+     * @param tipoMaterial Setar uma informação de valor String do tipo de
+     * materia da Chapa
+     * @param fornecedor Setar uma informação de valor String do fornecedor da
+     * Chapa
+     * @param ou
+     * @since 01/05/2019
+     * @version 1.0
+     */
+    public static void editarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor, boolean ou) {
+        String a;
+        if (ou) {
+            a = " or ";
+        } else {
+            a = " and ";
+        }
+        if (Chapa.NaoHaCampoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)) {
             if (Fornecedor.existeroFornecedor(fornecedor)) {
                 int idFornecedor = Fornecedor.obterIdFornecedortoFornecedor(fornecedor);
                 try {
-                    String sql = "uptade from " + Chapa.getTABELA()
-                            + " set quantidade = ?, comprimento = ?, largura = ?, espessura = ?, preco = ?, tipoMaterial = ? where id"
-                            + Fornecedor.getTABELA() + " = ?";
+                    String sql = "update " + Chapa.getTABELA() + " set quantidade = ?, comprimento = ?, largura = ?, espessura = ?, preco = ?, tipoMaterial = ? where ", antes = Chapa.exibirChapatoString(compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor), depois;
+                    if (!tipoMaterial.isEmpty() && !fornecedor.isEmpty()) {
+                        sql += "tipoMaterial = ?" + a + "id" + Fornecedor.getTABELA() + " = ?";
+                    }
                     chapa();
+                    int i = 1;
                     pst = conexao.prepareStatement(sql);
-                    pst.setInt(1, quantChapa);
-                    pst.setDouble(2, compChapa);
-                    pst.setDouble(3, largChapa);
-                    pst.setDouble(4, espeChapa);
-                    pst.setDouble(5, precChapa);
-                    pst.setString(6, tipoMaterial);
-                    pst.setInt(7, idFornecedor);
+                    pst.setInt(i++, quantChapa);
+                    pst.setDouble(i++, compChapa);
+                    pst.setDouble(i++, largChapa);
+                    pst.setDouble(i++, espeChapa);
+                    pst.setDouble(i++, precChapa);
+                    pst.setString(i++, tipoMaterial);
+
+                    if (!tipoMaterial.isEmpty() && !fornecedor.isEmpty()) {
+                        pst.setString(i++, tipoMaterial);
+                        pst.setInt(i++, idFornecedor);
+                    }
                     int editado = pst.executeUpdate();
                     if (editado > 0) {
-                        Messagem.chamarTela(Messagem.EDITADO(sql));
+                        depois = Chapa.exibirChapatoString(compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor);
+                        Messagem.chamarTela(Messagem.EDITADO(antes + "\n\n" + depois));
                     }
                 } catch (SQLException e) {
-                    Messagem.chamarTela(e);
+                    Messagem.chamarTela(Chapa.getTABELA() + " Editar: " + e);
                 } finally {
                     ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
-            } else {
-                Messagem.chamarTela("");
             }
-        } else {
-            Messagem.chamarTela(Messagem.VAZIO(Chapa.campoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa,
-                    tipoMaterial, fornecedor)));
         }
+    }
 
-        // Material.editarMaterial(getTABELA(), getTipoMateria(0), getQuantChapa(),
-        // getComprChapa(), getLargChapa(), getEspesChapa(), getPrecoChapa(),
-        // fornecedor);
+    public static void excluirChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor, boolean ou) {
+        excluirChapa(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor, ou, true);
     }
 
     /**
@@ -220,30 +257,132 @@ public class Chapa {
      * materia da Chapa
      * @param fornecedor Setar uma informação de valor String do fornecedor da
      * Chapa
+     * @param ou
+     * @param messagem
      * @since 01/05/2019
      * @version 1.0
      *
      */
-    public static void excluirChapa(int quantChapa, double compChapa, double largChapa, double espeChapa,
-            double precChapa, String tipoMaterial, String fornecedor) {
+    public static void excluirChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor, boolean ou, boolean messagem) {
+        String a;
+        if (ou) {
+            a = " or ";
+        } else {
+            a = " and ";
+        }
         if (Chapa.HaCampoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)) {
             try {
-                String sql = "";
-                pst = conexao.prepareStatement(sql);
-                int excluir = pst.executeUpdate();
-                if (excluir > 0) {
-                    Messagem.chamarTela(Messagem.EXCLUIDO(sql));
+                int i = 0, idFornecedor = Fornecedor.obterIdFornecedortoFornecedor(fornecedor);
+                String sql = "delete from " + Chapa.getTABELA() + " where ", exclui = Chapa.exibirChapatoString(compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor);
+                if (quantChapa >= 1) {
+                    sql += "quantidade = ?";
+                    i++;
                 }
-            } catch (Exception e) {
-                Messagem.chamarTela(e);
+                if (compChapa > 0.0 && compChapa == getComprChapa()) {
+                    if (i > 0) {
+                        sql += a;
+                    }
+                    sql += "comprimento = ?";
+                    i++;
+                }
+                if (largChapa > 0.0 && largChapa == getLargChapa()) {
+                    if (i > 0) {
+                        sql += a;
+                    }
+                    sql += "largura = ?";
+                    i++;
+                }
+                if (espeChapa > 0.0 && espeChapa == getEspesChapa()) {
+                    if (i > 0) {
+                        sql += a;
+                    }
+                    sql += "espessura = ?";
+                    i++;
+                }
+                if (precChapa > 0.0 && precChapa == getPrecoChapa()) {
+                    if (i > 0) {
+                        sql += a;
+                    }
+                    sql += "preco = ?";
+                    i++;
+                }
+                if (!tipoMaterial.isEmpty() && tipoMaterial.equalsIgnoreCase(getTipoMateria())) {
+                    if (i > 0) {
+                        sql += a;
+                    }
+                    sql += "tipoMaterial = ?";
+                    i++;
+                }
+                if (!fornecedor.isEmpty() && idFornecedor > 0) {
+                    if (i > 0) {
+                        sql += a;
+                    }
+                    sql += "id" + Fornecedor.getTABELA() + " = ?";
+                    i++;
+                }
+                if (messagem) {
+                    Messagem.chamarTelaConfirma(exclui, Chapa.getTABELA(), "deletar");
+                } else {
+                    Messagem.setDeleta(JOptionPane.OK_OPTION);
+                }
+                if (Messagem.getDeleta() == 0) {
+                    int j = 1;
+                    chapa();
+                    pst = conexao.prepareStatement(sql);
+                    if (quantChapa >= 1) {
+                        pst.setInt(j++, quantChapa);
+                    }
+                    if (compChapa > 0.0 && compChapa == getComprChapa()) {
+                        pst.setDouble(j++, compChapa);
+                    }
+                    if (largChapa > 0.0 && largChapa == getLargChapa()) {
+                        pst.setDouble(j++, largChapa);
+                    }
+                    if (espeChapa > 0.0 && espeChapa == getEspesChapa()) {
+                        pst.setDouble(j++, espeChapa);
+                    }
+                    if (precChapa > 0.0 && precChapa == getPrecoChapa()) {
+                        pst.setDouble(j++, precChapa);
+                    }
+                    if (!tipoMaterial.isEmpty() && tipoMaterial.equalsIgnoreCase(getTipoMateria())) {
+                        pst.setString(j++, tipoMaterial);
+                    }
+                    if (!fornecedor.isEmpty() && idFornecedor > 0) {
+                        pst.setInt(j++, idFornecedor);
+                    }
+                    int excluir = pst.executeUpdate();
+                    if (excluir > 0) {
+                        Messagem.chamarTela(Messagem.EXCLUIDO(exclui));
+                    }
+                }
+            } catch (SQLException e) {
+                Messagem.chamarTela(Chapa.getTABELA() + " Excluir: " + e);
             } finally {
                 ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } else {
-            Messagem.chamarTela(Messagem.VAZIO(Chapa.campoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa,
-                    tipoMaterial, fornecedor)));
         }
-        // Material.excluirMaterial(TABELA, TABELA, quantChapa, 0, 0, 0, 0);
+    }
+
+    /**
+     * @param quantChapa Setar uma informação de valor inteiro da quantidade de
+     * Chapa
+     * @param compChapa Setar uma informação de valor double do comprimento de
+     * Chapa
+     * @param largChapa Setar uma informação de valor double do largura de Chapa
+     * @param espeChapa Setar uma informação de valor double do espessura de
+     * Chapa
+     * @param precChapa Setar uma informação de valor double do Preço da Chapa
+     * @param tipoMaterial Setar uma informação de valor String do tipo de
+     * materia da Chapa
+     * @param fornecedor Setar uma informação de valor String do fornecedor da
+     * Chapa
+     */
+    public static void inserirChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
+        if (TemChapa(compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)) {
+            editarChapa(getQuantChapa() + quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor, true);
+        } else {
+            adicionarChapa(quantChapa, compChapa, largChapa, espeChapa, 0, tipoMaterial, fornecedor);
+        }
     }
 
     /**
@@ -266,9 +405,8 @@ public class Chapa {
      * @since 01/05/2019
      * @version 1.0
      */
-    public static void pesquisarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa,
-            double precChapa, String tipoMaterial, String fornecedor, boolean ou) {
-        if (Chapa.HaCampoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)) {
+    public static void pesquisarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor, boolean ou) {
+        if (!Chapa.HaCampoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)) {
             try {
                 String a;
                 int i = 0;
@@ -277,52 +415,52 @@ public class Chapa {
                 } else {
                     a = " and ";
                 }
-                String sql = "select from chapa where ";
+                String sql = "select id" + Chapa.getTABELA() + ", quantidade, comprimento, largura, espessura, preco, tipoMaterial, id" + Fornecedor.getTABELA() + " from " + Chapa.getTABELA() + " where ";
                 if (quantChapa > 0) {
                     sql += "quantidade = ?";
                     i++;
                 }
                 if (compChapa > 0.0) {
-                    if (i > 0) {
+                    if (i >= 1) {
                         sql += a;
-                        i++;
                     }
                     sql += "comprimento = ?";
+                    i++;
                 }
                 if (largChapa > 0.0) {
-                    if (i > 0) {
+                    if (i >= 1) {
                         sql += a;
-                        i++;
                     }
                     sql += "largura = ?";
+                    i++;
                 }
                 if (espeChapa > 0.0) {
-                    if (i > 0) {
+                    if (i >= 1) {
                         sql += a;
-                        i++;
                     }
                     sql += "espessura = ?";
+                    i++;
                 }
                 if (precChapa > 0.0) {
-                    if (i > 0) {
+                    if (i >= 1) {
                         sql += a;
-                        i++;
                     }
                     sql += "preco = ?";
+                    i++;
                 }
                 if (!tipoMaterial.isEmpty()) {
-                    if (i > 0) {
+                    if (i >= 1) {
                         sql += a;
-                        i++;
                     }
-                    sql += "tipoMateria = ?";
+                    sql += "tipoMaterial = ?";
+                    i++;
                 }
                 if (!fornecedor.isEmpty()) {
-                    if (i > 0) {
+                    if (i >= 1) {
                         sql += a;
-                        i++;
                     }
                     sql += "id" + Fornecedor.getTABELA() + " = ?";
+                    i++;
                 }
                 chapa();
                 pst = conexao.prepareStatement(sql);
@@ -352,9 +490,8 @@ public class Chapa {
                     j++;
                 }
                 if (!fornecedor.isEmpty()) {
-                    int forn = Fornecedor.obterIdPessoatoFornecedor(fornecedor);
+                    int forn = Fornecedor.obterIdFornecedortoFornecedor(fornecedor);
                     pst.setInt(j, forn);
-
                 }
                 rs = pst.executeQuery();
                 if (rs.next()) {
@@ -368,13 +505,10 @@ public class Chapa {
                     Fornecedor.setIdFornecedor(rs.getInt(8));
                 }
             } catch (SQLException e) {
-                Messagem.chamarTela(e);
+                Messagem.chamarTela(Chapa.getTABELA() + " Pesquisar: " + e);
             } finally {
                 ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } else {
-            Messagem.chamarTela(Messagem.VAZIO(Chapa.campoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa,
-                    tipoMaterial, fornecedor)));
         }
     }
 
@@ -413,11 +547,10 @@ public class Chapa {
      * @since 01/05/2019
      * @version 1.0
      */
-    public static String[] campoVazio(int quantChapa, double compChapa, double largChapa, double espeChapa,
-            double precChapa, String tipoMaterial, String fornecedor) {
+    public static String[] campoVazio(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
         String[] vazio = new String[7];
         boolean qc = false, cc = false, lc = false, ec = false, pc = false, tm = false, f = false;
-        for (int i = 0; i < vazio.length;) {
+        for (int i = 0; i < vazio.length; i++) {
             if (String.valueOf(quantChapa).isEmpty() && !qc) {
                 vazio[i] = "Quantidade de Chapa\n";
                 qc = true;
@@ -445,8 +578,53 @@ public class Chapa {
     }
 
     /**
-     * Tem que faze-lo
-     *
+     * @param compChapa Setar uma informação de valor double do comprimento de
+     * Chapa
+     * @param largChapa Setar uma informação de valor double do largura de Chapa
+     * @param espeChapa Setar uma informação de valor double do espessura de
+     * Chapa
+     * @param precChapa Setar uma informação de valor double do Preço da Chapa
+     * @param tipoMaterial Setar uma informação de valor String do tipo de
+     * materia da Chapa
+     * @param fornecedor Setar uma informação de valor String do fornecedor da
+     * Chapa
+     * @return
+     */
+    public static String exibirChapatoString(double compChapa, double largChapa, double espeChapa,
+            double precChapa, String tipoMaterial, String fornecedor) {
+        String a = "";
+
+        //if (TemChapa(compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)) {
+        pesquisarChapa(0, 0, 0, 0, 0, tipoMaterial, fornecedor, false);
+        a = "Cadastro da Chapa: \n";
+        if (getQuantChapa() >= 1) {
+            a += "\nQuantidade de Chapa: " + getQuantChapa();
+        }
+        if (getComprChapa() > 0) {
+            a += "\nComprimento: " + df.format(getComprChapa());
+        }
+        if (getLargChapa() > 0) {
+            a += "\nLargura: " + df.format(getLargChapa());
+        }
+        if (getEspesChapa() > 0) {
+            a += "\nEspessura: " + df.format(getEspesChapa());
+        }
+        if (getPrecoChapa() > 0) {
+            a += "\nPreço Unitario: " + moeda.format(getPrecoChapa());
+        }
+        if (!getTipoMateria().isEmpty()) {
+            a += "\nTipo de Material: " + getTipoMateria();
+        }
+        if (Fornecedor.getIdFornecedor() > 0) {
+            a += "\n\n" + Fornecedor.exibirFornecedortoString(fornecedor);
+        }
+        // } else {
+
+        //}
+        return a;
+    }
+
+    /**
      * @param quantChapa Setar uma informação de valor inteiro da quantidade de
      * Chapa
      * @param compChapa Setar uma informação de valor double do comprimento de
@@ -463,15 +641,85 @@ public class Chapa {
      * @since 01/05/2019
      * @version 1.0
      */
-    private static boolean HaCampoVazio(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
-        return String.valueOf(quantChapa).isEmpty() && String.valueOf(compChapa).isEmpty()
-                && String.valueOf(largChapa).isEmpty() && String.valueOf(espeChapa).isEmpty()
-                && String.valueOf(precChapa).isEmpty() && tipoMaterial.isEmpty() && fornecedor.isEmpty();
+    public static boolean NaoHaCampoVazio(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
+        return !Chapa.HaCampoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor, true);
     }
 
-    private static boolean TemChapa(double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
-        pesquisarChapa(0, 0, 0, 0, 0, tipoMaterial, fornecedor, true);
-        return getQuantChapa() >= 1 && getComprChapa() >= compChapa && getLargChapa() >= largChapa && getEspesChapa() >= espeChapa && getPrecoChapa() >= precChapa && getTipoMaterial().equalsIgnoreCase(tipoMaterial) && Fornecedor.getIdFornecedor() >= 1;
+    /**
+     * @param quantChapa Setar uma informação de valor inteiro da quantidade de
+     * Chapa
+     * @param compChapa Setar uma informação de valor double do comprimento de
+     * Chapa
+     * @param largChapa Setar uma informação de valor double do largura de Chapa
+     * @param espeChapa Setar uma informação de valor double do espessura de
+     * Chapa
+     * @param precChapa Setar uma informação de valor double do Preço da Chapa
+     * @param tipoMaterial Setar uma informação de valor String do tipo de
+     * materia da Chapa
+     * @param fornecedor Setar uma informação de valor String do fornecedor da
+     * Chapa
+     * @return
+     * @since 01/05/2019
+     * @version 1.0
+     */
+    public static boolean HaCampoVazio(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
+        return Chapa.HaCampoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor, true);
+    }
+
+    /**
+     * Tem que faze-lo
+     *
+     * @param quantChapa Setar uma informação de valor inteiro da quantidade de
+     * Chapa
+     * @param compChapa Setar uma informação de valor double do comprimento de
+     * Chapa
+     * @param largChapa Setar uma informação de valor double do largura de Chapa
+     * @param espeChapa Setar uma informação de valor double do espessura de
+     * Chapa
+     * @param precChapa Setar uma informação de valor double do Preço da Chapa
+     * @param tipoMaterial Setar uma informação de valor String do tipo de
+     * materia da Chapa
+     * @param fornecedor Setar uma informação de valor String do fornecedor da
+     * Chapa
+     * @param messagem
+     * @return
+     * @since 01/05/2019
+     * @version 1.0
+     */
+    public static boolean HaCampoVazio(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor, boolean messagem) {
+        boolean a = String.valueOf(quantChapa).isEmpty() && String.valueOf(compChapa).isEmpty()
+                && String.valueOf(largChapa).isEmpty() && String.valueOf(espeChapa).isEmpty()
+                && String.valueOf(precChapa).isEmpty() && tipoMaterial.isEmpty() && fornecedor.isEmpty();
+        System.out.println("" + a);
+        if (a && messagem) {
+            System.out.println("" + !a);
+            System.out.println("1" + Messagem.VAZIO(Chapa.campoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)));
+            Messagem.chamarTela(Messagem.VAZIO(Chapa.campoVazio(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor)));
+        }
+        return a;
+    }
+
+    /**
+     * @param compChapa Setar uma informação de valor double do comprimento de
+     * Chapa
+     * @param largChapa Setar uma informação de valor double do largura de Chapa
+     * @param espeChapa Setar uma informação de valor double do espessura de
+     * Chapa
+     * @param precChapa Setar uma informação de valor double do Preço da Chapa
+     * @param tipoMaterial Setar uma informação de valor String do tipo de
+     * materia da Chapa
+     * @param fornecedor Setar uma informação de valor String do fornecedor da
+     * Chapa
+     * @return
+     */
+    public static boolean TemChapa(double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
+        // System.err.println("5e");
+        pesquisarChapa(0, 0, 0, 0, 0, tipoMaterial, fornecedor, false);
+        boolean a = getQuantChapa() >= 1 && getComprChapa() >= compChapa && getLargChapa() >= largChapa && getEspesChapa() >= espeChapa && getPrecoChapa() >= precChapa && getTipoMateria().equalsIgnoreCase(tipoMaterial) && Fornecedor.getIdFornecedor() >= 1;
+        if (!a) {
+            Messagem.chamarTela("Não há Chapa Disponivel!!!");
+        }
+        return a;
     }
 
     // Gets e Sets
@@ -482,7 +730,7 @@ public class Chapa {
      * @version 1.0
      * @return Retornar uma valor double da largura da Chapa
      */
-    public static Double getLargChapa() {
+    public static double getLargChapa() {
         return largChapa;
     }
 
@@ -493,7 +741,7 @@ public class Chapa {
      * @version 1.0
      * @param largChapa Setar Informar uma valor double da largura da Chapa
      */
-    public static void setLargChapa(Double largChapa) {
+    public static void setLargChapa(double largChapa) {
         Chapa.largChapa = largChapa;
     }
 
@@ -504,7 +752,7 @@ public class Chapa {
      * @version 1.0
      * @return Retornar um valor double do comprimento da Chapa
      */
-    public static Double getComprChapa() {
+    public static double getComprChapa() {
         return comprChapa;
     }
 
@@ -516,7 +764,7 @@ public class Chapa {
      * @param comprChapa setar Informação um valor double do Comprimento da
      * Chapa
      */
-    public static void setComprChapa(Double comprChapa) {
+    public static void setComprChapa(double comprChapa) {
         Chapa.comprChapa = comprChapa;
     }
 
@@ -527,7 +775,7 @@ public class Chapa {
      * @version 1.0
      * @return Retornar um valor double da espessura da Chapa
      */
-    public static Double getEspesChapa() {
+    public static double getEspesChapa() {
         return espesChapa;
     }
 
@@ -539,7 +787,7 @@ public class Chapa {
      * @param espesChapa setar uma Informação de valor double da espessura da
      * Chapa
      */
-    public static void setEspesChapa(Double espesChapa) {
+    public static void setEspesChapa(double espesChapa) {
         Chapa.espesChapa = espesChapa;
     }
 
@@ -550,7 +798,7 @@ public class Chapa {
      * @version 1.0
      * @return Retorna um valor double do preco da Chapa
      */
-    public static Double getPrecoChapa() {
+    public static double getPrecoChapa() {
         return precoChapa;
     }
 
@@ -561,7 +809,7 @@ public class Chapa {
      * @version 1.0
      * @param precoChapa Setar Informar um valor double do preco da Chapa
      */
-    public static void setPrecoChapa(Double precoChapa) {
+    public static void setPrecoChapa(double precoChapa) {
         Chapa.precoChapa = precoChapa;
     }
 
@@ -630,60 +878,8 @@ public class Chapa {
      * @version 1.0
      * @return Retornar um Array de String
      */
-    public static String[] getTipoMateria() {
+    public static String getTipoMateria() {
         return tipoMateria;
-    }
-
-    /**
-     * Este Metodo Retornar uma informação de valor String do tipo de Pessoa
-     * conforme a posição de Index.
-     *
-     ** @since 16/05/2019
-     * @version 1.0
-     * @param pos Informar um valor inteiro do index do Array e deve começa em
-     * ZERO(0)
-     * @return Retornar uma informação de valor String do tipo de Pessoa
-     */
-    public static String getTipoMateria(int pos) {
-        return tipoMateria[pos];
-    }
-
-    public static String getTipoMaterial() {
-        for (String tipoMateria1 : tipoMateria) {
-            if (!tipoMateria1.isEmpty()) {
-                return tipoMateria1;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Este Metodo Setar a informação um valor do tipo String em um array do
-     * tipo de Materia da Chapa. String sendo:
-     * <p>
-     * <b>0</b> iqual a Compensado
-     * </p>
-     * <p>
-     * <b>1</b> iqual a MDF
-     * </p>
-     *
-     * @since 01/05/2019
-     * @version 1.0
-     */
-    public static void setTipoMateria() {
-        Chapa.tipoMateria[0] = "Compensado";
-        Chapa.tipoMateria[1] = "MDF";
-    }
-
-    /**
-     * Este Metodo Setar a informação um valor do tipo String de Array
-     *
-     * @since 01/05/2019
-     * @version 1.0
-     * @param tipoMateria Setar Informar um valor do tipo String de Array
-     */
-    public static void setTipoMateria(String[] tipoMateria) {
-        Chapa.tipoMateria = tipoMateria;
     }
 
     /**
@@ -697,26 +893,8 @@ public class Chapa {
      * @param pos Setar Informar um valor inteiro do index do Array e deve
      * começa em ZERO(0)
      */
-    public static void setTipoMateria(String tipoMateria, int pos) {
-        Chapa.tipoMateria[pos] = tipoMateria;
-    }
-
-    /**
-     * Este Metodo Setar a informação um valor do tipo String no array na
-     * posição escolhida
-     *
-     * @since 01/05/2019
-     * @version 1.0
-     * @param tipoMateria Setar Informar um valor do tipo String para setar no
-     * campo do Array
-     */
     public static void setTipoMateria(String tipoMateria) {
-        if (index < Chapa.tipoMateria.length) {
-            Chapa.tipoMateria[index] = tipoMateria;
-        } else {
-            index = 0;
-            Chapa.tipoMateria[index] = tipoMateria;
-        }
+        Chapa.tipoMateria = tipoMateria;
     }
 
 }

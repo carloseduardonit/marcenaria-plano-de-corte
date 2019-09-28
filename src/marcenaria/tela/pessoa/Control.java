@@ -302,7 +302,7 @@ public class Control {
      */
     public static void SEACHChapa(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
             JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
-        Chapa.pesquisarChapa();
+        Chapa.pesquisarChapa(tcs, tcs, tcs, tcs, tcs, tipoMaterial, fornecedor, true);
     }
 
     /**
@@ -362,7 +362,7 @@ public class Control {
      */
     public static void SEACHPeca(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
             JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
-        Peca.pesquisarPeca();
+        Peca.pesquisarPeca(tcs, tcs, tcs, tcs, tcs, tipoMaterial, fornecedor);
     }
 
     /**

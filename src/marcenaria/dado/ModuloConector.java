@@ -72,18 +72,52 @@ public class ModuloConector {
         conexao = getConecction();
     }
 
+    public static java.sql.Connection getConecction() {
+        return getConecction(DATABASE, USER, PASS);
+    }
+
     /**
      * Este metodo faz a conexao com o banco de dados MYSQL utilizado as
      * variaveis finais
      *
      * @version 1.0
+     * @param Banco
      * @since 01/05/2019
      * @return a conexao conexao com o banco de dado
      */
-    public static java.sql.Connection getConecction() {
+    public static java.sql.Connection getConecction(String Banco) {
+        return getConecction(Banco, USER, PASS);
+    }
+
+    /**
+     * Este metodo faz a conexao com o banco de dados MYSQL utilizado as
+     * variaveis finais
+     *
+     * @version 1.0
+     * @param Banco
+     * @param Usuario
+     * @since 01/05/2019
+     * @return a conexao conexao com o banco de dado
+     */
+    public static java.sql.Connection getConecction(String Banco, String Usuario) {
+        return getConecction(Banco, Usuario, PASS);
+    }
+
+    /**
+     * Este metodo faz a conexao com o banco de dados MYSQL utilizado as
+     * variaveis finais
+     *
+     * @version 1.0
+     * @param Banco
+     * @param Usuario
+     * @param Senha
+     * @since 01/05/2019
+     * @return a conexao conexao com o banco de dado
+     */
+    public static java.sql.Connection getConecction(String Banco, String Usuario, String Senha) {
         try {
             Class.forName(DRIVER);
-            return conexao = DriverManager.getConnection(URLD, USER, PASS);
+            return conexao = DriverManager.getConnection(URL + Banco, Usuario, Senha);
         } // catch{ }
         catch (ClassNotFoundException cnfe) {
             Messagem.chamarTela("O Servidor ultra-passou o limite de Conexão " + cnfe);
@@ -92,27 +126,27 @@ public class ModuloConector {
             Messagem.chamarTela("O banco de dados deve esta desligado " + ce);
             abrirAplicação();
             fecharConexao(conexao, rs, rsmd, pst, stmt);
-            getConecction();
+            getConecction(Banco, Usuario, Senha);
         } catch (SQLException e) {
             if (getCount() == 0) {
-                abrirAplicação();                
-                setCount(+1); 
-                Messagem.chamarTela(getCount()+" O banco de dados deve esta desligado 1 : " + e);
-            }            
-           
+                abrirAplicação();
+                setCount(+1);
+                Messagem.chamarTela(getCount() + " O banco de dados deve esta desligado 1 : " + e);
+            }
+
             fecharConexao(conexao, rs, rsmd, pst, stmt);
             getConecction();
         }
         setCount(0);
         return conexao;
     }
-    
+
     public static void abrirAplicação() {
         String b = "C:\\xampp\\xampp-control.exe";
         abrirAplicação(b);
-        
+
     }
-    
+
     public static void abrirAplicação(String a) {
         try {
             Runtime r;
@@ -129,13 +163,13 @@ public class ModuloConector {
      * tem ver
      */
     public static void criarDataBase() {
-        
+
         try {
             Connection conexao = null;
             Class.forName(DRIVER);
             conexao = DriverManager.getConnection(URL, USER, PASS);
             String sql = "create database if not exist " + DATABASE;
-            
+
         } catch (Exception e) {
             Messagem.chamarTela(e);
         }
@@ -255,7 +289,7 @@ public class ModuloConector {
             Statement stmt = conexao.createStatement();
             int adicionar = stmt.executeUpdate(sql);
             if (adicionar > 0) {
-                
+
             }
         } catch (SQLException e) {
             Messagem.chamarTela(e);
@@ -291,7 +325,7 @@ public class ModuloConector {
         }
         fecharConexao(conexao, rs, rsmd, pst, stmt);
         return true;
-        
+
     }
 
     /**
@@ -372,7 +406,7 @@ public class ModuloConector {
                 rs = pst.executeQuery();
                 rsmd = rs.getMetaData();
                 if (rs.next()) {
-                    
+
                 } else {
                     Messagem.chamarTela("0");
                 }
@@ -407,31 +441,32 @@ public class ModuloConector {
                 }
             }
         } catch (SQLException e) {
-            Messagem.chamarTela(Tabela+" erro Metodo CriarTabela: "+e);
+            Messagem.chamarTela(Tabela + " erro Metodo CriarTabela: " + e);
             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
-        
+
     }
 
-    /** ok
-     * Este Metodo deletar a tabela mo banco de dados
+    /**
+     * ok Este Metodo deletar a tabela mo banco de dados
+     *
      * @param Tabela
      */
     public static void deletarTabela(String Tabela) {
         try {
             conector();
-            String sql ="drop table if exists "+Tabela;
+            String sql = "drop table if exists " + Tabela;
             Messagem.deletadaTabela(Tabela);
-            if (Messagem.getDeleta()==0) {
+            if (Messagem.getDeleta() == 0) {
                 stmt = conexao.createStatement();
                 int DEL = stmt.executeUpdate(sql);
-                if(DEL >0){
-                   Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
+                if (DEL > 0) {
+                    Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
                 }
             }
         } catch (SQLException e) {
-            Messagem.chamarTela(Tabela+" erro Metodo DeletaTabela: "+e);
-        }finally{
+            Messagem.chamarTela(Tabela + " erro Metodo DeletaTabela: " + e);
+        } finally {
             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
@@ -442,7 +477,7 @@ public class ModuloConector {
     private static int getCount() {
         return count;
     }
-    
+
     private static void setCount(int count) {
         ModuloConector.count = count;
     }

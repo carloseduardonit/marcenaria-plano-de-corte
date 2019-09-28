@@ -308,7 +308,7 @@ public class Fornecedor extends Pessoa {
     public static void pesquisarFornecedor(String logFornecedor) {
         try {
             Fornecedor.setIdpessoa(Fornecedor.obterIdPessoa(logFornecedor));
-            Fornecedor.setIdFornecedor(Fornecedor.obterIdPessoatoFornecedor(logFornecedor));
+            Fornecedor.setIdFornecedor(Fornecedor.obterIdFornecedortoFornecedor(logFornecedor));
             String sql = "select P.login, P.senha, P.tipoPessoa, P.nome, F.docum from " + Pessoa.getTABELA() + " as P, "
                     + Fornecedor.getTABELA() + " as F where F.id" + Pessoa.getTABELA() + " = ? or P.id" + Pessoa.getTABELA() + " = ?";
             if (!logFornecedor.isEmpty()) {
@@ -335,7 +335,8 @@ public class Fornecedor extends Pessoa {
         }
     }
 
-    /** OK Este metodo pesquisa na Tabela atraves informação do parametro
+    /**
+     * OK Este metodo pesquisa na Tabela atraves informação do parametro
      * <b>Tabela</b> e do parametro
      * <b>logPessoa</b> retornando uma informação do do banco de dado tipo
      * inteiro do ID da pessoa
@@ -347,32 +348,54 @@ public class Fornecedor extends Pessoa {
     public static int obterIdPessoatoFornecedor(String logFornecedor) {
         return Pessoa.obterIdPessoa(Fornecedor.getTABELA(), logFornecedor);
     }
-    public static int obterIdFornecedortoFornecedor(String logFornecedor){
-        String sql ="select id"+Fornecedor.getTABELA()+" from "+Fornecedor.getTABELA()+" where  login = ?";
+
+    /**
+     * OK Este metodo pesquisa na Tabela atraves informação do parametro
+     * <b>Tabela</b> e do parametro
+     * <b>logPessoa</b> retornando uma informação do do banco de dado tipo
+     * inteiro do ID da pessoa
+     *
+     * @param logFornecedor Setar uma informação do tipo String da Tabela
+     * Fornecedor no Login Fornecedor
+     * @return Retornar o id da Tabela Fornecedor atraves do Login.
+     */
+    public static int obterIdFornecedortoFornecedor(String logFornecedor) {
+        String sql = "select id" + Fornecedor.getTABELA() + " from " + Fornecedor.getTABELA() + " where  login = ?";
         try {
             fornecedor();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, logFornecedor);
             rs = pst.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getInt(1);
             }
         } catch (SQLException e) {
             Messagem.chamarTela(e);
-        }finally{
+        } finally {
             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
         return 0;
     }
-    /** OK Este metodo 
+
+    /**
+     * OK Este metodo
+     *
      * @param logFornecedor Setar uma informação do tipo String da Tabela
      * Fornecedor no Login Fornecedor
      * @return
      */
     public static Boolean existeroFornecedor(String logFornecedor) {
-        return obterIdPessoatoFornecedor(logFornecedor) > 0;
+        boolean a = obterIdPessoatoFornecedor(logFornecedor) > 0;
+        if (!a) {
+            Messagem.chamarTela(NaoExisterFornecedor(logFornecedor));
+        }
+        return a;
     }
-    
+
+    public static String NaoExisterFornecedor(String logFornecedor) {
+        return "Não existe o fornecedor: " + logFornecedor;
+    }
+
     // Sets e Gets
     /**
      * Este metodo Retornar uma informação do tipo inteiro da Tabela Fornecedor

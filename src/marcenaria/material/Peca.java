@@ -18,6 +18,7 @@ import marcenaria.pessoa.cliente.Projeto;
  * @author Carlos Eduardo dos Santos Figueiredo
  */
 public class Peca {
+    
 
     /**
      *
@@ -60,12 +61,12 @@ public class Peca {
         }
         String sql = "create table if not exists " + Peca.getTABELA()
                 + "(id" + Peca.getTABELA() + " int primary key auto_increment,"
-                + "quantidade int default 0,"
-                + "comprimento double,"
-                + "largura double,"
-                + "espessura double,"
-                + "preco double, "
-                + "tipoMaterial varchar(30),"
+                + "quantidade int not null default 0,"
+                + "comprimento double(7,2) not null default 0,"
+                + "largura double(7,2) not null default 0,"
+                + "espessura double(4,2) not null default 0,"
+                + "preco double(10,2) not null default 0, "
+                + "tipoMaterial varchar(30) not null,"
                 + "id" + Chapa.getTABELA() + " int not null default 0,"
                 + "id" + Projeto.getTABELA() + " int not null default 0, "
                 + "foreign key (id" + Projeto.getTABELA() + ") references " + Projeto.getTABELA() + "(id" + Projeto.getTABELA()

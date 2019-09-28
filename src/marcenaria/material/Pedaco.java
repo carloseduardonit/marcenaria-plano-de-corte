@@ -16,9 +16,19 @@ import marcenaria.dado.ModuloConector;
  */
 public class Pedaco {
 
-    private static int idChapa, idPeca;
-    private static double comp, larg, espe, prec;
+    /**
+     * Variavel inteiro
+     */
+    private static int idChapa = 0, idPeca = 0, id;
+    /**
+     * Variavel double
+     */
+    private static double compPedaco = 0, largPedaco = 0, espePedaco = 0, precPedaco;
+    /**
+     * Variavel data
+     */
     private static Date incData;
+    private static String sys = "System";
     private static final String TABELA = Pedaco.class.getSimpleName();
     private static Connection conexao;
     private static ResultSet rs;
@@ -34,27 +44,23 @@ public class Pedaco {
     }
 
     /**
-     * OK
      * <b> Este Metodo faz a criação da tabela Pedaço no banco.</b>
      */
     public static void criadoPedaco() {
         if (ModuloConector.VerificarNaoExistirTabela(Chapa.getTABELA())) {
             Chapa.criadaChapa();
         }
-        if (ModuloConector.VerificarNaoExistirTabela(Peca.getTABELA())) {
-            Peca.criadaPeca();
-        }
+       
         String sql = "create table if not exists " + Pedaco.getTABELA()
                 + "(id" + Pedaco.getTABELA() + " int primary key auto_increment,"
                 + "quantidade int default 0,"
-                + "comprimento double,"
-                + "largura double,"
-                + "espessura double,"
-                + "preco double, "
-                + "tipoMaterial varchar(30),"
+                + "comprimento double(7,2) not null,"
+                + "largura double(7,2) not null,"
+                + "espessura double(4,2) not null,"
+                + "preco double(10,2) not null, "
+                + "tipoMaterial varchar(30) not null,"
                 + "id" + Chapa.getTABELA() + " int default '0',"
-                + "id" + Peca.getTABELA() + " int default 0,"
-                + "incData Timestamp,"
+                + "incData Timestamp auto_increment,"
                 + "foreign key (id" + Chapa.getTABELA() + ") references " + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), "
                 + "foreign key (id" + Peca.getTABELA() + ") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
         ModuloConector.criarTabela(sql, Pedaco.getTABELA());
@@ -62,7 +68,7 @@ public class Pedaco {
     }
 
     /**
-     * OK
+     *
      * <b>Este metodo faz a deletação a tabela Pedaço no banco.</b>
      * <p>
      * utilizando um metodo da Classe Material do Metodo deletarMaterial(String
@@ -76,6 +82,7 @@ public class Pedaco {
     /**
      * <b>Este Metodo adicionar informação na tabela Pedaço no banco.</b>
      *
+     * @param quantPedaco
      * @param quantPeca Informar um valor double da Comprimento da Pedaço.
      * @param compPedaco Informar um valor double da Comprimento da Pedaço.
      * @param precPedaco Informar um valor double da preço da Pedaço.
@@ -85,41 +92,41 @@ public class Pedaco {
      * @param idChapa
      * @param idPeca
      */
-    public static void adicionarPedaco(int quantPeca, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial, int idChapa, int idPeca) {
-        if (!Pedaco.HaCampoVazio(quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial, idChapa, idPeca)) {
-            try {
-                String sql = "insert into " + Pedaco.getTABELA()
-                        + "(quantidade, comprimento, largura, espessura, preco, tipoMaterial, id"
-                        + Chapa.getTABELA() + ", id" + Peca.getTABELA()
-                        + ") values (?,?,?,?,?,?,?,?)";
-                pedaco();
-                pst = conexao.prepareStatement(sql);
-                pst.setInt(1, quantPeca);
-                pst.setDouble(2, compPedaco);
-                pst.setDouble(3, largPedaco);
-                pst.setDouble(4, espePedaco);
-                pst.setDouble(5, precPedaco);
-                pst.setString(6, tipoMaterial);
-                pst.setInt(7, idChapa);
-                pst.setInt(8, idPeca);
-                int adicionar = pst.executeUpdate();
-                if (adicionar > 0) {
-                    Messagem.chamarTela(Messagem.ADICIONADO(sql));
+    public static void adicionarPedaco(int quantPedaco, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial) {
+        if (Pedaco.HaCampoVazio(quantPedaco, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial, 0, idPeca)) {
+            
+            int idChapa = Chapa.obterIdChapa(compPedaco, largPedaco, espePedaco, tipoMaterial, sys, false);
+            if (idChapa > 0) {
+                try {
+                    String sql = "insert into " + Pedaco.getTABELA()
+                            + "(quantidade, comprimento, largura, espessura, preco, tipoMaterial, id"
+                            + Chapa.getTABELA() + ") values (?,?,?,?,?,?,?)";
+                    pedaco();
+                    pst = conexao.prepareStatement(sql);
+                    pst.setInt(1, quantPedaco);
+                    pst.setDouble(2, compPedaco);
+                    pst.setDouble(3, largPedaco);
+                    pst.setDouble(4, espePedaco);
+                    pst.setDouble(5, precPedaco);
+                    pst.setString(6, tipoMaterial);
+                    pst.setInt(7, idChapa);
+                    int adicionar = pst.executeUpdate();
+                    if (adicionar > 0) {
+                        Messagem.chamarTela(Messagem.ADICIONADO(sql));
+                    }
+                } catch (SQLException e) {
+                    Messagem.chamarTela(e);
+                } finally {
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
-            } catch (SQLException e) {
-                Messagem.chamarTela(e);
-            } finally {
-                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } else {
-            Messagem.chamarTela(Messagem.VAZIO(Pedaco.CampoVazio(quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial, idChapa, idPeca)));
         }
-        // Material.adicionarMaterial(getTABELA(), quantPeca, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial, null);
     }
 
     /**
      * <b>Este Metodo Editar informação na tabela pedaço no banco.</b>
      *
+     * @param quantPecado
      * @param idChapa Informar um valor inteiro do Id da Chapa.
      * @param idPeca Informar um valor inteiro do Id da Peca.
      * @param compPedaco Informar um valor double da Comprimento da Pedaço.
@@ -127,7 +134,7 @@ public class Pedaco {
      * @param espePedaco Informar um valor double da espessura do Pedaço.
      * @param incData Informar um valor Date do dia da Inclusão do Pedaço.
      */
-    public static void editarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, Date incData) {
+    public static void editarPedaco(int quantPecado, double compPedaco, double largPedaco, double espePedaco, Date incData) {
         try {
             pedaco();
             String sql = "";
@@ -185,6 +192,7 @@ public class Pedaco {
      * @param compPedaco Informar um valor double da Comprimento da Pedaço.
      * @param largPedaco Informar um valor double da largura da Pedaço.
      * @param espePedaco Informar um valor double da espessura do Pedaço.
+     * @param tipoMaterial
      * @param incData Informar um valor Date do dia da Inclusão do Pedaço.
      * @param ou Informar um valor boolean:
      * <p>
@@ -193,7 +201,7 @@ public class Pedaco {
      * <p>
      * senão adicionar na String interna a expresão ="and".</p>
      */
-    public static void pesquisarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco,String tipoMaterial, Date incData, boolean ou) {
+    public static void pesquisarPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, String tipoMaterial, Date incData, boolean ou) {
         try {
             pedaco();
             int qt = 0, cqt, lqt, eqt;
@@ -275,10 +283,16 @@ public class Pedaco {
         }
     }
 
+    /**
+     *
+     */
     private static boolean HaCampoVazio(int quantPeca, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial, int idChapa, int idPeca) {
         return String.valueOf(quantPeca).isEmpty() && String.valueOf(compPedaco).isEmpty() && String.valueOf(largPedaco).isEmpty() && String.valueOf(espePedaco).isEmpty() && String.valueOf(precPedaco).isEmpty() && tipoMaterial.isEmpty() && String.valueOf(idChapa).isEmpty() && String.valueOf(idPeca).isEmpty();
     }
 
+    /**
+     *
+     */
     private static String[] CampoVazio(int quantPeca, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial, int idChapa, int idPeca) {
         String[] vazio = new String[8];
         boolean qp = false, cp = false, lp = false, ep = false, pp = false, tm = false, ic = false, ip = false;
@@ -312,14 +326,20 @@ public class Pedaco {
         return vazio;
     }
 
-    private static void exibirPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco,String tipoMaterial, Date incData, boolean ou) {
-        Messagem.chamarTela(exibirPedacotoString(idChapa, idPeca, compPedaco, largPedaco, espePedaco,tipoMaterial, incData, ou));
+    /**
+     *
+     */
+    private static void exibirPedaco(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, String tipoMaterial, Date incData, boolean ou) {
+        Messagem.chamarTela(exibirPedacotoString(idChapa, idPeca, compPedaco, largPedaco, espePedaco, tipoMaterial, incData, ou));
 
     }
 
-    private static String exibirPedacotoString(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco,String tipoMaterial, Date incData, boolean ou) {
+    /**
+     *
+     */
+    private static String exibirPedacotoString(int idChapa, int idPeca, double compPedaco, double largPedaco, double espePedaco, String tipoMaterial, Date incData, boolean ou) {
         String exibe = "";
-        pesquisarPedaco(idChapa, idPeca, compPedaco, largPedaco, espePedaco,tipoMaterial, incData, ou);
+        pesquisarPedaco(idChapa, idPeca, compPedaco, largPedaco, espePedaco, tipoMaterial, incData, ou);
         if (Peca.getIdPeca() > 0 && Peca.getComprimento() > 0.0 && Peca.getLargura() > 0.0 && Peca.getEspessura() > 0.0 && Peca.getPreco() > 0.0) {
 
         } else {
@@ -338,10 +358,20 @@ public class Pedaco {
         return Material.obterIdMaterial(getTABELA(), tipoMaterial, espessura);
     }
 
-    public static boolean temPedaco(double compPedaco, double largPedaco, double espePedaco,String tipoMaterial) {
-        pesquisarPedaco(0, 0, compPedaco, largPedaco, espePedaco,tipoMaterial, null, true);
-        return getComp() >= compPedaco && getLarg() >= largPedaco && getEspe() >= espePedaco;
-
+    /**
+     * @param compPedaco
+     * @param largPedaco
+     * @param espePedaco
+     * @param tipoMaterial
+     * @return
+     */
+    public static boolean temPedaco(double compPedaco, double largPedaco, double espePedaco, String tipoMaterial) {
+        pesquisarPedaco(0, 0, 0, 0, 0, tipoMaterial, null, true);
+        boolean a = getComp() >= compPedaco && getLarg() >= largPedaco && getEspe() >= espePedaco;
+        if (a == false) {
+            Messagem.chamarTela("Não há Pedaço !!!");
+        }
+        return a;
     }
 // Gets e Sets
 
@@ -353,9 +383,10 @@ public class Pedaco {
         return idChapa;
     }
 
-    /** <b>Este Metodo setar a informação mo ID da Chapa.</b>
+    /** <b>Este Metodo setar a informação um valor inteiro na varivel ID da
+     * Chapa.</b>
      *
-     * @param idChapa Informar um valor inteiro do Id da Chapa.
+     * @param idChapa Setar a Informação um valor inteiro do Id da Chapa.
      */
     public static void setIdChapa(int idChapa) {
         Pedaco.idChapa = idChapa;
@@ -382,7 +413,7 @@ public class Pedaco {
      * @return Retornar um valor double da Comprimento da Pedaço.
      */
     public static double getComp() {
-        return comp;
+        return compPedaco;
     }
 
     /** <b>Este Metodo setar a informação do Comprimento da Pedaço.</b>
@@ -390,7 +421,7 @@ public class Pedaco {
      * @param compPedaco Informar um valor double da Comprimento da Pedaço.
      */
     public static void setComp(double compPedaco) {
-        Pedaco.comp = comp;
+        Pedaco.compPedaco = compPedaco;
     }
 
     /** <b>Este Metodo Retornar a informação do largura do pedaço.</b>
@@ -398,7 +429,7 @@ public class Pedaco {
      * @return Retornar um valor double da largura da Pedaço.
      */
     public static double getLarg() {
-        return larg;
+        return largPedaco;
     }
 
     /** <b>Este Metodo setar a informação da largura do Pedaço.</b>
@@ -406,7 +437,7 @@ public class Pedaco {
      * @param largPedaco Informar um valor double da largura do Pedaço.
      */
     public static void setLarg(double largPedaco) {
-        Pedaco.larg = largPedaco;
+        Pedaco.largPedaco = largPedaco;
     }
 
     /** <b>Este Metodo Retornar a informação da Espessura do Pedaço.</b>
@@ -414,7 +445,7 @@ public class Pedaco {
      * @return Retornar um valor double da espessura do Pedaço.
      */
     public static double getEspe() {
-        return espe;
+        return espePedaco;
     }
 
     /** <b>Este Metodo setar a informação da Espessura do Pedaço.</b>
@@ -422,7 +453,7 @@ public class Pedaco {
      * @param espePedaco Informar um valor double da Espessura do Pedaço.
      */
     public static void setEspe(double espePedaco) {
-        Pedaco.espe = espePedaco;
+        Pedaco.espePedaco = espePedaco;
     }
 
     /** <b>Este Metodo Retornar a informação da Preço do Pedaço.</b>
@@ -430,7 +461,7 @@ public class Pedaco {
      * @return Retornar um valor double da Preco do Pedaço.
      */
     public static double getPrec() {
-        return prec;
+        return precPedaco;
     }
 
     /** <b>Este Metodo setar a informação da Preço do Pedaço.</b>
@@ -438,7 +469,7 @@ public class Pedaco {
      * @param precPedaco Informar um valor double da Preco do Pedaço.
      */
     public static void setPrec(double precPedaco) {
-        Pedaco.prec = precPedaco;
+        Pedaco.precPedaco = precPedaco;
     }
 
     /** <b>Este Metodo Retornar a informação do dia da Inclusão do Pedaço.</b>

@@ -18,7 +18,7 @@ import marcenaria.pessoa.cliente.Projeto;
 public class Cliente extends Pessoa {
 
     private static final String TABELA = Cliente.class.getSimpleName();
-    private static int cpf, idCliente;
+    private static int  idCliente;
     private static String tipoPessoa, docum;
     private static Connection conexao;
     private static PreparedStatement pst;
@@ -344,24 +344,6 @@ public class Cliente extends Pessoa {
         return obterIdPessoatoCliente(logCliente) > 0;
     }
     // Sets e Gets
-
-    /**
-     * Este Metodo Retornar uma informação de valor inteiro do CPF
-     *
-     * @return Retorn
-     */
-    public static int getCpf() {
-        return cpf;
-    }
-
-    /**
-     * Este Metodo Setar uma informação de valor inteiro do CPF
-     *
-     * @param cpf Setar uma informação de valor inteiro do CPF
-     */
-    public static void setCpf(int cpf) {
-        Cliente.cpf = cpf;
-    }
 
     /**
      * Este Metodo Retornar uma informação do tipo inteiro da Tabela Cliente no

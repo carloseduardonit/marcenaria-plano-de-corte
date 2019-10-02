@@ -278,6 +278,29 @@ public class Chapa {
      * materia da Chapa
      * @param fornecedor Setar uma informação de valor String do fornecedor da
      * Chapa
+     *
+     * @since 01/05/2019
+     * @version 1.0
+     */
+    public static void excluirChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
+        excluirChapa(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor, true, true);
+    }
+
+    /**
+     * Este metodo faz a utilização do metodo Chapa.excluirChapa()
+     *
+     * @param quantChapa Setar uma informação de valor inteiro da quantidade de
+     * Chapa
+     * @param compChapa Setar uma informação de valor double do comprimento de
+     * Chapa
+     * @param largChapa Setar uma informação de valor double do largura de Chapa
+     * @param espeChapa Setar uma informação de valor double do espessura de
+     * Chapa
+     * @param precChapa Setar uma informação de valor double do Preço da Chapa
+     * @param tipoMaterial Setar uma informação de valor String do tipo de
+     * materia da Chapa
+     * @param fornecedor Setar uma informação de valor String do fornecedor da
+     * Chapa
      * @param ou
      * @since 01/05/2019
      * @version 1.0
@@ -438,7 +461,33 @@ public class Chapa {
             adicionarChapa(quantChapa, compChapa, largChapa, espeChapa, 0, tipoMaterial, fornecedor);
         }
     }
-
+ /**
+     * Este Metodo realiza uma pesquisa na tabela Chapa do banco de dados
+     * conforme os parametros
+     *
+     * @param quantChapa Setar uma informação de valor inteiro da quantidade de
+     * Chapa
+     * @param compChapa Setar uma informação de valor double do comprimento de
+     * Chapa
+     * @param largChapa Setar uma informação de valor double do largura de Chapa
+     * @param espeChapa Setar uma informação de valor double do espessura de
+     * Chapa
+     * @param precChapa Setar uma informação de valor double do Preço da Chapa
+     * @param tipoMaterial Setar uma informação de valor String do tipo de
+     * materia da Chapa
+     * @param fornecedor Setar uma informação de valor String do fornecedor da
+     * Chapa
+     * @param ou Setar uma informação de valor boolean na expressão OU da
+     * Chapa<p>
+     * se for <b>TRUE</b> sera inserido <b>OR</b></p><p>
+     * se for <b>FALSE</b> sera inserido <b>AND</b></p>
+     *
+     * @since 01/05/2019
+     * @version 1.0
+     */
+    public static void pesquisarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor){
+        pesquisarChapa(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor, true);
+    }
     /**
      * Este Metodo realiza uma pesquisa na tabela Chapa do banco de dados
      * conforme os parametros
@@ -833,8 +882,8 @@ public class Chapa {
             sql += "espessura = ?";
             h++;
         }
-        if (!tipoMaterial.isEmpty() && 
-                !tipoMaterial.equals(null)) {
+        if (!tipoMaterial.isEmpty()
+                && !tipoMaterial.equals(null)) {
             if (h > 0) {
                 sql += a;
             }
@@ -870,7 +919,7 @@ public class Chapa {
                 id = rs.getInt(1);
             }
         } catch (SQLException e) {
-            Messagem.chamarTela("Metodo obterIDChapa e: " + e+"\n"+sql);
+            Messagem.chamarTela("Metodo obterIDChapa e: " + e + "\n" + sql);
         } finally {
             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }

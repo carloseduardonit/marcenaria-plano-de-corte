@@ -67,7 +67,7 @@ public class Control {
     }
 
     /**
-     *  @param login Setar uma informação de valor JText de login
+     * @param login Setar uma informação de valor JText de login
      * @param senha Setar uma informação de valor JText de senha
      * @param conSenha Setar uma informação de valor JText de confimação de
      * senha
@@ -129,8 +129,8 @@ public class Control {
      * fornecedor
      */
     public static void EDITChapa(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
-        Chapa.editarChapa(Fornecedor.getText());
+            JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
+        Chapa.editarChapa(deJTextparaInt(Quantidade), deJTextparaDouble(Comprimento), deJTextparaDouble(Largura), deJTextparaDouble(Espessura), deJTextparaDouble(Preco), Produto.getText(), Fornecedor.getText());
     }
 
     /**
@@ -142,7 +142,7 @@ public class Control {
      * @param nome Setar uma informação de valor JText de nome
      * @param documento Setar uma informação de valor JText de documento
      */
-    public static void EDITCliente( JTextField login, JTextField senha, JTextField conSenha,
+    public static void EDITCliente(JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
         if (Cliente.campoDiferente(senha.getText(), conSenha.getText(), getTcs())) {
             Cliente.editarCliente(login.getText(), senha.getText(), conSenha.getText(),
@@ -162,10 +162,10 @@ public class Control {
      * @param nome Setar uma informação de valor JText de nome
      * @param documento Setar uma informação de valor JText de documento
      */
-    public static void EDITFornecedor( JTextField login, JTextField senha, JTextField conSenha,
+    public static void EDITFornecedor(JTextField login, JTextField senha, JTextField conSenha,
             JComboBox<String> TipoPessoa, JTextField nome, JTextField documento) {
         // if (Cliente.campoDiferente(senha.getText(), conSenha.getText(), getTcs())) {
-        Fornecedor.editarFornecedor( login.getText(), senha.getText(), conSenha.getText(),
+        Fornecedor.editarFornecedor(login.getText(), senha.getText(), conSenha.getText(),
                 TipoPessoa.getSelectedItem().toString(), nome.getText(), documento.getText());
         LimpaDados(login, senha, conSenha, TipoPessoa, nome, documento);
         // } else {
@@ -185,8 +185,8 @@ public class Control {
      * fornecedor
      */
     public static void EDITPeca(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
-        Peca.editarPeca(Quantidade.getText());
+            JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
+        Peca.editarPeca(deJTextparaInt(Quantidade),deJTextparaDouble(Comprimento),deJTextparaDouble(Largura),deJTextparaDouble(Espessura),deJTextparaDouble(Preco),Produto.getText(),Fornecedor.getText());
     }
 
     /**
@@ -200,7 +200,7 @@ public class Control {
      * fornecedor
      */
     public static void EDITPedaco(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
+            JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
         // Pedaco.editarPedaco(tcs, tcs, tcs, tcs, tcs, incData);
     }
 
@@ -215,8 +215,8 @@ public class Control {
      * fornecedor
      */
     public static void DELETEChapa(JTextField Quantidade, JTextField Produto, JTextField Comprimento,
-            JTextField Largura, JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
-        Chapa.excluirChapa();
+            JTextField Largura, JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
+        Chapa.excluirChapa(deJTextparaInt(Quantidade),deJTextparaDouble(Comprimento),deJTextparaDouble(Largura),deJTextparaDouble(Espessura),deJTextparaDouble(Preco),Produto.getText(),Fornecedor.getText());
     }
 
     /**
@@ -271,7 +271,7 @@ public class Control {
      * fornecedor
      */
     public static void DELETEPeca(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
+            JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
         // Peca.excluirPeca(tcs, tcs, tcs, tcs, tcs, incData);
     }
 
@@ -286,7 +286,7 @@ public class Control {
      * fornecedor
      */
     public static void DELETEPedaco(JTextField Quantidade, JTextField Produto, JTextField Comprimento,
-            JTextField Largura, JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
+            JTextField Largura, JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
         // Pedaco.excluirPedaco(tcs, tcs, tcs, tcs, tcs, incData);
     }
 
@@ -301,8 +301,8 @@ public class Control {
      * fornecedor
      */
     public static void SEACHChapa(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
-        Chapa.pesquisarChapa(tcs, tcs, tcs, tcs, tcs, tipoMaterial, fornecedor, true);
+            JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
+        Chapa.pesquisarChapa(deJTextparaInt(Quantidade), deJTextparaDouble(Comprimento), deJTextparaDouble(Largura), deJTextparaDouble(Espessura), deJTextparaDouble(Preco), Produto.getText(), Fornecedor.getText());
     }
 
     /**
@@ -361,8 +361,8 @@ public class Control {
      * fornecedor
      */
     public static void SEACHPeca(JTextField Quantidade, JTextField Produto, JTextField Comprimento, JTextField Largura,
-            JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
-        Peca.pesquisarPeca(tcs, tcs, tcs, tcs, tcs, tipoMaterial, fornecedor);
+            JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
+        Peca.pesquisarPeca(deJTextparaInt(Quantidade), deJTextparaDouble(Comprimento), deJTextparaDouble(Largura), deJTextparaDouble(Espessura), deJTextparaDouble(Preco), Produto.getText(), Fornecedor.getText());
     }
 
     /**
@@ -376,7 +376,7 @@ public class Control {
      * fornecedor
      */
     public static void SEACHPedaco(JTextField Quantidade, JTextField Produto, JTextField Comprimento,
-            JTextField Largura, JTextField Espessura, JTextField Preco,JTextField Fornecedor) {
+            JTextField Largura, JTextField Espessura, JTextField Preco, JTextField Fornecedor) {
         // Pedaco.pesquisarPedaco(tcs, tcs, tcs, tcs, tcs, incData, true);
     }
 
@@ -385,13 +385,17 @@ public class Control {
      * texto do paramentro de valor JLabel mediante a informação setada atraves
      * do paramento de valor JComboBox.
      * <p>
-     * sendo <b>TipoPessoa</b>:</p> <p>se <b>TipoPessoa</b> for iqual a "pf" será
-     * habilitado o parametro <b>documento</b> e mudará o texto do parametro
-     * para "N° CPF:",</p> ou se <b>TipoPessoa</b> for iqual a "pj" será habilitado
-     * o parametro <b>documento</b> e mudará o texto do parametro para "N°
-     * CNPJ:",<p> ou se <b>TipoPessoa</b> Nâo for iqual a "pj" ou a "pf" será
-     * Desabilitado o parametro <b>documento</b> e mudará o texto do parametro
-     * para "Documento:".</p>
+     * sendo <b>TipoPessoa</b>:</p>
+     * <p>
+     * se <b>TipoPessoa</b> for iqual a "pf" será habilitado o parametro
+     * <b>documento</b> e mudará o texto do parametro para "N° CPF:",</p> ou se
+     * <b>TipoPessoa</b> for iqual a "pj" será habilitado o parametro
+     * <b>documento</b> e mudará o texto do parametro para "N°
+     * CNPJ:",
+     * <p>
+     * ou se <b>TipoPessoa</b> Nâo for iqual a "pj" ou a "pf" será Desabilitado
+     * o parametro <b>documento</b> e mudará o texto do parametro para
+     * "Documento:".</p>
      *
      * @param TipoPessoa Seta uma informação de valor JComboBox do tipo de
      * pessoa

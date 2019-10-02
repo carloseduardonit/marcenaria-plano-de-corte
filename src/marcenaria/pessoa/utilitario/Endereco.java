@@ -1,0 +1,324 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package marcenaria.pessoa.utilitario;
+
+import java.sql.*;
+import javax.swing.JOptionPane;
+import marcenaria.Const.Messagem;
+import marcenaria.dado.ModuloConector;
+import marcenaria.pessoa.Cliente;
+import marcenaria.pessoa.Fornecedor;
+import marcenaria.pessoa.Pessoa;
+import marcenaria.utilitario.CEP;
+
+/**
+ *
+ * @author Carlos
+ */
+public class Endereco extends CEP {
+
+    public static void main(String[] args) {
+        //criarEndereco();
+        Pessoa.setLogin("eii");
+        CEP.setCep("24752-640");
+        Endereco.setNumero(125);
+        Endereco.setComplemento("Quadra 44 lote 11");
+        adicionarEndereco(Pessoa.getLogin(), getCep(), getNumero(), getComplemento());
+
+    }
+    private static int ID, IDPessoa, IDCliente, IDFornecedor, numero, quantEndereco;
+    private static final String TABELA = Endereco.class.getSimpleName();
+    private static String complemento;
+    private static Connection conexao;
+    private static ResultSet rs;
+    private static ResultSetMetaData rsmd;
+    private static PreparedStatement pst;
+    private static Statement stmt;
+
+    /**
+     *
+     */
+    private static void endereco() {
+        conexao = ModuloConector.getConecction();
+    }
+
+    /**
+     * ta OK
+     */
+    public static void criarEndereco() {
+        if (ModuloConector.VerificarNaoExistirTabela(Cliente.getTABELA())) {
+            Cliente.criarCliente();
+        }
+        if (ModuloConector.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
+            Fornecedor.criarFornecedor();
+        }
+        String sql = "create table if not exists " + getTABELA() + " ("
+                + "id" + getTABELA() + " int auto_increment primary key, "
+                + "id" + Pessoa.getTABELA() + " int not null default 0, "
+                + "id" + Cliente.getTABELA() + " int not null default 0, "
+                + "id" + Fornecedor.getTABELA() + " int not null default 0, "
+                + "numero int not null default 0, "
+                + "quantEndereco int not null default 0, "
+                + "complemento varchar(200), "
+                + "cep varchar(9) not null, "
+                + "foreign key (id" + Pessoa.getTABELA() + ") references " + Pessoa.getTABELA() + " (id" + Pessoa.getTABELA() + "), "
+                + "foreign key (id" + Cliente.getTABELA() + ") references " + Cliente.getTABELA() + " (id" + Cliente.getTABELA() + "), "
+                + "foreign key (id" + Fornecedor.getTABELA() + ") references " + Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
+        ModuloConector.criarTabela(sql, getTABELA());
+    }
+
+    /**
+     *
+     */
+    public static void deletarEndereco() {
+        ModuloConector.deletarTabela(Endereco.getTABELA());
+    }
+
+    /**
+     *
+     * @param login
+     * @param CEP
+     * @param Numero
+     * @param Complemento
+     */
+    public static void adicionarEndereco(String login, String CEP, int Numero, String Complemento) {
+        try {
+            String sql = "insert into " + Endereco.getTABELA() + "(id" + Pessoa.getTABELA() + ", id" + Cliente.getTABELA() + ", id" + Fornecedor.getTABELA() + ", cep, numero, complemento) values (?,?,?,?,?,?)";
+            int i = 1, j = 1;
+            endereco();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(i++, Pessoa.obterIdPessoa(login));
+            pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
+            pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
+            pst.setString(i++, CEP);
+            pst.setInt(i++, Numero);
+            pst.setString(i++, Complemento);
+            int adicionar = pst.executeUpdate();
+            if (adicionar > 0) {
+                Messagem.chamarTela(Messagem.ADICIONADO(sql));
+            }
+        } catch (SQLException e) {
+            Messagem.chamarTela("Adicionar endereço: " + e);
+        } finally {
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        }
+    }
+
+    /**
+     *
+     * @param login
+     * @param CEP
+     * @param Numero
+     * @param Complemento
+     */
+    public static void editarEndereco(String login, String CEP, int Numero, String Complemento) {
+        try {
+            int i = 1;
+            String sql = "";
+            endereco();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(i++, Pessoa.obterIdPessoa(login));
+            pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
+            pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
+            pst.setString(i++, CEP);
+            pst.setInt(i++, Numero);
+            int editado = pst.executeUpdate();
+            if (editado > 0) {
+                Messagem.chamarTela(Messagem.EDITADO(EnderecoToString(CEP, Complemento, Numero)));
+            }
+        } catch (SQLException e) {
+            Messagem.chamarTela("Editar endereço: " + e);
+        } finally {
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        }
+    }
+
+    /**
+     * @param login
+     * @param CEP
+     * @param Numero
+     * @param Complemento
+     */
+    public static void excluirEndereco(String login, String CEP, int Numero, String Complemento) {
+        try {
+            int i = 1,excluido,excluir;
+            String sql = "";
+            endereco();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(i++, Pessoa.obterIdPessoa(login));
+            pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
+            pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
+            pst.setString(i++, CEP);
+            pst.setInt(i++, Numero);
+            excluir =JOptionPane.showInternalConfirmDialog(null, EnderecoToString(CEP, Complemento, Numero), getTABELA() , JOptionPane.OK_CANCEL_OPTION);
+            if(excluir ==JOptionPane.OK_OPTION){
+            excluido = pst.executeUpdate();
+            if (excluido > 0) {
+                Messagem.chamarTela(Messagem.EXCLUIDO(EnderecoToString(CEP, Complemento, Numero)));
+            }}
+        } catch (SQLException e) {
+            Messagem.chamarTela("Excluir Endereco: " + e);
+        } finally {
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        }
+    }
+
+    /**
+     * @param login
+     * @param CEP
+     * @param Numero
+     * @param Complemento
+     */
+    public static void pesquisarEndereco(String login, String CEP, int Numero, String Complemento) {
+        try {
+            int i = 1, j = 1;
+            String sql = "";
+            endereco();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(j++, Pessoa.obterIdPessoa(login));
+            pst.setInt(j++, Cliente.obterIdClientetoCliente(login));
+            pst.setInt(j++, Fornecedor.obterIdFornecedortoFornecedor(login));
+            pst.setString(j++, CEP);
+            pst.setInt(j++, Numero);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                setID(rs.getInt(i++));
+                setIDPessoa(rs.getInt(i++));
+                setIDCliente(rs.getInt(i++));
+                setIDFornecedor(rs.getInt(i++));
+                setQuantEndereco(rs.getInt(i++));
+                setCep(rs.getString(i++));
+                ObterEnderecodeCEP(getCep());
+                setComplemento(rs.getString(i++));
+            }
+        } catch (SQLException e) {
+            Messagem.chamarTela("Pesquisar Endereço: " + e);
+        } finally {
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static String getTABELA() {
+        return TABELA;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static int getID() {
+        return ID;
+    }
+
+    /**
+     *
+     * @param ID
+     */
+    public static void setID(int ID) {
+        Endereco.ID = ID;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static int getIDPessoa() {
+        return IDPessoa;
+    }
+
+    /**
+     *
+     * @param IDPessoa
+     */
+    public static void setIDPessoa(int IDPessoa) {
+        Endereco.IDPessoa = IDPessoa;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static int getIDCliente() {
+        return IDCliente;
+    }
+
+    /**
+     *
+     * @param IDCliente
+     */
+    public static void setIDCliente(int IDCliente) {
+        Endereco.IDCliente = IDCliente;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static int getIDFornecedor() {
+        return IDFornecedor;
+    }
+
+    /**
+     *
+     * @param IDFornecedor
+     */
+    public static void setIDFornecedor(int IDFornecedor) {
+        Endereco.IDFornecedor = IDFornecedor;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static int getNumero() {
+        return numero;
+    }
+
+    /**
+     *
+     * @param numero
+     */
+    public static void setNumero(int numero) {
+        Endereco.numero = numero;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static int getQuantEndereco() {
+        return quantEndereco;
+    }
+
+    /**
+     *
+     * @param quantEndereco
+     */
+    public static void setQuantEndereco(int quantEndereco) {
+        Endereco.quantEndereco = quantEndereco;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static String getComplemento() {
+        return complemento;
+    }
+
+    /**
+     *
+     * @param complemento
+     */
+    public static void setComplemento(String complemento) {
+        Endereco.complemento = complemento;
+    }
+
+}

@@ -71,7 +71,14 @@ public class ModuloConector {
     private static void conector() {
         conexao = getConecction();
     }
-
+ /**
+     * Este metodo faz a conexao com o banco de dados MYSQL utilizado as
+     * variaveis finais
+     *
+     * @version 1.0
+     * @since 01/05/2019
+     * @return a conexao conexao com o banco de dado
+     */
     public static java.sql.Connection getConecction() {
         return getConecction(DATABASE, USER, PASS);
     }

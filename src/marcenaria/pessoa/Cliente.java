@@ -18,7 +18,7 @@ import marcenaria.pessoa.cliente.Projeto;
 public class Cliente extends Pessoa {
 
     private static final String TABELA = Cliente.class.getSimpleName();
-    private static int  idCliente;
+    private static int idCliente;
     private static String tipoPessoa, docum;
     private static Connection conexao;
     private static PreparedStatement pst;
@@ -31,7 +31,7 @@ public class Cliente extends Pessoa {
     }
 
     /**
-     * ok  Este Metodo criar a tabela Cliente.
+     * ok Este Metodo criar a tabela Cliente.
      */
     public static void criarCliente() {
         String sql = "create table if not exists " + Cliente.getTABELA() + "(id" + Pessoa.getTABELA() + " int not null unique, " + "login varchar(15) not  null unique, "
@@ -55,7 +55,8 @@ public class Cliente extends Pessoa {
         ModuloConector.deletarTabela(Cliente.getTABELA());
     }
 
-    /**ok Este metodo inserer informação na tabela Cliente. 
+    /**
+     * ok Este metodo inserer informação na tabela Cliente.
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
@@ -120,7 +121,8 @@ public class Cliente extends Pessoa {
         }
     }
 
-    /** ok Este Metodo editar informação na tabela Cliente. 
+    /**
+     * ok Este Metodo editar informação na tabela Cliente.
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
@@ -177,7 +179,8 @@ public class Cliente extends Pessoa {
         }
     }
 
-    /**ok Este Metodo  deletar a informação na tabela Cliente. 
+    /**
+     * ok Este Metodo deletar a informação na tabela Cliente.
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
@@ -186,11 +189,13 @@ public class Cliente extends Pessoa {
         excluirCliente(logCliente, true);
     }
 
-    /** ok Este Metodo  deletar a informação na tabela Cliente. 
+    /**
+     * ok Este Metodo deletar a informação na tabela Cliente.
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
-     * @param Mensagem Setar uma informação do tipo boolean no metodo para exibir determinada mensagem
+     * @param Mensagem Setar uma informação do tipo boolean no metodo para
+     * exibir determinada mensagem
      */
     public static void excluirCliente(String logCliente, boolean Mensagem) {
         if (Cliente.existeraCliente(logCliente)) {
@@ -324,7 +329,9 @@ public class Cliente extends Pessoa {
         }
     }
 
-    /** ok Este Metodo Retornar o id da pessoa da Tabela Cliente atraves do Login.
+    /**
+     * ok Este Metodo Retornar o id da pessoa da Tabela Cliente atraves do
+     * Login.
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
@@ -334,11 +341,42 @@ public class Cliente extends Pessoa {
         return Pessoa.obterIdPessoa(Cliente.getTABELA(), logCliente);
     }
 
-    /**Ok Este Metodo Retornar uma informação de valor Boolean da Tabela Cliente
+    /**Precisa ser Testado.
+     *  Este Metodo Retornar o id do Cliente da Tabela Cliente atraves do
+     * Login.
+     *
+     * @param logCliente Setar uma informação do tipo String da Tabela Cliente
+     * no Login Cliente
+     * @since 29/09/2019
+     * @return Retornar o id do Cliente da Tabela Cliente atraves do Login.
+     */
+    public static int obterIdClientetoCliente(String logCliente) {
+        int id = 0;
+        try {
+            String sgl = "select id" + Cliente.getTABELA() + " from " + Cliente.getTABELA() + " where login = ? ";
+            cliente();
+            pst = conexao.prepareStatement(sgl);
+            pst.setString(1, logCliente);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            Messagem.chamarTela("Obter id Cliente: " + e);
+        } finally {
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        }
+        return id;
+    }
+
+    /**
+     * Ok Este Metodo Retornar uma informação de valor Boolean da Tabela Cliente
      * atraves do Login.
+     *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente.
-     * @return Retornar uma informação  de valor Boolean da Tabela Cliente atraves do Login.
+     * @return Retornar uma informação de valor Boolean da Tabela Cliente
+     * atraves do Login.
      */
     public static Boolean existeraCliente(String logCliente) {
         return obterIdPessoatoCliente(logCliente) > 0;

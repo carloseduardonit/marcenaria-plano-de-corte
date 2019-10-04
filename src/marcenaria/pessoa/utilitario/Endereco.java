@@ -85,25 +85,27 @@ public class Endereco extends CEP {
      * @param Complemento
      */
     public static void adicionarEndereco(String login, String CEP, int Numero, String Complemento) {
-        try {
-            String sql = "insert into " + Endereco.getTABELA() + "(id" + Pessoa.getTABELA() + ", id" + Cliente.getTABELA() + ", id" + Fornecedor.getTABELA() + ", cep, numero, complemento) values (?,?,?,?,?,?)";
-            int i = 1, j = 1;
-            endereco();
-            pst = conexao.prepareStatement(sql);
-            pst.setInt(i++, Pessoa.obterIdPessoa(login));
-            pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
-            pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
-            pst.setString(i++, CEP);
-            pst.setInt(i++, Numero);
-            pst.setString(i++, Complemento);
-            int adicionar = pst.executeUpdate();
-            if (adicionar > 0) {
-                Messagem.chamarTela(Messagem.ADICIONADO(sql));
+        if (NaoHaCampoVazio(login, CEP, Numero, Complemento)) {
+            try {
+                String sql = "insert into " + Endereco.getTABELA() + "(id" + Pessoa.getTABELA() + ", id" + Cliente.getTABELA() + ", id" + Fornecedor.getTABELA() + ", cep, numero, complemento) values (?,?,?,?,?,?)";
+                int i = 1, j = 1;
+                endereco();
+                pst = conexao.prepareStatement(sql);
+                pst.setInt(i++, Pessoa.obterIdPessoa(login));
+                pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
+                pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
+                pst.setString(i++, CEP);
+                pst.setInt(i++, Numero);
+                pst.setString(i++, Complemento);
+                int adicionar = pst.executeUpdate();
+                if (adicionar > 0) {
+                    Messagem.chamarTela(Messagem.ADICIONADO(sql));
+                }
+            } catch (SQLException e) {
+                Messagem.chamarTela("Adicionar endereço: " + e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela("Adicionar endereço: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
@@ -115,24 +117,26 @@ public class Endereco extends CEP {
      * @param Complemento
      */
     public static void editarEndereco(String login, String CEP, int Numero, String Complemento) {
-        try {
-            int i = 1;
-            String sql = "";
-            endereco();
-            pst = conexao.prepareStatement(sql);
-            pst.setInt(i++, Pessoa.obterIdPessoa(login));
-            pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
-            pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
-            pst.setString(i++, CEP);
-            pst.setInt(i++, Numero);
-            int editado = pst.executeUpdate();
-            if (editado > 0) {
-                Messagem.chamarTela(Messagem.EDITADO(EnderecoToString(CEP, Complemento, Numero)));
+        if (NaoHaCampoVazio(login, CEP, Numero, Complemento)) {
+            try {
+                int i = 1;
+                String sql = "";
+                endereco();
+                pst = conexao.prepareStatement(sql);
+                pst.setInt(i++, Pessoa.obterIdPessoa(login));
+                pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
+                pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
+                pst.setString(i++, CEP);
+                pst.setInt(i++, Numero);
+                int editado = pst.executeUpdate();
+                if (editado > 0) {
+                    Messagem.chamarTela(Messagem.EDITADO(EnderecoToString(CEP, Complemento, Numero)));
+                }
+            } catch (SQLException e) {
+                Messagem.chamarTela("Editar endereço: " + e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela("Editar endereço: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
@@ -144,7 +148,7 @@ public class Endereco extends CEP {
      */
     public static void excluirEndereco(String login, String CEP, int Numero, String Complemento) {
         try {
-            int i = 1,excluido,excluir;
+            int i = 1, excluido, excluir;
             String sql = "";
             endereco();
             pst = conexao.prepareStatement(sql);
@@ -153,12 +157,13 @@ public class Endereco extends CEP {
             pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
             pst.setString(i++, CEP);
             pst.setInt(i++, Numero);
-            excluir =JOptionPane.showInternalConfirmDialog(null, EnderecoToString(CEP, Complemento, Numero), getTABELA() , JOptionPane.OK_CANCEL_OPTION);
-            if(excluir ==JOptionPane.OK_OPTION){
-            excluido = pst.executeUpdate();
-            if (excluido > 0) {
-                Messagem.chamarTela(Messagem.EXCLUIDO(EnderecoToString(CEP, Complemento, Numero)));
-            }}
+            excluir = JOptionPane.showInternalConfirmDialog(null, EnderecoToString(CEP, Complemento, Numero), getTABELA(), JOptionPane.OK_CANCEL_OPTION);
+            if (excluir == JOptionPane.OK_OPTION) {
+                excluido = pst.executeUpdate();
+                if (excluido > 0) {
+                    Messagem.chamarTela(Messagem.EXCLUIDO(EnderecoToString(CEP, Complemento, Numero)));
+                }
+            }
         } catch (SQLException e) {
             Messagem.chamarTela("Excluir Endereco: " + e);
         } finally {
@@ -171,34 +176,116 @@ public class Endereco extends CEP {
      * @param CEP
      * @param Numero
      * @param Complemento
+     * @param ou
      */
-    public static void pesquisarEndereco(String login, String CEP, int Numero, String Complemento) {
-        try {
-            int i = 1, j = 1;
-            String sql = "";
-            endereco();
-            pst = conexao.prepareStatement(sql);
-            pst.setInt(j++, Pessoa.obterIdPessoa(login));
-            pst.setInt(j++, Cliente.obterIdClientetoCliente(login));
-            pst.setInt(j++, Fornecedor.obterIdFornecedortoFornecedor(login));
-            pst.setString(j++, CEP);
-            pst.setInt(j++, Numero);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                setID(rs.getInt(i++));
-                setIDPessoa(rs.getInt(i++));
-                setIDCliente(rs.getInt(i++));
-                setIDFornecedor(rs.getInt(i++));
-                setQuantEndereco(rs.getInt(i++));
-                setCep(rs.getString(i++));
-                ObterEnderecodeCEP(getCep());
-                setComplemento(rs.getString(i++));
+    public static void pesquisarEndereco(String login, String CEP, int Numero, String Complemento, boolean ou) {
+        if (NaoHaCampoVazio(login, CEP, Numero, Complemento)) {
+            String sql = " select id" + Endereco.getTABELA() + ", id" + Pessoa.getTABELA() + ", id" + Cliente.getTABELA() + ", id" + Fornecedor.getTABELA() + ", numero, quantEndereco, complemento, cep from " + Endereco.getTABELA() + " where ", a;
+            if (ou) {
+                a = " or ";
+            } else {
+                a = " and ";
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela("Pesquisar Endereço: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+            try {
+                int i = 1, j = 1, cont = 0;
+
+                if (!login.isEmpty()) {
+                    sql += "id" + Pessoa.getTABELA() + "= ?" + a + "id" + Cliente.getTABELA() + "= ?" + a + "id" + Fornecedor.getTABELA() + "= ? ";
+                    cont++;
+                }
+                if (!CEP.isEmpty()) {
+                    if (cont > 0) {
+                        sql += a;
+                    }
+                    sql += "Cep = ?";
+                }
+                if (numero >= 0) {
+                    if (cont > 0) {
+                        sql += a;
+                    }
+                    sql += "numero = ?";
+                }
+                endereco();
+                pst = conexao.prepareStatement(sql);
+                if (!login.isEmpty()) {
+                    pst.setInt(j++, Pessoa.obterIdPessoa(login));
+                    pst.setInt(j++, Cliente.obterIdClientetoCliente(login));
+                    pst.setInt(j++, Fornecedor.obterIdFornecedortoFornecedor(login));
+                }
+                if (!CEP.isEmpty()) {
+                    pst.setString(j++, CEP);
+                }
+                pst.setInt(j++, Numero);
+                rs = pst.executeQuery();
+                if (rs.next()) {
+                    setID(rs.getInt(i++));
+                    setIDPessoa(rs.getInt(i++));
+                    setIDCliente(rs.getInt(i++));
+                    setIDFornecedor(rs.getInt(i++));
+                    setNumero(rs.getInt(i++));
+                    setQuantEndereco(rs.getInt(i++));
+                    setComplemento(rs.getString(i++));
+                    setCep(rs.getString(i++));
+                    ObterEnderecodeCEP(getCep());
+                }
+            } catch (SQLException e) {
+                Messagem.chamarTela("Pesquisar Endereço: " + e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+            }
         }
+    }
+
+    /**
+     * @param login
+     * @param CEP
+     * @param Numero
+     * @param Complemento
+     * @return
+     */
+    public static boolean NaoHaCampoVazio(String login, String CEP, int Numero, String Complemento) {
+        boolean res = haCampoVazio(login, CEP, Numero, Complemento);
+        if (res) {
+            Messagem.chamarTela(Messagem.VAZIO(CampoVazio(login, CEP, Numero, Complemento)));
+        }
+        return !res;
+    }
+
+    /**
+     * @param login
+     * @param CEP
+     * @param Numero
+     * @param Complemento
+     * @return
+     */
+    public static boolean haCampoVazio(String login, String CEP, int Numero, String Complemento) {
+        boolean res = login.isEmpty() && CEP.isEmpty() && String.valueOf(Numero).isEmpty() && CEP.isEmpty();
+        return res;
+    }
+
+    /**
+     * @param login
+     * @param CEP
+     * @param Numero
+     * @param Complemento
+     * @return
+     */
+    public static String[] CampoVazio(String login, String CEP, int Numero, String Complemento) {
+        String[] vazio = new String[4];
+        int i = 0;
+        if (login.isEmpty()) {
+            vazio[i++] = "Login";
+        }
+        if (CEP.isEmpty()) {
+            vazio[i++] = "CEP";
+        }
+        if (String.valueOf(Numero).isEmpty()) {
+            vazio[i++] = "numero";
+        }
+        if (Complemento.isEmpty()) {
+            vazio[i++] = "Complemento";
+        }
+        return vazio;
     }
 
     /**

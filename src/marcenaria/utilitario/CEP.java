@@ -222,7 +222,7 @@ public class CEP {
         return UF;
     }
 
-      public static String EnderecoToString( String cep, String complemento, int numero) {
+    public static String EnderecoToString( String cep, String complemento, int numero) {
           return EnderecoToString(ObterUF(cep), cep, complemento, numero);
       }
     /**

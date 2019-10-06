@@ -22,12 +22,15 @@ public class Endereco extends CEP {
 
     public static void main(String[] args) {
         //criarEndereco();
+        String  login="1",cep="1",comp="1";
+        int nun=-1;
+                  
         Pessoa.setLogin("eii");
         CEP.setCep("24752-640");
         Endereco.setNumero(125);
         Endereco.setComplemento("Quadra 44 lote 11");
-        adicionarEndereco(Pessoa.getLogin(), getCep(), getNumero(), getComplemento());
-
+        //adicionarEndereco(Pessoa.getLogin(), getCep(), getNumero(), getComplemento());
+        pesquisarEndereco(Pessoa.getLogin(), CEP.getCep(), 11, Endereco.getComplemento(), true);
     }
     private static int ID, IDPessoa, IDCliente, IDFornecedor, numero, quantEndereco;
     private static final String TABELA = Endereco.class.getSimpleName();
@@ -147,6 +150,7 @@ public class Endereco extends CEP {
      * @param Complemento
      */
     public static void excluirEndereco(String login, String CEP, int Numero, String Complemento) {
+       if(NaoHaCampoVazio(login, CEP, Numero, Complemento)){
         try {
             int i = 1, excluido, excluir;
             String sql = "";
@@ -169,6 +173,7 @@ public class Endereco extends CEP {
         } finally {
             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
+       }
     }
 
     /**
@@ -236,7 +241,7 @@ public class Endereco extends CEP {
         }
     }
 
-    /**
+    /** ok
      * @param login
      * @param CEP
      * @param Numero
@@ -244,25 +249,26 @@ public class Endereco extends CEP {
      * @return
      */
     public static boolean NaoHaCampoVazio(String login, String CEP, int Numero, String Complemento) {
-        boolean res = haCampoVazio(login, CEP, Numero, Complemento);
-        if (res) {
-            Messagem.chamarTela(Messagem.VAZIO(CampoVazio(login, CEP, Numero, Complemento)));
-        }
-        return !res;
+        boolean res = !haCampoVazio(login, CEP, Numero, Complemento,true);        
+        return res;
     }
 
-    /**
+    /**ok
      * @param login
      * @param CEP
      * @param Numero
      * @param Complemento
+     * @param mensagem
      * @return
      */
-    public static boolean haCampoVazio(String login, String CEP, int Numero, String Complemento) {
-        boolean res = login.isEmpty() && CEP.isEmpty() && String.valueOf(Numero).isEmpty() && CEP.isEmpty();
+    public static boolean haCampoVazio(String login, String CEP, int Numero, String Complemento,boolean  mensagem) {
+        boolean res = login.isEmpty() || CEP.isEmpty() || String.valueOf(Numero).isEmpty()|| Numero<0|| Complemento.isEmpty();
+        if (res&&mensagem) {
+            Messagem.chamarTela(Messagem.VAZIO(CampoVazio(login, CEP, Numero, Complemento)));
+        }
         return res;
     }
-
+     
     /**
      * @param login
      * @param CEP
@@ -279,7 +285,7 @@ public class Endereco extends CEP {
         if (CEP.isEmpty()) {
             vazio[i++] = "CEP";
         }
-        if (String.valueOf(Numero).isEmpty()) {
+        if (String.valueOf(Numero).isEmpty()||Numero<0) {
             vazio[i++] = "numero";
         }
         if (Complemento.isEmpty()) {
@@ -287,7 +293,24 @@ public class Endereco extends CEP {
         }
         return vazio;
     }
-
+   
+    public static void limparCampos(){
+        String limpar = "";
+        int limp=0;
+        preencherCampos(limpar, limpar, limp, limpar);
+    }
+    /**
+     * @param login
+     * @param CEP
+     * @param Numero
+     * @param Complemento
+     */
+public static void preencherCampos(String login, String CEP, int Numero, String Complemento){
+    Pessoa.setLogin(login);
+    setCep(CEP);
+    setNumero(Numero);
+    setComplemento(Complemento);
+}
     /**
      *
      * @return

@@ -32,7 +32,7 @@ public class Endereco extends CEP {
         //adicionarEndereco(Pessoa.getLogin(), getCep(), getNumero(), getComplemento());
         pesquisarEndereco(Pessoa.getLogin(), CEP.getCep(), 11, Endereco.getComplemento(), true);
     }
-    
+
     private static int ID, IDPessoa, IDCliente, IDFornecedor, numero, quantEndereco;
     private static final String TABELA = Endereco.class.getSimpleName();
     private static String complemento;
@@ -94,7 +94,8 @@ public class Endereco extends CEP {
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
      * @param Numero Setar uma informação de valor inteiro do número do endereço
-     * @param Complemento Setar uma informação de valor String do complemento de endereço
+     * @param Complemento Setar uma informação de valor String do complemento de
+     * endereço
      */
     public static void adicionarEndereco(String login, String CEP, int Numero, String Complemento) {
         if (NaoHaCampoVazio(login, CEP, Numero, Complemento)) {
@@ -114,7 +115,7 @@ public class Endereco extends CEP {
                 pst.setString(i++, Complemento);
                 int adicionar = pst.executeUpdate();
                 if (adicionar > 0) {
-                    Messagem.chamarTela(Messagem.ADICIONADO(sql));
+                    Messagem.chamarTela(Messagem.ADICIONADO(Endereco.exibirEnderecoToString(login, CEP)));
                 }
             } catch (SQLException e) {
                 Messagem.chamarTela("Adicionar endereço: " + e);
@@ -132,7 +133,8 @@ public class Endereco extends CEP {
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
      * @param Numero Setar uma informação de valor inteiro do número do endereço
-     * @param Complemento Setar uma informação de valor String do complemento de endereço
+     * @param Complemento Setar uma informação de valor String do complemento de
+     * endereço
      *
      */
     public static void editarEndereco(String login, String CEP, int Numero, String Complemento) {
@@ -140,7 +142,7 @@ public class Endereco extends CEP {
             try {
                 int i = 1;
                 String sql = "update " + Endereco.getTABELA()
-                        + " set IDPessoa = ?, IDFornecedor = ? , IDCliente=?,"
+                        + " set IDPessoa = ?, IDCliente=?, IDFornecedor = ?, "
                         + "cep=?, numero=?, quantEndereco=?, Complemento=?";
                 endereco();
                 pst = conexao.prepareStatement(sql);
@@ -149,6 +151,7 @@ public class Endereco extends CEP {
                 pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
                 pst.setString(i++, CEP);
                 pst.setInt(i++, Numero);
+                pst.setString(i++, Complemento);
                 int editado = pst.executeUpdate();
                 if (editado > 0) {
                     Messagem.chamarTela(Messagem.EDITADO(EnderecoToString(CEP, Complemento, Numero)));
@@ -169,7 +172,8 @@ public class Endereco extends CEP {
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
      * @param Numero Setar uma informação de valor inteiro do número do endereço
-     * @param Complemento Setar uma informação de valor String do complemento de endereço
+     * @param Complemento Setar uma informação de valor String do complemento de
+     * endereço
      *
      */
     public static void excluirEndereco(String login, String CEP, int Numero, String Complemento) {
@@ -213,8 +217,13 @@ public class Endereco extends CEP {
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
      * @param Numero Setar uma informação de valor inteiro do número do endereço
-     * @param Complemento Setar uma informação de valor String do complemento de endereço
-     * @param ou
+     * @param Complemento Setar uma informação de valor String do complemento de
+     * endereço
+     * @param ou Setar uma informação de valor boolean na instrução sql
+     * <li>
+     * <ul> se o valor for True: incluir OR no sql. </ul>
+     * <ul> se o valor for False: incluir AND no sql. </ul>
+     * </li>
      */
     public static void pesquisarEndereco(String login, String CEP, int Numero, String Complemento, boolean ou) {
         if (NaoHaCampoVazio(login, CEP, Numero, Complemento)) {
@@ -285,8 +294,8 @@ public class Endereco extends CEP {
         }
     }
 
-        /**
-     * Este Método faz a exibição em tela da informação de endereço 
+    /**
+     * Este Método faz a exibição em tela da informação de endereço
      *
      * @param login Setar uma informação de valor String do login da pessoa e/ou
      * cliente e/ou fornecedor
@@ -297,18 +306,89 @@ public class Endereco extends CEP {
     }
 
     /**
-     * Este Método retorna uma informação de valor String do endereço 
+     * Este Método retorna uma informação de valor String do endereço
      *
      * @param login Setar uma informação de valor String do login da pessoa e/ou
      * cliente e/ou fornecedor
-     * @param cep Setar uma informação de valor String do CEP
-     * @return 
+     * @param cep Setar uma informação de valor String do CEP de Endereço.
+     * @return retorna uma informação de valor String do endereço completo
      */
     public static String exibirEnderecoToString(String login, String cep
     ) {
         pesquisarEndereco(login, cep, -1, "", true);
         CEP.EnderecoToString(Endereco.getCep(), Endereco.getComplemento(), Endereco.getNumero());
         return "";
+    }
+
+    /**
+     * Este Metodo obter o Id Endereço da tabela endereço no banco de dados
+     * primario. se retornar 0 e por que não há registro.
+     *
+     * @param login Setar uma informação de valor String do login da pessoa e/ou
+     * cliente e/ou fornecedor
+     * @param cep Setar uma informação de valor String do CEP de Endereço.
+     * @param numero Setar uma informação de valor inteiro do número do endereço
+     * @param complemento Setar uma informação de valor String do complemento de
+     * endereço
+     * @param ou Setar uma informação de valor boolean na instrução sql
+     * <li>
+     * <ul> se o valor for True: incluir OR no sql. </ul>
+     * <ul> se o valor for False: incluir AND no sql. </ul>
+     * </li>
+     * @return Retornar o Id Endereço da tabela endereço no banco de dados
+     * primario.
+     */
+    public static int ObterIDEndereco(String login, String cep, int numero, String complemento, boolean ou) {
+        String sql = "select idEndereco from " + Endereco.getTABELA() + " where ", a;
+        int res = 0, i = 1, j = i, count = res;
+        if (ou) {
+            a = " or ";
+        } else {
+            a = " and ";
+        }
+
+        if (!login.isEmpty()) {
+            sql += "id" + Pessoa.getTABELA() + " =?" + a + "id" + Cliente.getTABELA() + " =?" + a + "id" + Fornecedor.getTABELA() + " =?";
+            count++;
+        }
+        if (!cep.isEmpty()) {
+            if (count > 0) {
+                sql += a;
+            }
+            sql += "cep =?";
+            count++;
+        }
+        if (!complemento.isEmpty()) {
+            if (count > 0) {
+                sql += a;
+            }
+            sql += "complemento =?";
+            count++;
+        }
+        try {
+            endereco();
+            pst = conexao.prepareStatement(sql);
+            if (!login.isEmpty()) {
+                pst.setInt(i++, Pessoa.obterIdPessoa(login));
+                pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
+                pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
+            }
+            if (!cep.isEmpty()) {
+                pst.setString(i++, cep);
+            }
+            if (!complemento.isEmpty()) {
+                pst.setString(i++, complemento);
+            }
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                res = rs.getInt(j);
+            }
+        } catch (Exception e) {
+            Messagem.chamarTela("Obter o id do Endereço: " + e);
+        } finally {
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        }
+        return res;
     }
 
     /**
@@ -319,7 +399,8 @@ public class Endereco extends CEP {
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
      * @param Numero Setar uma informação de valor inteiro do número do endereço
-     * @param Complemento Setar uma informação de valor String do complemento de endereço
+     * @param Complemento Setar uma informação de valor String do complemento de
+     * endereço
      *
      * @return
      */
@@ -336,8 +417,10 @@ public class Endereco extends CEP {
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
      * @param Numero Setar uma informação de valor inteiro do número do endereço
-     * @param Complemento Setar uma informação de valor String do complemento de endereço
-     * @param mensagem Setar uma informação de valor booleano do complemento de endereço      
+     * @param Complemento Setar uma informação de valor String do complemento de
+     * endereço
+     * @param mensagem Setar uma informação de valor booleano do complemento de
+     * endereço
      * @return
      */
     public static boolean haCampoVazio(String login, String CEP, int Numero, String Complemento, boolean mensagem) {
@@ -356,7 +439,8 @@ public class Endereco extends CEP {
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
      * @param Numero Setar uma informação de valor inteiro do número do endereço
-     * @param Complemento Setar uma informação de valor String do complemento de endereço
+     * @param Complemento Setar uma informação de valor String do complemento de
+     * endereço
      *
      * @return Retornar um array de informação de valor String dos campos vazios
      */
@@ -385,10 +469,10 @@ public class Endereco extends CEP {
     public static void limparCampos() {
         String limpar = "";
         int limp = 0;
-        preencherCampos(limp, limp, limp, limp, limp, limpar, limpar, limpar);
+        preencherCampos(limp, limp, limp,limp, limp, limp, limpar, limpar, limpar);
     }
 
-    /**
+    /** Este Metodo e responsavel pelo prenchimento dos sets da Classe endereço
      * @param IDEndereco setar uma informação de valor inteiro do ID de endereço
      * @param IDPessoa Setar uma informação de valor inteiro do IDPessoa de
      * endereço
@@ -396,18 +480,26 @@ public class Endereco extends CEP {
      * endereço
      * @param IDFornecedor Setar uma informação de valor inteiro do IDFo de
      * endereço
+     * @param quantEndereco
      * @param login Setar uma informação de valor String do login da pessoa e/ou
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
      * @param Numero Setar uma informação de valor inteiro do número do endereço
-     * @param Complemento Setar uma informação de valor String do complemento de endereço
+     * @param Complemento Setar uma informação de valor String do complemento de
+     * endereço
      *
      */
-    public static void preencherCampos(int IDEndereco, int IDPessoa, int IDCliente, int IDFornecedor, int Numero, String login, String CEP, String Complemento) {
+    public static void preencherCampos(int IDEndereco, int IDPessoa, int IDCliente, int IDFornecedor,int quantEndereco, int Numero, String login, String CEP, String Complemento) {
+        setID(IDEndereco);
+        Pessoa.setIdpessoa(IDPessoa);
+        Cliente.setIdCliente(IDCliente);
+        Fornecedor.setIdFornecedor(IDFornecedor);
         Pessoa.setLogin(login);
         setCep(CEP);
         setNumero(Numero);
+        setQuantEndereco(quantEndereco);
         setComplemento(Complemento);
+        ObterEnderecodeCEP(getCep());
     }
 
     /**
@@ -569,12 +661,12 @@ public class Endereco extends CEP {
     /**
      *
      * Este Método setar uma infornação de valor String no complemento do
-     * Endereço
-     *a
+     * Endereço a
+     *
      * @param complemento setar uma infornação de valor String no complemento do
      * Endereço
      */
-    public static void setComplemento (String complemento) {
+    public static void setComplemento(String complemento) {
         Endereco.complemento = complemento;
     }
 }

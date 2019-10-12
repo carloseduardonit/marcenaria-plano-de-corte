@@ -12,7 +12,7 @@ import marcenaria.dado.ModuloConector;
 import marcenaria.material.Chapa;
 
 /**
- * 16/06/2019
+ * 16/06/2019a
  *
  * @author Carlos Eduardo dos Santos Figueiredo
  */

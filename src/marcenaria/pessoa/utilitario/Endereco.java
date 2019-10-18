@@ -129,29 +129,72 @@ public class Endereco extends CEP {
      * Este metodo faz a editacao da tabela Endereço do banco de dados
      * principal.
      *
+     * @param IDEndereco
      * @param login Setar uma informação de valor String do login da pessoa e/ou
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
      * @param Numero Setar uma informação de valor inteiro do número do endereço
+     * @param quantEndereço
      * @param Complemento Setar uma informação de valor String do complemento de
      * endereço
      *
      */
-    public static void editarEndereco(String login, String CEP, int Numero, String Complemento) {
+    public static void editarEndereco(int IDEndereco, String login, String CEP, int Numero, int quantEndereço, String Complemento) {
         if (NaoHaCampoVazio(login, CEP, Numero, Complemento)) {
             try {
-                int i = 1;
+                int i = 1, count = 0;
                 String sql = "update " + Endereco.getTABELA()
-                        + " set IDPessoa = ?, IDCliente=?, IDFornecedor = ?, "
-                        + "cep=?, numero=?, quantEndereco=?, Complemento=?";
+                        + " set ";
+                if (!login.isEmpty()) {
+                    sql += " IDPessoa = ?, IDCliente=?, IDFornecedor = ?";
+                    count++;
+                }
+                if (!CEP.isEmpty()) {
+                    if (count > 0) {
+                        sql += ", ";
+                    }
+                    sql += "cep =?";
+                    count++;
+                }
+                if (!String.valueOf(Numero).isEmpty()) {
+                    if (count > 0) {
+                        sql += ", ";
+                    }
+                    sql += "numero =?";
+                    count++;
+                }
+                if (!String.valueOf(quantEndereco).isEmpty()) {
+                    if (count > 0) {
+                        sql += ", ";
+                    }
+                    sql += "quantEndereco=?";
+                    count++;
+                }
+                if (!Complemento.isEmpty()) {
+                    if (count > 0) {
+                        sql += ", ";
+                    }
+                    sql += "Complemento =?";
+                    count++;
+                }
+                sql += " where id" + getTABELA() + " =?";
                 endereco();
                 pst = conexao.prepareStatement(sql);
-                pst.setInt(i++, Pessoa.obterIdPessoa(login));
-                pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
-                pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
-                pst.setString(i++, CEP);
-                pst.setInt(i++, Numero);
-                pst.setString(i++, Complemento);
+                if (!login.isEmpty()) {
+                    pst.setInt(i++, Pessoa.obterIdPessoa(login));
+                    pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
+                    pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
+                }
+                if (CEP.isEmpty()) {
+                    pst.setString(i++, CEP);
+                }
+                if (String.valueOf(Numero).isEmpty()) {
+                    pst.setInt(i++, Numero);
+                }
+                if (!Complemento.isEmpty()) {
+                    pst.setString(i++, Complemento);
+                }
+                pst.setInt(i++, IDEndereco);
                 int editado = pst.executeUpdate();
                 if (editado > 0) {
                     Messagem.chamarTela(Messagem.EDITADO(EnderecoToString(CEP, Complemento, Numero)));
@@ -174,26 +217,64 @@ public class Endereco extends CEP {
      * @param Numero Setar uma informação de valor inteiro do número do endereço
      * @param Complemento Setar uma informação de valor String do complemento de
      * endereço
+     * @param ou Setar uma informação de valor boolean na instrução sql
+     * <li>
+     * <ul> se o valor for True: incluir OR no sql. </ul>
+     * <ul> se o valor for False: incluir AND no sql. </ul>
+     * </li>
      *
      */
-    public static void excluirEndereco(String login, String CEP, int Numero, String Complemento) {
+    public static void excluirEndereco(String login, String CEP, int Numero, String Complemento, boolean ou) {
         if (NaoHaCampoVazio(login, CEP, Numero, Complemento)) {
             try {
-                int i = 1, excluido, excluir;
-                String sql = "delete  from " + Endereco.getTABELA() + " where ";
-                if (login.isEmpty()) {
-                    sql += "";
+                int i = 1, count = 0, excluido, excluir;
+                String sql = "delete  from " + Endereco.getTABELA() + " where ", a;
+                if (ou) {
+                    a = " or ";
+                } else {
+                    a = " and ";
                 }
-                if (CEP.isEmpty()) {
-                    sql += "";
+                if (!login.isEmpty()) {
+                    sql += "login =?";
+                    count++;
+                }
+                if (!CEP.isEmpty()) {
+                    if (count > 0) {
+                        sql += a;
+                    }
+                    sql += "cep =?";
+                    count++;
+                }
+                if (!String.valueOf(Numero).isEmpty()) {
+                    if (count > 0) {
+                        sql += a;
+                    }
+                    sql += "numero +?";
+                    count++;
+                }
+                if (!Complemento.isEmpty()) {
+                    if (count > 0) {
+                        sql += a;
+                    }
+                    sql += "complemento =?";
+                    count++;
                 }
                 endereco();
                 pst = conexao.prepareStatement(sql);
-                pst.setInt(i++, Pessoa.obterIdPessoa(login));
-                pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
-                pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
-                pst.setString(i++, CEP);
-                pst.setInt(i++, Numero);
+                if (!login.isEmpty()) {
+                    pst.setInt(i++, Pessoa.obterIdPessoa(login));
+                    pst.setInt(i++, Cliente.obterIdClientetoCliente(login));
+                    pst.setInt(i++, Fornecedor.obterIdFornecedortoFornecedor(login));
+                }
+                if (!CEP.isEmpty()) {
+                    pst.setString(i++, CEP);
+                }
+                if (!String.valueOf(Numero).isEmpty()) {
+                    pst.setInt(i++, Numero);
+                }
+                if (!Complemento.isEmpty()) {
+                    pst.setString(i++, Complemento);
+                }
                 excluir = JOptionPane.showInternalConfirmDialog(null, EnderecoToString(CEP, Complemento, Numero), getTABELA(), JOptionPane.OK_CANCEL_OPTION);
                 if (excluir == JOptionPane.OK_OPTION) {
                     excluido = pst.executeUpdate();
@@ -469,10 +550,12 @@ public class Endereco extends CEP {
     public static void limparCampos() {
         String limpar = "";
         int limp = 0;
-        preencherCampos(limp, limp, limp,limp, limp, limp, limpar, limpar, limpar);
+        preencherCampos(limp, limp, limp, limp, limp, limp, limpar, limpar, limpar);
     }
 
-    /** Este Metodo e responsavel pelo prenchimento dos sets da Classe endereço
+    /**
+     * Este Metodo e responsavel pelo prenchimento dos sets da Classe endereço
+     *
      * @param IDEndereco setar uma informação de valor inteiro do ID de endereço
      * @param IDPessoa Setar uma informação de valor inteiro do IDPessoa de
      * endereço
@@ -489,7 +572,7 @@ public class Endereco extends CEP {
      * endereço
      *
      */
-    public static void preencherCampos(int IDEndereco, int IDPessoa, int IDCliente, int IDFornecedor,int quantEndereco, int Numero, String login, String CEP, String Complemento) {
+    public static void preencherCampos(int IDEndereco, int IDPessoa, int IDCliente, int IDFornecedor, int quantEndereco, int Numero, String login, String CEP, String Complemento) {
         setID(IDEndereco);
         Pessoa.setIdpessoa(IDPessoa);
         Cliente.setIdCliente(IDCliente);

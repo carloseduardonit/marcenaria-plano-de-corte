@@ -29,8 +29,12 @@ public class Endereco extends CEP {
         CEP.setCep("24752-640");
         Endereco.setNumero(125);
         Endereco.setComplemento("Quadra 44 lote 11");
-        //adicionarEndereco(Pessoa.getLogin(), getCep(), getNumero(), getComplemento());
-        pesquisarEndereco(Pessoa.getLogin(), CEP.getCep(), 11, Endereco.getComplemento(), true);
+        System.out.println(Endereco.EnderecoToString(CEP.getCep(), getComplemento(), getNumero())
+        );
+        //deletarEndereco();
+        //criarEndereco();
+        //adicionarEndereco(Pessoa.getLogin(), CEP.getCep(), Endereco.getNumero(), Endereco.getComplemento());
+        //pesquisarEndereco(Pessoa.getLogin(), CEP.getCep(), 11, Endereco.getComplemento(), true);
     }
 
     private static int ID, IDPessoa, IDCliente, IDFornecedor, numero, quantEndereco;

@@ -18,7 +18,7 @@ import marcenaria.utilitario.cep.UF;
 public class CEP {
 
     private static int ID;
-    private static String cidade, logradouro, bairro, cep, estado, tipoLogradouro;
+    private static String cidade, logradouro, bairro, cep, estado, tipoLogradouro, aUF;
     private static final String Dado = "teste1";
     private static String complemento = " qd 44", numero;
     private static Connection conexao;
@@ -29,12 +29,16 @@ public class CEP {
     private static Statement stmt;
 
     public static void main(String[] args) {
-        setCep("24752-640");
-        System.out.println(CEP.eEsteUF(uf.RJ.toString().toLowerCase(), getCep()));
+        setCep("04180-112");
+        setEstado("sp");
+        //System.out.println(ObterCEP1deUF(getEstado()));
+        //System.out.println(ObterCEP2deUF(getEstado()));
+        System.out.println(CEP.eEsteUF(getCep()));
+        System.out.println(getaUF());
 
         /**
-         * UF[] ess = UF.values(); for (int i = 1; i <= UF.values().length; i++)
-         * { System.out.println(ess[i].getNomeEstado(i)); } *
+         * for (UF a : UF.values()){ String t = a.name(); System.out.println(t);
+         * } *
          */
     }
 
@@ -49,60 +53,71 @@ public class CEP {
     }
 
     /**
+     * OK. Este Metodo obtem o CEP 1 da tabela UF atraves do paramento UF
+     *
      * @author Carlos Eduardo dos santos Figueiredo
+     * @param UF Setar uma informação de valor String do UF do CEP.
      * @since 21/09/19 -criada
      *
      */
     private static int ObterCEP1deUF(String UF) {
         int cepLocal = 0;
-        try {
-            //esta ok
-            String sql = "select cep1 from uf where uf = ?";
-            cep();
-            pst = conexao.prepareStatement(sql);
-            int i = 1;
-            pst.setString(i, UF.toLowerCase());
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                cepLocal = Integer.parseInt(rs.getString(1));
+        if (NãoHaCampoVazio(UF, null, null, 0)) {
+            try {
+                String sql = "select cep1 from uf where uf = ?";
+                cep();
+                pst = conexao.prepareStatement(sql);
+                int i = 1;
+                pst.setString(i, UF.toLowerCase());
+                rs = pst.executeQuery();
+                if (rs.next()) {
+                    cepLocal = Integer.parseInt(rs.getString(1));
+                }
+            } catch (NumberFormatException | SQLException e) {
+                Messagem.chamarTela("Obter o CEP1 de UF: " + e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } catch (NumberFormatException | SQLException e) {
-            Messagem.chamarTela("Obter o CEP1 de UF: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
         return cepLocal;
     }
 
     /**
+     * OK. Este Metodo obtem o CEP 2 da tabela UF atraves do paramento UF
+     *
+     * @param UF Setar uma informação de valor String do UF do CEP.
      * @author Carlos Eduardo dos santos Figueiredo
      * @since 21/09/19 -criada
      *
      */
     private static int ObterCEP2deUF(String UF) {
         int cepLocal = 0;
-        try {//esta Ok
-            String sql = "select cep2 from uf where uf = ?";
-            cep();
-            pst = conexao.prepareStatement(sql);
-            int i = 1;
-            pst.setString(i, UF);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                cepLocal = Integer.parseInt(rs.getString(1));
+        if (NãoHaCampoVazio(UF, null, null, 0)) {
+            try {//esta Ok
+                String sql = "select cep2 from uf where uf = ?";
+                cep();
+                pst = conexao.prepareStatement(sql);
+                int i = 1;
+                pst.setString(i, UF);
+                rs = pst.executeQuery();
+                if (rs.next()) {
+                    cepLocal = Integer.parseInt(rs.getString(1));
+                }
+                return cepLocal;
+            } catch (NumberFormatException | SQLException e) {
+                Messagem.chamarTela("Obter o CEP2 de UF: " + e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-            return cepLocal;
-        } catch (NumberFormatException | SQLException e) {
-            Messagem.chamarTela("Obter o CEP2 de UF: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
         return cepLocal;
     }
 
     /**
+     * Este Metodo Obtem o endereço atraves parametro do cep
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param Cep
+     * @param Cep Setar uma informação de valor String do cep do CEP.
      * @since 25/09/19 -criada
      *
      */
@@ -111,39 +126,43 @@ public class CEP {
     }
 
     /**
+     * Este Metodo Obtem o endereço atraves parametro do cep
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param UF
-     * @param CEP
+     * @param UF Setar uma informação de valor String do UF do CEP.
+     * @param CEP Setar uma informação de valor String do cep do CEP.
      * @since 21/09/19 -criada
      *
      */
     public static void ObterEnderecodeCEP(String UF, String CEP) {
-        try {
-            String sql = "select id, cidade, logradouro, bairro, tp_logradouro from " + UF + " where cep = ?";
-            cep();
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, CEP);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                int i = 1;
-                setID(rs.getInt(i++));
-                setCidade(rs.getString(i++));//
-                setLogradouro(rs.getString(i++));//
-                setBairro(rs.getString(i++));//
-                setEstado(UF);
-                setCep(CEP);
-                setTipoLogradouro(rs.getString(i));//
+        if (NãoHaCampoVazio(UF, CEP, null, 0)) {
+            try {
+                String sql = "select  cidade, logradouro, bairro, tp_logradouro from " + UF + " where cep = ?";
+                cep();
+                pst = conexao.prepareStatement(sql);
+                pst.setString(1, CEP);
+                rs = pst.executeQuery();
+                if (rs.next()) {
+                    int i = 1;
+
+                    setCidade(rs.getString(i++));//
+                    setLogradouro(rs.getString(i++));//
+                    setBairro(rs.getString(i++));//
+                    setEstado(UF);
+                    setCep(CEP);
+                    setTipoLogradouro(rs.getString(i));//
+                }
+            } catch (SQLException e) {
+                Messagem.chamarTela("Obter o Endereço: " + e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela("Obter o Endereço: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
     /**
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param Cep
+     * @param Cep Setar uma informação de valor String do cep do CEP.
      * @return
      * @since 25/09/19 -criada
      *
@@ -168,19 +187,30 @@ public class CEP {
     }
 
     /**
+     * OK Este Metodo Retornar uma informação de valor boolean
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param UF
-     * @param Cep
+     * @param Cep Setar uma informação de valor String do cep do CEP.
      * @return
      * @since 25/09/19 -criada
      *
      */
-    public static Boolean eEsteUF(String Cep) {
-
-        return false;
+    public static boolean eEsteUF(String Cep) {
+        boolean resp = false;
+        for (UF a : UF.values()) {
+            String t = a.name();
+            resp = eEsteUF(t, Cep);
+            if (resp) {
+                setaUF(t);
+                break;
+            }
+        }
+        return resp;
     }
 
     /**
+     * Este Metod
+     *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param UF
      * @param Cep
@@ -188,49 +218,63 @@ public class CEP {
      * @since 25/09/19 -criada
      *
      */
-    public static Boolean eEsteUF(String UF, String Cep) {
+    public static boolean eEsteUF(String UF, String Cep) {
         String cep5 = Cep.substring(0, 5);
-        //System.out.println(ObterCEP1deUF(UF.toLowerCase()) + " >= " + cep5 + " <= " + ObterCEP2deUF(UF.toLowerCase()));
         return Integer.parseInt(cep5) >= ObterCEP1deUF(UF.toLowerCase()) && Integer.parseInt(cep5) <= ObterCEP2deUF(UF.toLowerCase());
     }
 
     /**
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param Cep
+     * @param Cep Setar uma informação de valor String do cep do CEP.
      * @return
      * @since 25/09/19 -criada
      *
      */
     public static String ObterEstadodeCEP(String Cep) {
         String UF = "";
-        if (CEP.eEsteUF(Cep)) {
-            String sql = "select nome from uf where uf = ?";
-            try {
-                cep();
-                pst = conexao.prepareStatement(sql);
-                pst.setString(1, UF);
-                rs = pst.executeQuery();
-                if (rs.next()) {
-                    UF = rs.getString(1);
+        if (NãoHaCampoVazio(null, Cep, null, 0)) {
+            if (CEP.eEsteUF(Cep)) {
+                String sql = "select nome from " + Dado + ".uf where uf = ?";
+                try {
+                    cep();
+                    pst = conexao.prepareStatement(sql);
+                    pst.setString(1, UF);
+                    rs = pst.executeQuery();
+                    if (rs.next()) {
+                        UF = rs.getString(1);
+                    }
+                } catch (SQLException e) {
+                    Messagem.chamarTela("Obter o UF: " + e);
+                } finally {
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
                 }
-            } catch (SQLException e) {
-                Messagem.chamarTela("Obter o UF: " + e);
-            } finally {
-                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
         }
         return UF;
     }
 
-    public static String EnderecoToString( String cep, String complemento, int numero) {
-          return EnderecoToString(ObterUF(cep), cep, complemento, numero);
-      }
     /**
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param UF
-     * @param cep
-     * @param complemento
-     * @param numero
+     * @param cep Setar uma informação de valor String do cep do CEP.
+     * @param complemento Setar uma informação de valor String do complemento do
+     * CEP.
+     * @param numero Setar uma informação de valor inteiro do numero do CEP.
+     * @return
+     * @since 25/09/19 -criada
+     *
+     */
+    public static String EnderecoToString(String cep, String complemento, int numero) {
+        String uf = CEP.ObterUF(cep);
+        return EnderecoToString(uf, cep, complemento, numero);
+    }
+
+    /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @param UF Setar uma informação de valor String do UF do CEP.
+     * @param cep Setar uma informação de valor String do cep do CEP.
+     * @param complemento Setar uma informação de valor String do complemento do
+     * CEP.
+     * @param numero Setar uma informação de valor inteiro do numero do CEP.
      * @return
      * @since 25/09/19 -criada
      *
@@ -261,11 +305,98 @@ public class CEP {
         }
         return endereço;
     }
+
+    /**
+     * @param UF Setar uma informação de valor String do UF do CEP.
+     * @param cep Setar uma informação de valor String do cep do CEP.
+     * @param complemento Setar uma informação de valor String do complemento do
+     * CEP.
+     * @param numero Setar uma informação de valor inteiro do numero do CEP.
+     * @return
+     */
+    public static String[] campoVazio(String UF, String cep, String complemento, int numero) {
+        String[] campo = new String[4];
+        int i = 0;
+        if (UF.isEmpty()) {
+            campo[i++] = "Estado";
+        }
+        if (cep.isEmpty()) {
+            campo[i++] = "n° CEP";
+        }
+        if (complemento.isEmpty()) {
+            campo[i++] = "complemento";
+        }
+        if (String.valueOf(numero).isEmpty() && numero >= 0) {
+            campo[i++] = "Numero";
+        }
+        return campo;
+    }
+
+    /**
+     * Este Metodo retorna um valor boolean se Não ha Campos Vazios:
+     * <li>
+     * <ul><b>TRUE: </b>se não tiver Campos Vazios</ul>
+     * <ul><b>FALSE: </b>se tiver Campos Vazios</ul>
+     * </li>
+     *
+     * @param UF Setar uma informação de valor String do UF do CEP.
+     * @param cep Setar uma informação de valor String do cep do CEP.
+     * @param complemento Setar uma informação de valor String do complemento do
+     * CEP.
+     * @param numero Setar uma informação de valor inteiro do numero do CEP.
+     * @return Retornar uma informação de valor boolean se não tem campo vazio
+     * <li>
+     * <ul><b>TRUE: </b>se tiver Campos Vazios</ul>
+     * <ul><b>FALSE: </b>se não tiver Campos Vazios</ul>
+     * </li>
+     */
+    public static boolean HaCampoVazio(String UF, String cep, String complemento, int numero) {
+        if (UF == null) {
+            UF = "0";
+        }
+        if (cep == null) {
+            cep = "0";
+        }
+        if (complemento == null) {
+            complemento = "0";
+        }
+        boolean resp = UF.isEmpty() || cep.isEmpty() || complemento.isEmpty() || (String.valueOf(numero).isEmpty() && numero >= 0);
+        return resp;
+    }
+
+    /**
+     * Este Metodo retorna um valor boolean se Não ha Campos Vazios:
+     * <li>
+     * <ul><b>TRUE: </b>se não tiver Campos Vazios</ul>
+     * <ul><b>FALSE: </b>se tiver Campos Vazios e mostra o uma tela se
+     * informação com os campos vazios.</ul>
+     * </li>
+     *
+     * @param UF Setar uma informação de valor String do UF do CEP.
+     * @param cep Setar uma informação de valor String do cep do CEP.
+     * @param complemento Setar uma informação de valor String do complemento do
+     * CEP.
+     * @param numero Setar uma informação de valor inteiro do numero do CEP.
+     * @return Retornar uma informação de valor boolean se não tem campo vazio
+     * <li>
+     * <ul><b>TRUE: </b>se não tiver Campos Vazios</ul>
+     * <ul><b>FALSE: </b>se tiver Campos Vazios</ul>
+     * </li>
+     */
+    public static boolean NãoHaCampoVazio(String UF, String cep, String complemento, int numero) {
+        boolean resp = HaCampoVazio(UF, cep, complemento, numero);
+        if (resp) {
+            Messagem.chamarTela(Messagem.VAZIO(campoVazio(UF, cep, complemento, numero)));
+        }
+        return !resp;
+    }
     // SETS E GETS
 
     /**
+     * Este metodo Retornar uma informação de valor inteiro do ID do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @return
+     * @return Retornar uma informação de valor inteiro do ID do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -274,8 +405,10 @@ public class CEP {
     }
 
     /**
+     * Este metodo Setar uma informação de valor inteiro do ID do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param ID
+     * @param ID Setar uma informação de valor inteiro do ID do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -284,8 +417,10 @@ public class CEP {
     }
 
     /**
+     * Este metodo Retornar uma informação de valor String do Cidade do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @return
+     * @return Retornar uma informação de valor String do Cidade do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -294,8 +429,10 @@ public class CEP {
     }
 
     /**
+     * Este metodo Setar uma informação de valor String do Cidade do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param cidade
+     * @param cidade Setar uma informação de valor String do Cidade do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -304,8 +441,10 @@ public class CEP {
     }
 
     /**
+     * Este metodo Retornar uma informação de valor String do logradouro do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @return
+     * @return Retornar uma informação de valor String do logradouro do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -314,8 +453,11 @@ public class CEP {
     }
 
     /**
+     * Este metodo Setar uma informação de valor String do logradouro do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param logradouro
+     * @param logradouro Setar uma informação de valor String do logradouro do
+     * CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -324,8 +466,10 @@ public class CEP {
     }
 
     /**
+     * Este metodo Retornar uma informação de valor String do Bairro do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @return
+     * @return Retornar uma informação de valor String do Bairro do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -334,8 +478,10 @@ public class CEP {
     }
 
     /**
+     * Este metodo Setar uma informação de valor String do Bairro do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param bairro
+     * @param bairro Setar uma informação de valor String do Bairro do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -344,8 +490,10 @@ public class CEP {
     }
 
     /**
+     * Este Metodo Retornar uma informação de valor String do n° CEP do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @return
+     * @return Retornar uma informação de valor String do n° CEP do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -354,8 +502,10 @@ public class CEP {
     }
 
     /**
+     * Este Metodo Setar uma informação de valor String do n° CEP do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param cep
+     * @param cep Setar uma informação de valor String do n° CEP do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -364,8 +514,10 @@ public class CEP {
     }
 
     /**
+     * Este Metodo Retornar uma informação de valor String do Estado do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @return
+     * @return Retornar uma informação de valor String do Estado do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -374,8 +526,10 @@ public class CEP {
     }
 
     /**
+     * Este Metodo Setar uma informação de valor String do Estado do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param estado
+     * @param estado Setar uma informação de valor String do Estado do CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -384,8 +538,12 @@ public class CEP {
     }
 
     /**
+     * Este Metodo Retornar uma informação de valor String do Tipo de logradouro
+     * do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @return
+     * @return Retornar uma informação de valor String do Tipo de logradouro do
+     * CEP.
      * @since 21/09/19 -criada
      *
      */
@@ -394,13 +552,41 @@ public class CEP {
     }
 
     /**
+     * Este Metodo Setar uma informação de valor String do Tipo de logradouro do
+     * CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param tipoLogradouro
+     * @param tipoLogradouro Setar uma informação de valor String do Tipo de
+     * logradouro do CEP.
      * @since 21/09/19 -criada
      *
      */
     public static void setTipoLogradouro(String tipoLogradouro) {
         CEP.tipoLogradouro = tipoLogradouro;
+    }
+
+    /**
+     * Este Método Retornar uma informação de valor String da UF.
+     *
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @return Retornar uma informação de valor String da UF.
+     * @since 21/09/19 -criada
+     *
+     */
+    public static String getaUF() {
+        return aUF;
+    }
+
+    /**
+     * Este Método Setar uma informação de valor String da UF.
+     *
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @param aUF Setar uma informação de valor String da UF.
+     * @since 19/10/19 -criada
+     *
+     */
+    public static void setaUF(String aUF) {
+        CEP.aUF = aUF;
     }
 
 }

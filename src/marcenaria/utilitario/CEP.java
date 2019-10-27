@@ -29,13 +29,7 @@ public class CEP {
     private static Statement stmt;
 
     public static void main(String[] args) {
-        setCep("04180-112");
-        setEstado("sp");
-        //System.out.println(ObterCEP1deUF(getEstado()));
-        //System.out.println(ObterCEP2deUF(getEstado()));
-        System.out.println(CEP.eEsteUF(getCep()));
-        System.out.println(getaUF());
-
+        System.out.println(CEP.ObterUF(cep));
         /**
          * for (UF a : UF.values()){ String t = a.name(); System.out.println(t);
          * } *
@@ -52,8 +46,9 @@ public class CEP {
         conexao = ModuloConector.getConecction(Dado);
     }
 
+    //  INICIO acessa a tabela UF.
     /**
-     * OK. Este Metodo obtem o CEP 1 da tabela UF atraves do paramento UF
+     * OK Este Metodo obtem o CEP 1 da tabela UF atraves do paramento UF
      *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param UF Setar uma informação de valor String do UF do CEP.
@@ -83,7 +78,7 @@ public class CEP {
     }
 
     /**
-     * OK. Este Metodo obtem o CEP 2 da tabela UF atraves do paramento UF
+     * OK Este Metodo obtem o CEP 2 da tabela UF atraves do paramento UF
      *
      * @param UF Setar uma informação de valor String do UF do CEP.
      * @author Carlos Eduardo dos santos Figueiredo
@@ -113,6 +108,8 @@ public class CEP {
         return cepLocal;
     }
 
+    // FIM acessa a tabela UF.
+    // INICIO acessar a tabela de ESTADO.
     /**
      * Este Metodo Obtem o endereço atraves parametro do cep
      *
@@ -161,37 +158,52 @@ public class CEP {
     }
 
     /**
+     * Este Metodo obtem uma informação de valor String da UF atraves do
+     * parametro cep do CEP.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param Cep Setar uma informação de valor String do cep do CEP.
-     * @return
+     * @return Retornar uma informação de valor String da UF.
      * @since 25/09/19 -criada
      *
      */
     public static String ObterUF(String Cep) {
-        String UF = "", sql = "select uf from uf where cep1 >= ? and cep2 <= ?", cep5 = Cep.substring(0, 5);
-        try {
-            cep();
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, cep5);
-            pst.setString(2, cep5);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                UF = rs.getString(1);
+        String UF = "", sql = "select uf from uf where cep1 = ? and cep2 = ?", cep5 ;
+        if (Cep == null) {
+             Messagem.chamarTela(" Valor não informado !!!! " );
+        }else{
+             if (NãoHaCampoVazio(null, Cep, null, 0)) {
+                try {
+                    
+                    cep5 = Cep.substring(0, 5);
+                    cep();
+                    pst = conexao.prepareStatement(sql);
+                    pst.setString(1, cep5);
+                    pst.setString(2, cep5);
+                    rs = pst.executeQuery();
+                    if (rs.next()) {
+                        UF = rs.getString(1);
+                    }
+                } catch (NullPointerException npe) {
+                    Messagem.chamarTela("Obter o UF: " + npe);
+                } catch (SQLException e) {
+                    Messagem.chamarTela("Obter o UF: " + e);
+                } finally {
+                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                }
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela("Obter o UF: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
         return UF;
     }
 
     /**
-     * OK Este Metodo Retornar uma informação de valor boolean
+     * OK Este Metodo Retornar uma informação de valor boolean se este e UF
+     * atraves do parametro CEP
      *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param Cep Setar uma informação de valor String do cep do CEP.
-     * @return
+     * @return Retornar uma informação de valor boolean se este e UF atraves do
+     * parametro CEP
      * @since 25/09/19 -criada
      *
      */
@@ -209,12 +221,14 @@ public class CEP {
     }
 
     /**
-     * Este Metod
+     * Este Metodo Retornar uma informação de valor boolean se este e UF atraves
+     * dos parametros UF e CEP.
      *
      * @author Carlos Eduardo dos santos Figueiredo
-     * @param UF
-     * @param Cep
-     * @return
+     * @param UF Setar uma informação de valor String do UF do CEP.
+     * @param Cep Setar uma informação de valor String do cep do CEP.
+     * @return Retornar uma informação de valor boolean se este e UF atraves do
+     * parametro UF e CEP.
      * @since 25/09/19 -criada
      *
      */
@@ -224,9 +238,13 @@ public class CEP {
     }
 
     /**
+     * Este Metodo Retornar Obtenção uma informação de valor String do Estado
+     * conforme os parametro cep.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param Cep Setar uma informação de valor String do cep do CEP.
-     * @return
+     * @return Retornar Obtenção uma informação de valor String do Estado
+     * conforme os parametro cep.
      * @since 25/09/19 -criada
      *
      */
@@ -254,12 +272,16 @@ public class CEP {
     }
 
     /**
+     * Este Metodo Retornar uma informação de valor String do endereço conforme
+     * os parametro cep, conplemento e numero.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param cep Setar uma informação de valor String do cep do CEP.
      * @param complemento Setar uma informação de valor String do complemento do
      * CEP.
      * @param numero Setar uma informação de valor inteiro do numero do CEP.
-     * @return
+     * @return Retornar uma informação de valor String do endereço conforme os
+     * parametro cep, complemento e numero.
      * @since 25/09/19 -criada
      *
      */
@@ -269,13 +291,17 @@ public class CEP {
     }
 
     /**
+     * Este Metodo Retornar uma informação de valor String do endereço conforme
+     * os parametro UF, cep, conplemento e numero.
+     *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param UF Setar uma informação de valor String do UF do CEP.
      * @param cep Setar uma informação de valor String do cep do CEP.
      * @param complemento Setar uma informação de valor String do complemento do
      * CEP.
      * @param numero Setar uma informação de valor inteiro do numero do CEP.
-     * @return
+     * @return Retornar uma informação de valor String do endereço conforme os
+     * parametro UF, cep, conplemento e numero.
      * @since 25/09/19 -criada
      *
      */
@@ -307,12 +333,16 @@ public class CEP {
     }
 
     /**
+     * OK Este Metodo Retornar um array de informação de valor String dos campos
+     * vazios.
+     *
      * @param UF Setar uma informação de valor String do UF do CEP.
      * @param cep Setar uma informação de valor String do cep do CEP.
      * @param complemento Setar uma informação de valor String do complemento do
      * CEP.
      * @param numero Setar uma informação de valor inteiro do numero do CEP.
-     * @return
+     * @return Retornar um array de informação de valor String dos campos
+     * vazios.
      */
     public static String[] campoVazio(String UF, String cep, String complemento, int numero) {
         String[] campo = new String[4];
@@ -326,14 +356,14 @@ public class CEP {
         if (complemento.isEmpty()) {
             campo[i++] = "complemento";
         }
-        if (String.valueOf(numero).isEmpty() && numero >= 0) {
+        if (String.valueOf(numero).isEmpty() && numero < 0) {
             campo[i++] = "Numero";
         }
         return campo;
     }
 
     /**
-     * Este Metodo retorna um valor boolean se Não ha Campos Vazios:
+     * OK Este Metodo retorna um valor boolean se Não ha Campos Vazios:
      * <li>
      * <ul><b>TRUE: </b>se não tiver Campos Vazios</ul>
      * <ul><b>FALSE: </b>se tiver Campos Vazios</ul>
@@ -360,12 +390,12 @@ public class CEP {
         if (complemento == null) {
             complemento = "0";
         }
-        boolean resp = UF.isEmpty() || cep.isEmpty() || complemento.isEmpty() || (String.valueOf(numero).isEmpty() && numero >= 0);
+        boolean resp = UF.isEmpty() || cep.isEmpty() || complemento.isEmpty() || (String.valueOf(numero).isEmpty() && numero < 0);
         return resp;
     }
 
     /**
-     * Este Metodo retorna um valor boolean se Não ha Campos Vazios:
+     * OK Este Metodo retorna um valor boolean se Não ha Campos Vazios:
      * <li>
      * <ul><b>TRUE: </b>se não tiver Campos Vazios</ul>
      * <ul><b>FALSE: </b>se tiver Campos Vazios e mostra o uma tela se

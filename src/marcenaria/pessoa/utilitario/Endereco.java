@@ -12,7 +12,7 @@ import marcenaria.dado.ModuloConector;
 import marcenaria.pessoa.Cliente;
 import marcenaria.pessoa.Fornecedor;
 import marcenaria.pessoa.Pessoa;
-import marcenaria.utilitario.CEP;
+import marcenaria.utilitario.cep.dados.CEP;
 
 /**
  *
@@ -22,6 +22,7 @@ public class Endereco extends CEP {
 
     public static void main(String[] args) {
         //criarEndereco();
+
         String login = "1", cep = "1", comp = "1";
         int nun = -1;
 
@@ -127,6 +128,14 @@ public class Endereco extends CEP {
                 ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
         }
+    }
+
+    public static void editarEndereco(String login, String CEP, int Numero, String Complemento) {
+        editarEndereco(0, login, CEP, Numero, 0, Complemento);
+    }
+
+    public static void editarEndereco(int IDEndereco, String login, String CEP, int Numero, String Complemento) {
+        editarEndereco(IDEndereco, login, CEP, Numero, 0, Complemento);
     }
 
     /**

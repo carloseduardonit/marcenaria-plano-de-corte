@@ -20,7 +20,7 @@ public class UF {
     private static ResultSetMetaData rsmd;
     private static PreparedStatement pst;
     private static Statement stmt;
-    private static String uf;
+    private static String uf, nomeEstado, cep1Digito5, cep2Digito5;
     private static marcenaria.utilitario.cep.enu.UF ufa;
 
     public static void uf() {
@@ -32,7 +32,7 @@ public class UF {
      *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param UF Setar uma informação de valor String do UF do CEP.
-     * @return
+     * @return Retornar obtebção o CEP 1 da tabela UF atraves do paramento UF
      * @since 21/09/19 -criada
      *
      */
@@ -61,9 +61,10 @@ public class UF {
     /**
      * OK Este Metodo obtem o CEP 2 da tabela UF atraves do paramento UF
      *
+     * @author Carlos Eduardo dos santos Figueiredo
      * @param UF Setar uma informação de valor String do UF do CEP.
      * @author Carlos Eduardo dos santos Figueiredo
-     * @return
+     * @return Retornar obtebção o CEP 2 da tabela UF atraves do paramento UF
      * @since 21/09/19 -criada
      *
      */
@@ -91,6 +92,31 @@ public class UF {
     }
 
     /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @param UF Setar uma informação de valor String do UF do CEP.
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @return
+     */
+    public static String ObterEstadodeUF(String UF) {
+        String estado = "", sql;
+        try {
+            uf();
+            sql = "select nome from uf where uf = ?";
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, UF);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                estado = rs.getString(1);
+            }
+        } catch (SQLException e) {
+            Messagem.chamarTela("" + e);
+        } finally {
+            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        }
+        return estado;
+    }
+
+    /**
      * OK Este Metodo Retornar uma informação de valor boolean se este e UF
      * atraves do parametro CEP
      *
@@ -103,7 +129,7 @@ public class UF {
      */
     public static boolean eEsteUF(String Cep) {
         boolean resp = false;
-        for (marcenaria.utilitario.cep.enu.UF a : ufa.values()) {
+        for (marcenaria.utilitario.cep.enu.UF a : marcenaria.utilitario.cep.enu.UF.values()) {
             String t = a.name();
             resp = eEsteUF(t, Cep);
             if (resp) {
@@ -132,7 +158,7 @@ public class UF {
     }
 
     /**
-     * @param uf
+     * @param uf Setar uma informação de valor String do UF do CEP.
      * @return
      */
     public static boolean NãoHaCampoVazio(String uf) {
@@ -144,7 +170,8 @@ public class UF {
     }
 
     /**
-     * @param UF
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @param UF Setar uma informação de valor String do UF do CEP.
      * @return
      */
     public static boolean HaCampoVazio(String UF) {
@@ -154,6 +181,7 @@ public class UF {
     }
 
     /**
+     * @author Carlos Eduardo dos santos Figueiredo
      * @param uf
      * @return
      */
@@ -182,11 +210,94 @@ public class UF {
      *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param aUF Setar uma informação de valor String da UF.
-     * @since 19/10/19 -criada
+     * @since 10/11/19 -criada
      *
      */
     public static void setaUF(String aUF) {
         uf = aUF;
+    }
+
+    /**
+     * Este Método Retornar uma informação de valor String da UF.
+     *
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @return Retornar uma informação de valor String da UF.
+     * @since 10/11/19 -criada
+     */
+    public static String getUf() {
+        return uf;
+    }
+
+    /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @param uf
+     */
+    public static void setUf(String uf) {
+        UF.uf = uf;
+    }
+
+    /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @return
+     */
+    public static String getNomeEstado() {
+        return nomeEstado;
+    }
+
+    /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @param nomeEstado
+     */
+    public static void setNomeEstado(String nomeEstado) {
+        UF.nomeEstado = nomeEstado;
+    }
+
+    /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @return
+     */
+    public static String getCep1Digito5() {
+        return cep1Digito5;
+    }
+
+    /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @param cep1Digito5
+     */
+    public static void setCep1Digito5(String cep1Digito5) {
+        UF.cep1Digito5 = cep1Digito5;
+    }
+
+    /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @return
+     */
+    public static String getCep2Digito5() {
+        return cep2Digito5;
+    }
+
+    /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @param cep2Digito5
+     */
+    public static void setCep2Digito5(String cep2Digito5) {
+        UF.cep2Digito5 = cep2Digito5;
+    }
+
+    /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @return
+     */
+    public static marcenaria.utilitario.cep.enu.UF getUfa() {
+        return ufa;
+    }
+
+    /**
+     * @author Carlos Eduardo dos santos Figueiredo
+     * @param ufa
+     */
+    public static void setUfa(marcenaria.utilitario.cep.enu.UF ufa) {
+        UF.ufa = ufa;
     }
 
 }

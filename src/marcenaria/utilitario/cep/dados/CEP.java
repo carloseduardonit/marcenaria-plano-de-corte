@@ -9,7 +9,6 @@ import java.sql.*;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
 
-
 /**
  *
  * @author Carlos Eduardo dos santos Figueiredo
@@ -31,7 +30,7 @@ public class CEP {
 
     public static void main(String[] args) {
         System.out.println(CEP.ObterUF(cep));
-        
+
     }
 
     /**
@@ -43,7 +42,7 @@ public class CEP {
     private static void cep() {
         conexao = ModuloConector.getConecction(Dado);
     }
-    
+
     // INICIO acessar a tabela de ESTADO.
     /**
      * Este Metodo Obtem o endereço atraves parametro do cep
@@ -102,12 +101,12 @@ public class CEP {
      *
      */
     public static String ObterUF(String Cep) {
-        String UF = "", sql = "select uf from uf where cep1 = ? and cep2 = ?", cep5 ;
+        String UF = "", sql = "select uf from uf where cep1 = ? and cep2 = ?", cep5;
         if (Cep == null) {
-             Messagem.chamarTela(" Valor não informado !!!! " );
-        }else{
-             if (NãoHaCampoVazio(null, Cep, null, 0)) {
-                try {                   
+            Messagem.chamarTela(" Valor não informado !!!! ");
+        } else {
+            if (NãoHaCampoVazio(null, Cep, null, 0)) {
+                try {
                     cep5 = Cep.substring(0, 5);
                     cep();
                     pst = conexao.prepareStatement(sql);
@@ -148,7 +147,7 @@ public class CEP {
                 try {
                     cep();
                     pst = conexao.prepareStatement(sql);
-                    pst.setString(1,  );
+                    pst.setString(1,UF.getaUF());
                     rs = pst.executeQuery();
                     if (rs.next()) {
                         UFa = rs.getString(1);
@@ -487,5 +486,4 @@ public class CEP {
         CEP.tipoLogradouro = tipoLogradouro;
     }
 
-    
 }

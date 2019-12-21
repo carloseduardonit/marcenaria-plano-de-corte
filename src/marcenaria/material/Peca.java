@@ -8,6 +8,7 @@ package marcenaria.material;
 import java.sql.*;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.dado.Table;
 import marcenaria.pessoa.Fornecedor;
 import marcenaria.pessoa.cliente.Projeto;
 
@@ -53,10 +54,10 @@ public class Peca {
      *
      */
     public static void criadaPeca() {
-        if (ModuloConector.VerificarNaoExistirTabela(Chapa.getTABELA())) {
+        if (Table.VerificarNaoExistirTabela(Chapa.getTABELA())) {
             Chapa.criadaChapa();
         }
-        if (ModuloConector.VerificarNaoExistirTabela(Projeto.getTABELA())) {
+        if (Table.VerificarNaoExistirTabela(Projeto.getTABELA())) {
             Projeto.criarProjeto();
         }
         String sql = "create table if not exists " + Peca.getTABELA()
@@ -71,7 +72,7 @@ public class Peca {
                 + "id" + Projeto.getTABELA() + " int not null default 0, "
                 + "foreign key (id" + Projeto.getTABELA() + ") references " + Projeto.getTABELA() + "(id" + Projeto.getTABELA()
                 + "), foreign key(id" + Chapa.getTABELA() + ") references " + Chapa.getTABELA() + "(id" + Chapa.getTABELA() + "))";
-        ModuloConector.criarTabela(sql, Peca.getTABELA());
+        Table.criarTabela(sql, Peca.getTABELA());
     }
 
     /**
@@ -82,10 +83,10 @@ public class Peca {
      *
      */
     public static void deletadaPeca() {
-        if (!ModuloConector.VerificarNaoExistirTabela(Pedaco.getTABELA())) {
+        if (!Table.VerificarNaoExistirTabela(Pedaco.getTABELA())) {
             Pedaco.deletaPedaco();
         }
-        ModuloConector.deletarTabela(Peca.getTABELA());
+        Table.deletarTabela(Peca.getTABELA());
     }
 
     /** <b>Este metodo faz adição na tabela Peça.</b>

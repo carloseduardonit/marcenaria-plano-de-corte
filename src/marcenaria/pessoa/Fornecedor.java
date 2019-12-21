@@ -9,10 +9,12 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.dado.Table;
 import marcenaria.material.Chapa;
 
 /**
- * 16/06/2019a
+ * 16/06/2019
+a
  *
  * @author Carlos Eduardo dos Santos Figueiredo
  */
@@ -43,21 +45,21 @@ public class Fornecedor extends Pessoa {
                 + "docum varchar(14) not null unique, " + "foreign key (login) references "
                 + Pessoa.getTABELA().toLowerCase() + "(login)," + "foreign key (id" + Pessoa.getTABELA()
                 + ") references " + Pessoa.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + "))";
-        if (ModuloConector.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
+        if (Table.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
             Pessoa.criarPessoa();
         }
-        ModuloConector.criarTabela(sql, Fornecedor.getTABELA());
+        Table.criarTabela(sql, Fornecedor.getTABELA());
     }
 
     /**
      * ok Este metodo faz a exclução da informação na Tabela
      */
     public static void deletarFornecedor() {
-        if (!ModuloConector.VerificarNaoExistirTabela(Chapa.getTABELA())) {
+        if (!Table.VerificarNaoExistirTabela(Chapa.getTABELA())) {
             Chapa.deletadaChapa();
             deletarFornecedor();
         }
-        ModuloConector.deletarTabela(Fornecedor.getTABELA());
+        Table.deletarTabela(Fornecedor.getTABELA());
     }
 
     /**

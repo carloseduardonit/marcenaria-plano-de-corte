@@ -6,8 +6,11 @@
 package marcenaria.dado;
 
 import com.mysql.jdbc.CommunicationsException;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Scanner;
 import marcenaria.Const.Messagem;
 
 /**
@@ -65,13 +68,19 @@ public class ModuloConector {
     private static Statement stmt = null;
     private static int count = 0;
 
+    public static void main(String[] args) {
+        DataBase.criarDataBase("teste2");
+        //ImportarSQL();
+    }
+
     /**
      * Este metodo faz a conexão com o banco de dados
      */
-    private static void conector() {
+    public  static void conector() {
         conexao = getConecction();
     }
- /**
+
+    /**
      * Este metodo faz a conexao com o banco de dados MYSQL utilizado as
      * variaveis finais
      *
@@ -148,6 +157,55 @@ public class ModuloConector {
         return conexao;
     }
 
+     /**
+     * Este metodo faz a conexao com o banco de dados MYSQL utilizado as
+     * variaveis finais
+     *
+     * @version 1.0
+     * @since 01/05/2019
+     * @return a conexao conexao com o banco de dado
+     */
+    public static java.sql.Connection getConecction1() {
+        return getConecction1(USER, PASS);
+    }
+    /**
+     * Este metodo faz a conexao com o banco de dados MYSQL utilizado as
+     * variaveis finais
+     *
+     * @version 1.0
+     * @param Banco
+     * @param Usuario
+     * @param Senha
+     * @since 01/05/2019
+     * @return a conexao conexao com o banco de dado
+     */
+    public static java.sql.Connection getConecction1(String Usuario, String Senha) {
+        try {
+            Class.forName(DRIVER);
+            return conexao = DriverManager.getConnection(URL, Usuario, Senha);
+        } // catch{ }
+        catch (ClassNotFoundException cnfe) {
+            Messagem.chamarTela("O Servidor ultra-passou o limite de Conexão " + cnfe);
+            fecharConexao(conexao, rs, rsmd, pst, stmt);
+        } catch (CommunicationsException ce) {
+            Messagem.chamarTela("O banco de dados deve esta desligado " + ce);
+            abrirAplicação();
+            fecharConexao(conexao, rs, rsmd, pst, stmt);
+            getConecction1(Usuario, Senha);
+        } catch (SQLException e) {
+            if (getCount() == 0) {
+                abrirAplicação();
+                setCount(+1);
+                Messagem.chamarTela(getCount() + " O banco de dados deve esta desligado 1 : " + e);
+            }
+
+            fecharConexao(conexao, rs, rsmd, pst, stmt);
+            getConecction();
+        }
+        setCount(0);
+        return conexao;
+    }
+
     public static void abrirAplicação() {
         String b = "C:\\xampp\\xampp-control.exe";
         abrirAplicação(b);
@@ -165,24 +223,7 @@ public class ModuloConector {
     }
 
     /**
-     * TESTE
      *
-     * tem ver
-     */
-    public static void criarDataBase() {
-
-        try {
-            Connection conexao = null;
-            Class.forName(DRIVER);
-            conexao = DriverManager.getConnection(URL, USER, PASS);
-            String sql = "create database if not exist " + DATABASE;
-
-        } catch (Exception e) {
-            Messagem.chamarTela(e);
-        }
-    }
-
-    /**
      * @version 1.0 Este Metodo faz o fechamento da conexao
      * @since 01/05/2019
      * @param con - Fecha a conexao do banco
@@ -285,200 +326,25 @@ public class ModuloConector {
     }
 
     /**
-     * Fazer
-     *
-     * @since 01/05/2019
      */
-    public static void criarBackupdataBase() {
-        Connection conexao = getConecction();
-        String sql = "BACKUP DATABASE teste\n" + "TO DISK = 'D:\\backups\\testDB.bak'";
+    public static void ImportarSQL() {
         try {
-            Statement stmt = conexao.createStatement();
-            int adicionar = stmt.executeUpdate(sql);
-            if (adicionar > 0) {
 
+            InputStream a;
+            a = new FileInputStream("C:/Users/Carlos/Documents/NetBeansProjects/Marcenaria/src/marcenaria/Novo Documento de Texto.txt");
+            Scanner ler = new Scanner(a);
+            int data = a.read();
+
+            while (data != -1) {
+                System.out.println(ler.toString());
+                data = a.read();
             }
-        } catch (SQLException e) {
+            a.close();
+        } catch (IOException e) {
             Messagem.chamarTela(e);
         }
-    }
-
-    /**
-     * Este Metodo Verifica se determinada Tabela nao existe return um valor
-     * Boolean
-     *
-     * @since 01/05/2019
-     * @param Tabela Setar uma Informação de tipo String com o nome da Tabela
-     * @return Retornar um valor Boolean
-     *
-     */
-    public static Boolean VerificarNaoExistirTabela(String Tabela) {
-        try {
-            if (!Tabela.isEmpty()) {
-                conector();
-                String sql = "show tables in " + DATABASE + " like ?";
-                pst = conexao.prepareStatement(sql);
-                pst.setString(1, Tabela + "%");
-                rs = pst.executeQuery();
-                if (rs.next()) {
-                    return false;
-                }
-                fecharConexao(conexao, rs, rsmd, pst, stmt);
-            } else {
-                Messagem.chamarTela("O campo tabela esta Vazio !!!");
-            }
-        } catch (SQLException e) {
-            Messagem.chamarTela(e);
-        }
-        fecharConexao(conexao, rs, rsmd, pst, stmt);
-        return true;
 
     }
-
-    /**
-     * Este Metodo Obtem o numero de Coluna de uma determinada tabela no banco.
-     *
-     * @since 10/07/2019
-     * @version 1.4
-     * @param tabela Setar uma informação devalor String com o none da tabela .
-     * @return Retornar uma infornação de valor inteiro com a quantidade de
-     * coluna.
-     */
-    public static int quantColuna(String tabela) {
-        String sql = "selec * from ?";
-        return quantColuna(tabela, sql);
-    }
-
-    /**
-     * Este Metodo Obtem o numero de Coluna de uma determinada tabela no banco.
-     *
-     * @since 11/07/2019
-     * @version 1.5
-     * @param tabela Setar uma informação devalor String com o none da tabela .
-     * @param sql Setar uma Informação de Valor String com a instrução MYSQL.
-     * @return Retornar uma informação de valor inteiro com a quantidade de
-     * coluna.
-     */
-    public static int quantColuna(String tabela, String sql) {
-        conector();
-        try {
-            if (VerificarNaoExistirTabela(tabela)) {
-                pst = conexao.prepareStatement(sql);
-                pst.setString(1, tabela);
-                rs = pst.executeQuery();
-                if (rs.next()) {
-                    rsmd = rs.getMetaData();
-                    return rsmd.getColumnCount();
-                } else {
-                    Messagem.chamarTela("");
-                }
-            } else {
-                Messagem.chamarTela("");
-            }
-        } catch (SQLException e) {
-            Messagem.chamarTela("Metodo QuantColuna da Classe ModuloConector: " + e);
-        }
-        return 0;
-    }
-
-    /**
-     * Este Metodo Obtem o numero de Linha de uma determinada tabela no banco
-     *
-     * @since 10/07/2019
-     * @param tabela Setar uma informação devalor String com o none da tabela .
-     * @return Retornar uma informação de valor inteiro com a quantidade de
-     * linha.
-     */
-    public static int quantLinha(String tabela) {
-        String sql = "select * from " + tabela;
-        return quantLinha(tabela, sql);
-    }
-
-    /**
-     * Este Metodo Obtem o numero de Linha de uma determinada tabela no banco
-     *
-     * @since 11/07/2019
-     * @version 1.5
-     * @param tabela Setar uma informação devalor String com o none da tabela .
-     * @param sql Setar uma Informação de Valor String com a instrução MYSQL.
-     * @return Retornar uma informação de valor inteiro com a quantidade de
-     * linha.
-     */
-    // para obter o numero de linha eu tenho que sabe se  Tabela existe; Depois saber ser a instrução mysql obter algum resultado
-    public static int quantLinha(String tabela, String sql) {
-        try {
-            conector();
-            if (!VerificarNaoExistirTabela(tabela)) {
-                pst = conexao.prepareStatement(sql);
-                rs = pst.executeQuery();
-                rsmd = rs.getMetaData();
-                if (rs.next()) {
-
-                } else {
-                    Messagem.chamarTela("0");
-                }
-            } else {
-                Messagem.chamarTela("1");
-            }
-        } catch (SQLException e) {
-            Messagem.chamarTela("Metodo QuantLinha da Classe ModuloConector: " + e);
-        }
-        return 0;
-    }
-
-    // Incio das Tabelas
-    /**
-     * Este Metodo criar uma tabela no banco de dados.
-     *
-     * @version 1.6
-     * @since 21/07/2019
-     * @param sql Seta uma informação de valor String da instrução MySql.
-     * @param Tabela Seta uma informação de valor String do nome da Tabela.
-     */
-    public static void criarTabela(String sql, String Tabela) {
-        try {
-            conector();
-            Messagem.criadoTabela(Tabela);
-            if (Messagem.getCriada() == 0) {
-                stmt = conexao.createStatement();
-                int criar = stmt.executeUpdate(sql);
-                if (criar == 0) {
-                    Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
-                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-                }
-            }
-        } catch (SQLException e) {
-            Messagem.chamarTela(Tabela + " erro Metodo CriarTabela: " + e);
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-        }
-
-    }
-
-    /**
-     * ok Este Metodo deletar a tabela mo banco de dados
-     *
-     * @param Tabela
-     */
-    public static void deletarTabela(String Tabela) {
-        try {
-            conector();
-            String sql = "drop table if exists " + Tabela;
-            Messagem.deletadaTabela(Tabela);
-            if (Messagem.getDeleta() == 0) {
-                stmt = conexao.createStatement();
-                int DEL = stmt.executeUpdate(sql);
-                if (DEL > 0) {
-                    Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
-                }
-            }
-        } catch (SQLException e) {
-            Messagem.chamarTela(Tabela + " erro Metodo DeletaTabela: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-        }
-    }
-    // Fim das Tabelas
-    // Inicio dos Sets e Gets
 
     // Inicio dos Sets e Gets
     private static int getCount() {

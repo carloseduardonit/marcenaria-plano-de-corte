@@ -9,6 +9,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.dado.Table;
 import marcenaria.pessoa.Cliente;
 import marcenaria.pessoa.Fornecedor;
 import marcenaria.pessoa.Pessoa;
@@ -61,10 +62,10 @@ public class Endereco extends CEP {
      * tabela Endereço no banco de dado principal
      */
     public static void criarEndereco() {
-        if (ModuloConector.VerificarNaoExistirTabela(Cliente.getTABELA())) {
+        if (Table.VerificarNaoExistirTabela(Cliente.getTABELA())) {
             Cliente.criarCliente();
         }
-        if (ModuloConector.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
+        if (Table.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
             Fornecedor.criarFornecedor();
         }
         String sql = "create table if not exists " + getTABELA() + " ("
@@ -79,7 +80,7 @@ public class Endereco extends CEP {
                 + "foreign key (id" + Pessoa.getTABELA() + ") references " + Pessoa.getTABELA() + " (id" + Pessoa.getTABELA() + "), "
                 + "foreign key (id" + Cliente.getTABELA() + ") references " + Cliente.getTABELA() + " (id" + Cliente.getTABELA() + "), "
                 + "foreign key (id" + Fornecedor.getTABELA() + ") references " + Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
-        ModuloConector.criarTabela(sql, getTABELA());
+        Table.criarTabela(sql, getTABELA());
     }
 
     /**
@@ -87,7 +88,7 @@ public class Endereco extends CEP {
      * Precisa ser testado. Este metodo faz a deletacao da tabela Endereço
      */
     public static void deletarEndereco() {
-        ModuloConector.deletarTabela(Endereco.getTABELA());
+        Table.deletarTabela(Endereco.getTABELA());
     }
 
     /**

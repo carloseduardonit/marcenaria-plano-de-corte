@@ -8,6 +8,7 @@ package marcenaria.pessoa.cliente;
 import java.sql.*;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.dado.Table;
 import marcenaria.material.Peca;
 import marcenaria.pessoa.Cliente;
 
@@ -45,7 +46,7 @@ public class Projeto {
      * varchar(20)," + "descricao"+getTABELA()+ " varchar(20),"]
      */
     public static void criarProjeto() {
-        if (ModuloConector.VerificarNaoExistirTabela(Cliente.getTABELA())) {
+        if (Table.VerificarNaoExistirTabela(Cliente.getTABELA())) {
             Cliente.criarCliente();
         }
         String sql = "create table if not exists " + Projeto.getTABELA()
@@ -55,7 +56,7 @@ public class Projeto {
                 + "id" + Cliente.getTABELA() + " int not null, "
                 + "preco" + Projeto.getTABELA() + " double default 0, "
                 + "foreign key (id" + Cliente.getTABELA() + ") references " + Cliente.getTABELA().toLowerCase() + " (id" + Cliente.getTABELA() + ") )";
-        ModuloConector.criarTabela(sql, Projeto.getTABELA());
+        Table.criarTabela(sql, Projeto.getTABELA());
 
     }
 
@@ -67,10 +68,10 @@ public class Projeto {
      * @version 1.0
      */
     public static void deletarProjeto() {
-        if (!ModuloConector.VerificarNaoExistirTabela(Peca.getTABELA())) {
+        if (!Table.VerificarNaoExistirTabela(Peca.getTABELA())) {
             Peca.deletadaPeca();
         }
-        ModuloConector.deletarTabela(Projeto.getTABELA());
+        Table.deletarTabela(Projeto.getTABELA());
     }
 //Fim da Manipulação do Banco de dados.
 //Incio da Manipulação da Tabela do Banco de dados.

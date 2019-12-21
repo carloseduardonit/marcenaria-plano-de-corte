@@ -5,6 +5,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.dado.Table;
 
 /**
  * 16/06/2019
@@ -38,7 +39,7 @@ public class Pessoa {
         String sql = "create table if not exists " + Pessoa.getTABELA() + "(id" + Pessoa.getTABELA() + " int primary key auto_increment, "
                 + "login varchar(15) not  null unique, " + "senha varchar(9) not null, "
                 + "tipoPessoa varchar(2) not null, " + "nome varchar(100) not null)";
-        ModuloConector.criarTabela(sql, Pessoa.getTABELA());
+        Table.criarTabela(sql, Pessoa.getTABELA());
     }
 
     /**
@@ -47,13 +48,13 @@ public class Pessoa {
      * @param Tabela Setar uma informação do tipo String no nome da Tabela
      */
     public static void deletarPessoa() {
-        if (!ModuloConector.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
+        if (!Table.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
             Fornecedor.deletarFornecedor();
         }
-        if (!ModuloConector.VerificarNaoExistirTabela(Cliente.getTABELA())) {
+        if (!Table.VerificarNaoExistirTabela(Cliente.getTABELA())) {
             Cliente.deletarCliente();
         }
-        ModuloConector.deletarTabela(Pessoa.getTABELA());
+        Table.deletarTabela(Pessoa.getTABELA());
     }
 
     /**
@@ -406,7 +407,7 @@ public class Pessoa {
      * @return
      */
     public static String[] obterlogPessoa(String Tabela, String sql) {
-        int quantidadePessoa = ModuloConector.quantLinha(TABELA, sql);
+        int quantidadePessoa = Table.quantLinha(TABELA, sql);
         String[] login = new String[quantidadePessoa];
         try {
             pessoa();

@@ -6,6 +6,7 @@
 package marcenaria.tela.material;
 
 import marcenaria.dado.ModuloConector;
+import marcenaria.dado.Table;
 import marcenaria.material.Peca;
 import marcenaria.tela.pessoa.Control;
 
@@ -19,7 +20,7 @@ public class TelaPeca extends javax.swing.JInternalFrame {
      * Creates new form TelaPeca
      */
     public TelaPeca() {
-        if(ModuloConector.VerificarNaoExistirTabela(Peca.getTABELA())){
+        if(Table.VerificarNaoExistirTabela(Peca.getTABELA())){
             Peca.criadaPeca();
         }
         initComponents();

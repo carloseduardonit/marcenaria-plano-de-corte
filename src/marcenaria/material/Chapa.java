@@ -13,6 +13,7 @@ import java.util.Locale;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.dado.Table;
 import marcenaria.pessoa.Fornecedor;
 
 /**
@@ -79,7 +80,7 @@ public class Chapa {
      * @version 1.1 - utilizava o metodo auxiliar ModuloConector.criarTabela
      */
     public static void criadaChapa() {
-        if (ModuloConector.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
+        if (Table.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
             Fornecedor.criarFornecedor();
             // faz a criação da tabela Fornecedor por causa foreign key(Chave Estrageira) idFornecedor
         }
@@ -93,7 +94,7 @@ public class Chapa {
                 + "tipoMaterial varchar(30), "
                 + "id" + Fornecedor.getTABELA() + " int not null default 0,"
                 + "foreign key(id" + Fornecedor.getTABELA() + ") references " + Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
-        ModuloConector.criarTabela(sql, Chapa.getTABELA());
+        Table.criarTabela(sql, Chapa.getTABELA());
     }
 
     /**
@@ -105,15 +106,15 @@ public class Chapa {
      * @version 1.0
      */
     public static void deletadaChapa() {
-        if (!ModuloConector.VerificarNaoExistirTabela(Peca.getTABELA())) {
+        if (!Table.VerificarNaoExistirTabela(Peca.getTABELA())) {
             Peca.deletadaPeca();
             //este metodo precisa se excluido devido precisa da Foreign key(chave Estrageira) idChapa da Tabela Chapa
         }
-        if (!ModuloConector.VerificarNaoExistirTabela(Pedaco.getTABELA())) {
+        if (!Table.VerificarNaoExistirTabela(Pedaco.getTABELA())) {
             Pedaco.deletaPedaco();
             //este metodo precisa se excluido devido precisa da Foreign key(chave Estrageira) idChapa da Tabela Chapa
         }
-        ModuloConector.deletarTabela(Chapa.getTABELA());
+        Table.deletarTabela(Chapa.getTABELA());
     }
 
     /**

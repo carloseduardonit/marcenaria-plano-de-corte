@@ -7,6 +7,7 @@ package marcenaria.tela.pessoa;
 
 import marcenaria.Marcenaria;
 import marcenaria.dado.ModuloConector;
+import marcenaria.dado.Table;
 import marcenaria.pessoa.Cliente;
 import marcenaria.pessoa.Layout;
 
@@ -23,7 +24,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
      * Creates new form TelaFornecedor
      */
     public TelaCliente() {
-        if (ModuloConector.VerificarNaoExistirTabela(Cliente.getTABELA())) {
+        if (Table.VerificarNaoExistirTabela(Cliente.getTABELA())) {
             Cliente.criarCliente();
         }
         initComponents();

@@ -9,6 +9,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.dado.Table;
 import marcenaria.pessoa.cliente.Projeto;
 
 /**
@@ -39,20 +40,20 @@ public class Cliente extends Pessoa {
                 + "docum varchar(14) not null unique, " + "foreign key (login) references "
                 + Pessoa.getTABELA().toLowerCase() + "(login)," + "foreign key (id" + Pessoa.getTABELA()
                 + ") references " + Pessoa.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + "))";
-        if (ModuloConector.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
+        if (Table.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
             Pessoa.criarPessoa();
         }
-        ModuloConector.criarTabela(sql, Cliente.getTABELA());
+        Table.criarTabela(sql, Cliente.getTABELA());
     }
 
     /**
      * ok Este Metodo deletar a tabela Cliente.
      */
     public static void deletarCliente() {
-        if (!ModuloConector.VerificarNaoExistirTabela(Projeto.getTABELA())) {
+        if (!Table.VerificarNaoExistirTabela(Projeto.getTABELA())) {
             Projeto.deletarProjeto();
         }
-        ModuloConector.deletarTabela(Cliente.getTABELA());
+        Table.deletarTabela(Cliente.getTABELA());
     }
 
     /**

@@ -8,6 +8,7 @@ package marcenaria.material;
 import java.sql.*;
 import marcenaria.Const.Messagem;
 import marcenaria.dado.ModuloConector;
+import marcenaria.dado.Table;
 
 /**
  *
@@ -47,7 +48,7 @@ public class Pedaco {
      * <b> Este Metodo faz a criação da tabela Pedaço no banco.</b>
      */
     public static void criadoPedaco() {
-        if (ModuloConector.VerificarNaoExistirTabela(Chapa.getTABELA())) {
+        if (Table.VerificarNaoExistirTabela(Chapa.getTABELA())) {
             Chapa.criadaChapa();
         }
        
@@ -63,7 +64,7 @@ public class Pedaco {
                 + "incData Timestamp auto_increment,"
                 + "foreign key (id" + Chapa.getTABELA() + ") references " + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), "
                 + "foreign key (id" + Peca.getTABELA() + ") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
-        ModuloConector.criarTabela(sql, Pedaco.getTABELA());
+        Table.criarTabela(sql, Pedaco.getTABELA());
 
     }
 
@@ -76,7 +77,7 @@ public class Pedaco {
      * </p>
      */
     public static void deletaPedaco() {
-        ModuloConector.deletarTabela(Pedaco.getTABELA());
+        Table.deletarTabela(Pedaco.getTABELA());
     }
 
     /**

@@ -12,9 +12,10 @@ import marcenaria.Const.Messagem;
  *
  * @author Carlos
  */
-public class Table extends ModuloConector{
+public class Table extends ModuloConector {
+
     public static void main(String[] args) {
-        
+
     }
     private static Connection conexao;
     private static Statement stmt;
@@ -63,20 +64,22 @@ public class Table extends ModuloConector{
      * @param Tabela Seta uma informação de valor String do nome da Tabela.
      */
     public static void criarTabela(String sql, String Tabela) {
-        try {
-            ModuloConector.conector();
-            Messagem.criadoTabela(Tabela);
-            if (Messagem.getCriada() == 0) {
-                stmt = conexao.createStatement();
-                int criar = stmt.executeUpdate(sql);
-                if (criar == 0) {
-                    Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
-                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+        if (NaoHaCampoVazio(sql,Tabela)) {
+            try {
+                ModuloConector.conector();
+                Messagem.criadoTabela(Tabela);
+                if (Messagem.getCriada() == 0) {
+                    stmt = conexao.createStatement();
+                    int criar = stmt.executeUpdate(sql);
+                    if (criar == 0) {
+                        Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
+                        ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                    }
                 }
+            } catch (SQLException e) {
+                Messagem.chamarTela(Tabela + " erro Metodo CriarTabela: " + e);
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela(Tabela + " erro Metodo CriarTabela: " + e);
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
 
@@ -86,22 +89,48 @@ public class Table extends ModuloConector{
      * @param Tabela
      */
     public static void deletarTabela(String Tabela) {
-        try {
-            ModuloConector.conector();
-            String sql = "drop table if exists " + Tabela;
-            Messagem.deletadaTabela(Tabela);
-            if (Messagem.getDeleta() == 0) {
-                stmt = conexao.createStatement();
-                int DEL = stmt.executeUpdate(sql);
-                if (DEL > 0) {
-                    Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
+        if (NaoHaCampoVazio(null,Tabela)) {
+            try {
+                ModuloConector.conector();
+                String sql = "drop table if exists " + Tabela;
+                Messagem.deletadaTabela(Tabela);
+                if (Messagem.getDeleta() == 0) {
+                    stmt = conexao.createStatement();
+                    int DEL = stmt.executeUpdate(sql);
+                    if (DEL > 0) {
+                        Messagem.chamarTela(Messagem.tabelaCriada(Tabela));
+                    }
                 }
+            } catch (SQLException e) {
+                Messagem.chamarTela(Tabela + " erro Metodo DeletaTabela: " + e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela(Tabela + " erro Metodo DeletaTabela: " + e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
+    }
+
+    private static boolean HaCampoVazio(String sql, String Tabela) {
+        boolean campo = Tabela.isEmpty() || sql.isEmpty();
+        if (campo) {
+            Messagem.chamarTela(Messagem.VAZIO(HaCampoVaziotoString(sql, Tabela)));
+        }
+        return campo;
+    }
+
+    private static String[] HaCampoVaziotoString(String sql, String Tabela) {
+        String[] campo = new String[2];
+        int i = 0;
+        if (sql.isEmpty()) {
+            campo[i++] = "Instrução SQL";
+        }
+        if (Tabela.isEmpty()) {
+            campo[i++] = "Tabela";
+        }
+        return campo;
+    }
+
+    private static boolean NaoHaCampoVazio(String sql, String Tabela) {
+        return !HaCampoVazio(sql, Tabela);
     }
     // Fim das Tabelas
     // Inicio dos Sets e Gets

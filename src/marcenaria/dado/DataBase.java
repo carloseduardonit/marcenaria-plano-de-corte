@@ -15,7 +15,8 @@ import marcenaria.Const.Messagem;
 public class DataBase extends ModuloConector {
 
     public static void main(String[] args) {
-        
+        criarDataBase("");
+        deletarDataBase("teste");
     }
     private static Connection conexao;
     private static Statement stmt;
@@ -31,36 +32,57 @@ public class DataBase extends ModuloConector {
      * @param dataBase
      */
     public static void criarDataBase(String dataBase) {
-        try {
-            conexao = ModuloConector.getConecction1();
-            String sql = "create database if not exists " + dataBase;
-            stmt = conexao.createStatement();
-            int criada = stmt.executeUpdate(sql);
-            if (criada > 0) {
-                Messagem.chamarTela(Messagem.CRIADO("Banco " + dataBase));
+        if (NaoHaCampoVazio(dataBase)) {
+            try {
+                conexao = ModuloConector.getConecction1();
+                String sql = "create database if not exists " + dataBase;
+                stmt = conexao.createStatement();
+                int criada = stmt.executeUpdate(sql);
+                if (criada > 0) {
+                    Messagem.chamarTela(Messagem.CRIADO("Banco " + dataBase));
+                }
+            } catch (SQLException e) {
+                Messagem.chamarTela(e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela(e);
-        } finally {
-            ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
     }
+
     /**
-     * @param dataBase*/
+     * @param dataBase
+     */
     public static void deletarDataBase(String dataBase) {
-        try {
-            conexao = ModuloConector.getConecction1();
-            String sql = "delete database if exists " + dataBase;
-            int deletada = stmt.executeUpdate(sql);
-            if (deletada > 0) {
-                Messagem.chamarTela(Messagem.EXCLUIDO("Banco " + dataBase));
+        if (NaoHaCampoVazio(dataBase)) {
+            try {
+                conexao = ModuloConector.getConecction1();
+                String sql = "drop database if exists " + dataBase;
+                stmt = conexao.createStatement();
+                int deletada = stmt.executeUpdate(sql);
+                System.out.println(deletada);
+                if (deletada > 0) {
+                    Messagem.chamarTela(Messagem.EXCLUIDO("Banco " + dataBase));
+                }
+                stmt = conexao.createStatement();
+            } catch (SQLException e) {
+                Messagem.chamarTela(e);
+            } finally {
+                ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
             }
-            stmt = conexao.createStatement();
-        } catch (SQLException e) {
-            Messagem.chamarTela(e);
-        } finally {
-            
         }
+    }
+
+    private static boolean HaCampoVazio(String dataBase) {
+        boolean campo = dataBase.isEmpty();
+        if (campo) {
+            Messagem.chamarTela(Messagem.VAZIO("nome do banco de dados nao informado"));
+        }
+        return campo;
+    }
+
+    private static boolean NaoHaCampoVazio(String dataBase) {
+
+        return !HaCampoVazio(dataBase);
     }
 
     /**
@@ -80,12 +102,13 @@ public class DataBase extends ModuloConector {
             Messagem.chamarTela(e);
         }
     }
-     /**
+
+    /**
      * Fazer
      *
      * @since 01/05/2019
      */
-    public static void exportarBackupdataBase(){
-        
+    public static void exportarBackupdataBase() {
+
     }
 }

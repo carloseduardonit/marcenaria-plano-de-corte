@@ -5,6 +5,11 @@
  */
 package marcenaria.dado;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import marcenaria.Const.Messagem;
 
@@ -14,15 +19,18 @@ import marcenaria.Const.Messagem;
  */
 public class DataBase extends ModuloConector {
 
+    static String linha = new String();
+
     public static void main(String[] args) {
-        criarDataBase("");
-        deletarDataBase("teste");
+        criarDataBase("teste");
+        //deletarDataBase("teste");
     }
     private static Connection conexao;
     private static Statement stmt;
     private static ResultSet rs;
     private static ResultSetMetaData rsmd;
     private static PreparedStatement pst;
+    static File arg;
 
     /**
      * TESTE
@@ -88,19 +96,63 @@ public class DataBase extends ModuloConector {
     /**
      * Fazer
      *
+     * @param caminhoArquivo
+     * @param sql
      * @since 01/05/2019
      */
-    public static void importarBackupdataBase() {
-        Connection conexao = ModuloConector.getConecction();
-        String sql = "BACKUP DATABASE teste\n" + "TO DISK = 'D:\\backups\\testDB.bak'";
-        try {
-            Statement stmt = conexao.createStatement();
-            int adicionar = stmt.executeUpdate(sql);
-            if (adicionar > 0) {
+    public static void importarBackupdataBase(String caminhoArquivo) {
+        arg = new File(caminhoArquivo);
+        String Conteudo = "";
+        if (arg.exists()) {
+            try {
+                // pega a localizaçao do arquivo
+                FileReader leitorArquivo = new FileReader(caminhoArquivo);
+                //ler a linha do arquivo 
+                BufferedReader bufferArquivo = new BufferedReader(leitorArquivo);
+                while (true) {
+                    linha = bufferArquivo.readLine();
+                    if (linha == null) {
+                        break;
+                    } else {
+                        if (!linha.startsWith("--")) {
+                            // este e o incio do Bloco separa o comentario  da instrução sql
+                            System.out.println(linha);
+                            Conteudo += linha;
+                            if (Conteudo.endsWith(";")) {
+                                // este Bloco executar instrução sql
+                                try {
+                                    conexao = ModuloConector.getConecction();
+                                    Statement stmt = conexao.createStatement();
+                                    int adicionar = stmt.executeUpdate(Conteudo);
+                                    if (adicionar > 0) {
+                                        // Messagem.chamarTela(Conteudo);
+                                    }
+                                    System.err.println(Conteudo);
+                                } catch (SQLException e) {
+                                     System.err.println(e);
+                                    Messagem.chamarTela(e);
+                                } finally {
+                                    Conteudo = "";
+                                    ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                                }
+                                // este Bloco executar instrução sql
+                            }else{
+                                 //  else  do  comentario MYSqul
+                            }
+                            // este e o FIM do Bloco separa o comentario  da instrução sql
+                        } else{
+                            //  else  do  comentario MYSqul
+                        }
+                    }
+                }
+            } catch (FileNotFoundException FNFE) {
+                Messagem.chamarTela(FNFE);
+            } catch (IOException IOE) {
+                Messagem.chamarTela(IOE);
+            } finally { 
+                arg.deleteOnExit();
             }
-        } catch (SQLException e) {
-            Messagem.chamarTela(e);
-        }
+          }
     }
 
     /**
@@ -109,6 +161,6 @@ public class DataBase extends ModuloConector {
      * @since 01/05/2019
      */
     public static void exportarBackupdataBase() {
-
+       
     }
 }

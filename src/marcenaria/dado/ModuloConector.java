@@ -6,11 +6,8 @@
 package marcenaria.dado;
 
 import com.mysql.jdbc.CommunicationsException;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
-import java.util.Scanner;
 import marcenaria.Const.Messagem;
 
 /**
@@ -323,27 +320,6 @@ public class ModuloConector {
         } catch (SQLException e) {
             Messagem.chamarTela(e);
         }
-    }
-
-    /**
-     */
-    public static void ImportarSQL() {
-        try {
-
-            InputStream a;
-            a = new FileInputStream("C:/Users/Carlos/Documents/NetBeansProjects/Marcenaria/src/marcenaria/Novo Documento de Texto.txt");
-            Scanner ler = new Scanner(a);
-            int data = a.read();
-
-            while (data != -1) {
-                System.out.println(ler.toString());
-                data = a.read();
-            }
-            a.close();
-        } catch (IOException e) {
-            Messagem.chamarTela(e);
-        }
-
     }
 
     // Inicio dos Sets e Gets

@@ -6,7 +6,6 @@
 package marcenaria.tela.pessoa;
 
 import marcenaria.Marcenaria;
-import marcenaria.dado.ModuloConector;
 import marcenaria.dado.Table;
 import marcenaria.pessoa.Cliente;
 import marcenaria.pessoa.Layout;

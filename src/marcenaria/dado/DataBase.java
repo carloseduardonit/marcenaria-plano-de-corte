@@ -94,13 +94,13 @@ public class DataBase extends ModuloConector {
     }
 
     /**
-     * Fazer
+     * Testando
+     * Este Metodo faz a importação de arquivo  do tipo sql, com a localizaçao o arquivo atravez  do parametro
      *
      * @param caminhoArquivo
-     * @param sql
      * @since 01/05/2019
      */
-    public static void importarBackupdataBase(String caminhoArquivo) {
+    public static void importarBackupdataBaseSQL(String caminhoArquivo) {
         arg = new File(caminhoArquivo);
         String Conteudo = "";
         if (arg.exists()) {

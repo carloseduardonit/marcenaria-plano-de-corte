@@ -17,6 +17,6 @@ public class T {
     static String nomeArquivo = "C:\\Users\\Carlos\\Documents\\NetBeansProjects\\Agil\\src\\agil\\dado\\cep.sql";
    
     public static void main(String[] args)  {
-        DataBase.importarBackupdataBase(nomeArquivo);
+        DataBase.importarBackupdataBaseSQL(nomeArquivo);
     }
 }

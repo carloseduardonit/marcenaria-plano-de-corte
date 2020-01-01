@@ -5,7 +5,7 @@
  */
 package marcenaria.tela.material;
 
-import marcenaria.dado.ModuloConector;
+import java.sql.*;
 import marcenaria.dado.Table;
 import marcenaria.material.Pedaco;
 import marcenaria.tela.pessoa.Control;
@@ -15,7 +15,9 @@ import marcenaria.tela.pessoa.Control;
  * @author Carlos Eduardo dos santos Fiqueiredo
  */
 public class TelaPedaco extends javax.swing.JInternalFrame {
-
+static ResultSet rs;
+static ResultSetMetaData rsmd;
+static Array ar;
     /**
      * Creates new form TelaPedaco
      */
@@ -24,6 +26,8 @@ public class TelaPedaco extends javax.swing.JInternalFrame {
             Pedaco.criadoPedaco();
         }
         initComponents();
+        tbPedaco.setValueAt("carlos",0,0);
+        
     }
 
     /**
@@ -50,7 +54,15 @@ public class TelaPedaco extends javax.swing.JInternalFrame {
         btnADD = new javax.swing.JButton();
         btnDELETE = new javax.swing.JButton();
         btnEDIT = new javax.swing.JButton();
+        lblProduto1 = new javax.swing.JLabel();
+        txtProduto1 = new javax.swing.JTextField();
+        lblProduto2 = new javax.swing.JLabel();
+        txtProduto2 = new javax.swing.JTextField();
+        lblProduto3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbPedaco = new javax.swing.JTable();
 
+        setClosable(true);
         setTitle(Pedaco.getTABELA());
 
         txtProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -99,7 +111,7 @@ public class TelaPedaco extends javax.swing.JInternalFrame {
             }
         });
 
-        lblProduto.setText("Produto: ");
+        lblProduto.setText("IDChapa:");
 
         btnADD.setText("ADD");
         btnADD.addActionListener(new java.awt.event.ActionListener() {
@@ -122,74 +134,120 @@ public class TelaPedaco extends javax.swing.JInternalFrame {
             }
         });
 
+        lblProduto1.setText("Produto: ");
+
+        txtProduto1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtProduto1ActionPerformed(evt);
+            }
+        });
+
+        txtProduto2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtProduto2ActionPerformed(evt);
+            }
+        });
+
+        lblProduto3.setText("IDPeça:");
+
+        tbPedaco.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tbPedaco);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(108, Short.MAX_VALUE)
-                .addComponent(btnADD)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnEDIT)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDELETE)
-                .addGap(100, 100, 100))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(49, 49, 49)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblProduto)
-                        .addComponent(lblComprimento)
-                        .addComponent(lblLargura)
-                        .addComponent(lblEspessura)
-                        .addComponent(lblPreco)
-                        .addComponent(lblQuantidade))
-                    .addGap(18, 18, 18)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtProduto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtComprimento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtLagura, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtEspessura, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtPreco, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtQuantidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(49, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblComprimento)
+                            .addComponent(lblQuantidade)
+                            .addComponent(lblProduto1)
+                            .addComponent(lblLargura)
+                            .addComponent(lblPreco)
+                            .addComponent(lblEspessura)
+                            .addComponent(lblProduto)
+                            .addComponent(lblProduto2)
+                            .addComponent(lblProduto3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtEspessura, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(txtProduto1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(txtQuantidade, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(txtComprimento, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(txtLagura, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(txtPreco, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(txtProduto2, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                            .addComponent(txtProduto))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 141, Short.MAX_VALUE)
+                        .addComponent(btnADD)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnEDIT)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDELETE)
+                        .addGap(100, 100, 100))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(22, 22, 22))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(247, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtProduto)
+                    .addComponent(lblProduto))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtProduto2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProduto2)
+                    .addComponent(lblProduto3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtProduto1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProduto1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblQuantidade))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtComprimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblComprimento))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtLagura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLargura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEspessura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEspessura))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPreco)
+                    .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnADD)
                     .addComponent(btnEDIT)
                     .addComponent(btnDELETE))
-                .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(35, 35, 35)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblProduto)
-                        .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblQuantidade)
-                        .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblComprimento)
-                        .addComponent(txtComprimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblLargura)
-                        .addComponent(txtLagura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblEspessura)
-                        .addComponent(txtEspessura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblPreco)
-                        .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(46, Short.MAX_VALUE)))
+                .addGap(288, 288, 288))
         );
 
         pack();
@@ -231,22 +289,37 @@ public class TelaPedaco extends javax.swing.JInternalFrame {
        Control.DELETEPedaco(txtQuantidade, txtProduto, txtComprimento, txtLagura, txtEspessura, txtPreco, txtPreco);
     }//GEN-LAST:event_btnDELETEActionPerformed
 
+    private void txtProduto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProduto1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtProduto1ActionPerformed
+
+    private void txtProduto2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProduto2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtProduto2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnADD;
     private javax.swing.JButton btnDELETE;
     private javax.swing.JButton btnEDIT;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblComprimento;
     private javax.swing.JLabel lblEspessura;
     private javax.swing.JLabel lblLargura;
     private javax.swing.JLabel lblPreco;
     private javax.swing.JLabel lblProduto;
+    private javax.swing.JLabel lblProduto1;
+    private javax.swing.JLabel lblProduto2;
+    private javax.swing.JLabel lblProduto3;
     private javax.swing.JLabel lblQuantidade;
+    private javax.swing.JTable tbPedaco;
     private javax.swing.JTextField txtComprimento;
     private javax.swing.JTextField txtEspessura;
     private javax.swing.JTextField txtLagura;
     private javax.swing.JTextField txtPreco;
     private javax.swing.JTextField txtProduto;
+    private javax.swing.JTextField txtProduto1;
+    private javax.swing.JTextField txtProduto2;
     private javax.swing.JTextField txtQuantidade;
     // End of variables declaration//GEN-END:variables
 }

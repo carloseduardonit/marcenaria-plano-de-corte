@@ -4,8 +4,7 @@ import java.awt.HeadlessException;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
-import marcenaria.dado.ModuloConector;
-import marcenaria.dado.Table;
+import marcenaria.dado.*;
 
 /**
  * 16/06/2019
@@ -17,23 +16,41 @@ public class Pessoa {
     private static int idpessoa;
     private static final String TABELA = Pessoa.class.getSimpleName();
     private static String login, senha, confSenha, tipoPessoa, nome;
+    private static final String PERSONS = "persons";
     private static Connection conexao;
     private static PreparedStatement pst;
     private static ResultSet rs;
     private static ResultSetMetaData rsmd;
     private static Statement stmt;
+    public static String banco = PERSONS;
+
+    public static void main(String[] args) {
+        pessoaZero();
+    }
 
     /**
      * Este Metodo faz a conexao com o banco de dado
      */
     public static void pessoa() {
-        conexao = ModuloConector.getConecction();
+        conexao = ModuloConector.getConecction(PERSONS);
+    }
+
+    /**
+     * OK este metodo faz a 
+     * => Criação do Banco de dados Pesons
+     * => Criação das tabelas Pessoa, Cliente, Fornecedor, 
+     * => Inserção dos usuarios zero na tabela  Pessoa,
+     * => Inserção dos usuarios zero na tabela Cliente,
+     * => Inserção dos usuarios zero na tabela Fornecedor,
+     * atravez do metodo auxiliar
+     */
+    public static void pessoaZero() {
+        DataBase.importarBackupdataBaseSQL("C:\\Users\\Carlos\\Documents\\NetBeansProjects\\Marcenaria\\src\\marcenaria\\pessoa\\Persona.sql", "Persons");
     }
 
     /**
      * ok Este Metodo faz a criação da Tabela Pessoa e de Tabela Filhas
      *
-     * @param Tabela Setar uma informação do tipo String no nome da Tabela
      */
     public static void criarPessoa() {
         String sql = "create table if not exists " + Pessoa.getTABELA() + "(id" + Pessoa.getTABELA() + " int primary key auto_increment, "
@@ -45,7 +62,6 @@ public class Pessoa {
     /**
      * ok Este Metodo deleta a tabela desejada
      *
-     * @param Tabela Setar uma informação do tipo String no nome da Tabela
      */
     public static void deletarPessoa() {
         if (!Table.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
@@ -240,7 +256,7 @@ public class Pessoa {
                 Messagem.chamarTela(Pessoa.getTABELA() + " Excluir: " + e);
             } finally {
                 ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
-                
+
             }
         } else {
             if (mensagem) {

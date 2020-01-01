@@ -33,7 +33,7 @@ public class Fornecedor extends Pessoa {
      *
      */
     private static void fornecedor() {
-        conexao = ModuloConector.getConecction();
+        conexao = ModuloConector.getConecction(banco);
     }
 
     /**
@@ -398,7 +398,7 @@ public class Fornecedor extends Pessoa {
         return "Não existe o fornecedor: " + logFornecedor;
     }
 
-    // Sets e Gets
+    //  Inicio do Sets e Gets
     /**
      * Este metodo Retornar uma informação do tipo inteiro da Tabela Fornecedor
      * no ID Fornecedor
@@ -495,5 +495,5 @@ public class Fornecedor extends Pessoa {
     public static void setDocum(String docum) {
         Fornecedor.docum = docum;
     }
-
+    // Fim do Sets e Gets
 }

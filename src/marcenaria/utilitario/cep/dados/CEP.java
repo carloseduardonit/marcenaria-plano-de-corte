@@ -7,7 +7,7 @@ package marcenaria.utilitario.cep.dados;
 
 import java.sql.*;
 import marcenaria.Const.Messagem;
-import marcenaria.dado.ModuloConector;
+import marcenaria.dado.*;
 
 /**
  *
@@ -44,7 +44,8 @@ public class CEP {
         conexao = ModuloConector.getConecction(Dado);
     }
     public static void CriarCEP(){
-        
+         String nomeArquivo = "C:\\Users\\Carlos\\Documents\\NetBeansProjects\\Agil\\src\\agil\\dado\\cep.sql";
+         DataBase.importarBackupdataBaseSQL(nomeArquivo);
     }
 
     // INICIO acessar a tabela de ESTADO.
@@ -317,7 +318,7 @@ public class CEP {
         return !resp;
     }
    
-    // SETS E GETS
+    // inicio da SETS E GETS
 
     /**
      * Este metodo Retornar uma informação de valor inteiro do ID do CEP.
@@ -491,5 +492,5 @@ public class CEP {
     public static void setTipoLogradouro(String tipoLogradouro) {
         CEP.tipoLogradouro = tipoLogradouro;
     }
-
+// fim da SETS E GETS
 }

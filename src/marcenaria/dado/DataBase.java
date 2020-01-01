@@ -33,9 +33,9 @@ public class DataBase extends ModuloConector {
     static File arg;
 
     /**
-     * TESTE
+     * OK
      *
-     * tem ver
+     * Este metodo faz a criação do banco de dados conforme o parametro dataBase
      *
      * @param dataBase
      */
@@ -58,6 +58,9 @@ public class DataBase extends ModuloConector {
     }
 
     /**
+     * OK Este metodo faz a exclução do banco de dados e de todos os dados
+     * conforme o parametro dataBase
+     *
      * @param dataBase
      */
     public static void deletarDataBase(String dataBase) {
@@ -94,15 +97,17 @@ public class DataBase extends ModuloConector {
     }
 
     /**
-     * Testando
-     * Este Metodo faz a importação de arquivo  do tipo sql, com a localizaçao o arquivo atravez  do parametro
+     * Testando Este Metodo faz a importação de arquivo do tipo sql, com a
+     * localizaçao o arquivo atravez do parametro
      *
      * @param caminhoArquivo
-     * @since 01/05/2019
+     * @param Banco
+     * @since 23/12/2019
      */
-    public static void importarBackupdataBaseSQL(String caminhoArquivo) {
+    public static void importarBackupdataBaseSQL(String caminhoArquivo, String Banco) {
         arg = new File(caminhoArquivo);
         String Conteudo = "";
+        int indexLinha = 0;
         if (arg.exists()) {
             try {
                 // pega a localizaçao do arquivo
@@ -112,35 +117,47 @@ public class DataBase extends ModuloConector {
                 while (true) {
                     linha = bufferArquivo.readLine();
                     if (linha == null) {
+                        System.out.println("1");
+                        if (indexLinha == 0) {
+                            Messagem.chamarTela("O arquivo se encontra Vazio  ou não existe");
+                        }
                         break;
                     } else {
-                        if (!linha.startsWith("--")) {
+                        System.out.println("2");
+                        if (!linha.startsWith("*/") || !linha.startsWith("--") || !linha.isEmpty() || !linha.startsWith("*") || !linha.startsWith("/*")) {
+                            System.out.println("21");
                             // este e o incio do Bloco separa o comentario  da instrução sql
                             System.out.println(linha);
                             Conteudo += linha;
                             if (Conteudo.endsWith(";")) {
                                 // este Bloco executar instrução sql
                                 try {
-                                    conexao = ModuloConector.getConecction();
-                                    Statement stmt = conexao.createStatement();
+                                    if (indexLinha == 0 || Banco == null) {
+                                        conexao = ModuloConector.getConecction1();
+                                    } else {
+                                        conexao = ModuloConector.getConecction(Banco);
+                                    }
+                                    stmt = conexao.createStatement();
                                     int adicionar = stmt.executeUpdate(Conteudo);
                                     if (adicionar > 0) {
                                         // Messagem.chamarTela(Conteudo);
                                     }
                                     System.err.println(Conteudo);
                                 } catch (SQLException e) {
-                                     System.err.println(e);
+                                    //e.toString().
+                                    System.err.println(e);
                                     Messagem.chamarTela(e);
                                 } finally {
                                     Conteudo = "";
                                     ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
+                                    indexLinha++;
                                 }
                                 // este Bloco executar instrução sql
-                            }else{
-                                 //  else  do  comentario MYSqul
+                            } else {
+                                //  else  do  comentario MYSqul
                             }
                             // este e o FIM do Bloco separa o comentario  da instrução sql
-                        } else{
+                        } else {
                             //  else  do  comentario MYSqul
                         }
                     }
@@ -149,18 +166,23 @@ public class DataBase extends ModuloConector {
                 Messagem.chamarTela(FNFE);
             } catch (IOException IOE) {
                 Messagem.chamarTela(IOE);
-            } finally { 
+            } finally {
                 arg.deleteOnExit();
+                linha = null;
             }
-          }
+        } else {
+            Messagem.chamarTela("O arquivo se encontra Vazio  ou não existe");
+        }
     }
 
     /**
      * Fazer
      *
+     * @param caminhoArquivo
+     * @param Banco
      * @since 01/05/2019
      */
-    public static void exportarBackupdataBase() {
-       
+    public static void exportarBackupdataBaseSQL(String caminhoArquivo, String Banco) {
+
     }
 }

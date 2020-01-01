@@ -5,7 +5,7 @@
  */
 package marcenaria;
 
-import marcenaria.dado.DataBase;
+import marcenaria.pessoa.Pessoa;
 
 /**
  *
@@ -17,6 +17,7 @@ public class T {
     static String nomeArquivo = "C:\\Users\\Carlos\\Documents\\NetBeansProjects\\Agil\\src\\agil\\dado\\cep.sql";
    
     public static void main(String[] args)  {
-        DataBase.importarBackupdataBaseSQL(nomeArquivo);
+    // CEP.CriarCEP();
+        Pessoa.pessoaZero();
     }
 }

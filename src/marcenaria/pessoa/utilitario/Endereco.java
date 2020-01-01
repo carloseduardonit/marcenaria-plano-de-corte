@@ -8,8 +8,7 @@ package marcenaria.pessoa.utilitario;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import marcenaria.Const.Messagem;
-import marcenaria.dado.ModuloConector;
-import marcenaria.dado.Table;
+import marcenaria.dado.*;
 import marcenaria.pessoa.Cliente;
 import marcenaria.pessoa.Fornecedor;
 import marcenaria.pessoa.Pessoa;
@@ -22,21 +21,7 @@ import marcenaria.utilitario.cep.dados.CEP;
 public class Endereco extends CEP {
 
     public static void main(String[] args) {
-        //criarEndereco();
-
-        String login = "1", cep = "1", comp = "1";
-        int nun = -1;
-
-        Pessoa.setLogin("eii");
-        CEP.setCep("24752-640");
-        Endereco.setNumero(125);
-        Endereco.setComplemento("Quadra 44 lote 11");
-        System.out.println(Endereco.EnderecoToString(CEP.getCep(), getComplemento(), getNumero())
-        );
-        //deletarEndereco();
-        //criarEndereco();
-        //adicionarEndereco(Pessoa.getLogin(), CEP.getCep(), Endereco.getNumero(), Endereco.getComplemento());
-        //pesquisarEndereco(Pessoa.getLogin(), CEP.getCep(), 11, Endereco.getComplemento(), true);
+        usuarioZeroenderecoZero();
     }
 
     private static int ID, IDPessoa, IDCliente, IDFornecedor, numero, quantEndereco;
@@ -48,12 +33,19 @@ public class Endereco extends CEP {
     private static PreparedStatement pst;
     private static Statement stmt;
 
+    private static void usuarioZeroenderecoZero() {
+        if (Table.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
+            Pessoa.pessoaZero();
+        }
+        DataBase.importarBackupdataBaseSQL("C:\\Users\\Carlos\\Documents\\NetBeansProjects\\Marcenaria\\src\\marcenaria\\pessoa\\utilitario\\EnderecoZero.sql", Pessoa.banco);
+    }
+
     /**
      *
      * este Método faz a conexão com o banco de dados primário
      */
     private static void endereco() {
-        conexao = ModuloConector.getConecction();
+        conexao = ModuloConector.getConecction(Pessoa.banco);
     }
 
     /**
@@ -131,10 +123,34 @@ public class Endereco extends CEP {
         }
     }
 
+    /**
+     * Este metodo faz a editacao da tabela Endereço do banco de dados
+     * principal.
+     *
+     * @param login Setar uma informação de valor String do login da pessoa e/ou
+     * cliente e/ou fornecedor
+     * @param CEP Setar uma informação de valor String do CEP
+     * @param Numero Setar uma informação de valor inteiro do número do endereço
+     * @param Complemento Setar uma informação de valor String do complemento de
+     * endereço
+     */
     public static void editarEndereco(String login, String CEP, int Numero, String Complemento) {
         editarEndereco(0, login, CEP, Numero, 0, Complemento);
     }
 
+    /**
+     *
+     * Este metodo faz a editacao da tabela Endereço do banco de dados
+     * principal.
+     *
+     * @param IDEndereco
+     * @param login Setar uma informação de valor String do login da pessoa e/ou
+     * cliente e/ou fornecedor
+     * @param CEP Setar uma informação de valor String do CEP
+     * @param Numero Setar uma informação de valor inteiro do número do endereço
+     * @param Complemento Setar uma informação de valor String do complemento de
+     * endereço
+     */
     public static void editarEndereco(int IDEndereco, String login, String CEP, int Numero, String Complemento) {
         editarEndereco(IDEndereco, login, CEP, Numero, 0, Complemento);
     }
@@ -598,6 +614,7 @@ public class Endereco extends CEP {
         setComplemento(Complemento);
         ObterEnderecodeCEP(getCep());
     }
+    //Inicio do SETS e GETS
 
     /**
      *
@@ -766,4 +783,5 @@ public class Endereco extends CEP {
     public static void setComplemento(String complemento) {
         Endereco.complemento = complemento;
     }
+    //FIM do SETS e GETS
 }

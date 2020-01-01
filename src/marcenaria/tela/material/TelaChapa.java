@@ -5,7 +5,6 @@
  */
 package marcenaria.tela.material;
 
-import marcenaria.dado.ModuloConector;
 import marcenaria.dado.Table;
 import marcenaria.material.Chapa;
 import marcenaria.pessoa.Layout;
@@ -65,6 +64,8 @@ public class TelaChapa extends javax.swing.JInternalFrame {
         );
         setPreferredSize(Layout.getMaximo()
         );
+        setVisible(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tbChapa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -96,53 +97,67 @@ public class TelaChapa extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tbChapa);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 39, 497, 102));
+
         lblFornecedor.setText("Fornecedor:");
+        getContentPane().add(lblFornecedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 7, -1, -1));
 
         txtFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtFornecedorMousePressed(evt);
             }
         });
+        getContentPane().add(txtFornecedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 3, 331, -1));
 
         lblProduto.setText("Produto: ");
+        getContentPane().add(lblProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 157, -1, -1));
 
         txtProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtProdutoActionPerformed(evt);
             }
         });
+        getContentPane().add(txtProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(196, 153, 195, -1));
 
         lblComprimento.setText("Comprimento: ");
+        getContentPane().add(lblComprimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 229, -1, -1));
 
         txtComprimento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtComprimentoActionPerformed(evt);
             }
         });
+        getContentPane().add(txtComprimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(196, 225, 195, -1));
 
         txtLagura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtLaguraActionPerformed(evt);
             }
         });
+        getContentPane().add(txtLagura, new org.netbeans.lib.awtextra.AbsoluteConstraints(196, 261, 195, -1));
 
         lblLargura.setText("Largura: ");
+        getContentPane().add(lblLargura, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 265, -1, -1));
 
         txtEspessura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEspessuraActionPerformed(evt);
             }
         });
+        getContentPane().add(txtEspessura, new org.netbeans.lib.awtextra.AbsoluteConstraints(196, 297, 195, -1));
 
         lblEspessura.setText("Espessura: ");
+        getContentPane().add(lblEspessura, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 301, -1, -1));
 
         lblPreco.setText("Preço: ");
+        getContentPane().add(lblPreco, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 337, -1, -1));
 
         txtPreco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPrecoActionPerformed(evt);
             }
         });
+        getContentPane().add(txtPreco, new org.netbeans.lib.awtextra.AbsoluteConstraints(196, 333, 195, -1));
 
         btnADD.setText("ADD");
         btnADD.addActionListener(new java.awt.event.ActionListener() {
@@ -150,101 +165,25 @@ public class TelaChapa extends javax.swing.JInternalFrame {
                 btnADDActionPerformed(evt);
             }
         });
+        getContentPane().add(btnADD, new org.netbeans.lib.awtextra.AbsoluteConstraints(147, 369, -1, -1));
 
         btnDELETE.setText("DELE");
+        getContentPane().add(btnDELETE, new org.netbeans.lib.awtextra.AbsoluteConstraints(274, 369, -1, -1));
 
         btnEDIT.setText("EDIT");
+        getContentPane().add(btnEDIT, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 369, -1, -1));
 
         txtQuantidade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtQuantidadeActionPerformed(evt);
             }
         });
+        getContentPane().add(txtQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(196, 189, 195, -1));
 
         lblQuantidade.setText("Quantidade: ");
+        getContentPane().add(lblQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 193, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblProduto)
-                            .addComponent(lblComprimento)
-                            .addComponent(lblLargura)
-                            .addComponent(lblEspessura)
-                            .addComponent(lblPreco)
-                            .addComponent(lblQuantidade))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtProduto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtComprimento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLagura, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEspessura, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPreco, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtQuantidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(lblFornecedor)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(147, 147, 147)
-                        .addComponent(btnADD)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEDIT)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDELETE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFornecedor)
-                    .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblProduto)
-                    .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblQuantidade)
-                    .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblComprimento)
-                    .addComponent(txtComprimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblLargura)
-                    .addComponent(txtLagura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEspessura)
-                    .addComponent(txtEspessura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPreco)
-                    .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnADD)
-                    .addComponent(btnEDIT)
-                    .addComponent(btnDELETE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        pack();
+        setBounds(0, 0, 511, 429);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProdutoActionPerformed

@@ -92,6 +92,7 @@ public class Chapa {
                 + "espessura double(4,2),"
                 + "preco double (10,2), "
                 + "tipoMaterial varchar(30), "
+                
                 + "id" + Fornecedor.getTABELA() + " int not null default 0,"
                 + "foreign key(id" + Fornecedor.getTABELA() + ") references " + Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
         Table.criarTabela(sql, Chapa.getTABELA());

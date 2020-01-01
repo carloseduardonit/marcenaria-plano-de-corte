@@ -28,7 +28,7 @@ public class Cliente extends Pessoa {
     private static Statement stmt;
 
     private static void cliente() {
-        conexao = ModuloConector.getConecction();
+        conexao = ModuloConector.getConecction(banco);
     }
 
     /**
@@ -382,7 +382,7 @@ public class Cliente extends Pessoa {
     public static Boolean existeraCliente(String logCliente) {
         return obterIdPessoatoCliente(logCliente) > 0;
     }
-    // Sets e Gets
+    // Inicio do Sets e Gets
 
     /**
      * Este Metodo Retornar uma informação do tipo inteiro da Tabela Cliente no
@@ -456,5 +456,6 @@ public class Cliente extends Pessoa {
     public static void setDocum(String docum) {
         Cliente.docum = docum;
     }
+        // Fim do Sets e Gets
 
 }

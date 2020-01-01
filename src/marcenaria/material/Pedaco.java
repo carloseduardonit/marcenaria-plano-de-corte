@@ -61,7 +61,8 @@ public class Pedaco {
                 + "preco double(10,2) not null, "
                 + "tipoMaterial varchar(30) not null,"
                 + "id" + Chapa.getTABELA() + " int default '0',"
-                + "incData Timestamp auto_increment,"
+                +"id"+Peca.getTABELA()+" int default '0',"
+                + "incData timestamp,"
                 + "foreign key (id" + Chapa.getTABELA() + ") references " + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), "
                 + "foreign key (id" + Peca.getTABELA() + ") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
         Table.criarTabela(sql, Pedaco.getTABELA());

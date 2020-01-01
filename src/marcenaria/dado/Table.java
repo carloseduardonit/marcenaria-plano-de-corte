@@ -22,7 +22,10 @@ public class Table extends ModuloConector {
     private static ResultSet rs;
     private static ResultSetMetaData rsmd;
     private static PreparedStatement pst;
-
+    private static  void Table(){
+        conexao =ModuloConector.getConecction();
+    }
+    
     /**
      * Este Metodo Verifica se determinada Tabela nao existe return um valor
      * Boolean
@@ -35,7 +38,7 @@ public class Table extends ModuloConector {
     public static Boolean VerificarNaoExistirTabela(String Tabela) {
         try {
             if (!Tabela.isEmpty()) {
-                conexao = ModuloConector.getConecction();
+                conexao = ModuloConector.getConecction1();
                 String sql = "show tables in " + ModuloConector.DATABASE + " like ?";
                 pst = conexao.prepareStatement(sql);
                 pst.setString(1, Tabela + "%");
@@ -66,7 +69,7 @@ public class Table extends ModuloConector {
     public static void criarTabela(String sql, String Tabela) {
         if (NaoHaCampoVazio(sql,Tabela)) {
             try {
-                ModuloConector.conector();
+               Table();
                 Messagem.criadoTabela(Tabela);
                 if (Messagem.getCriada() == 0) {
                     stmt = conexao.createStatement();
@@ -91,7 +94,7 @@ public class Table extends ModuloConector {
     public static void deletarTabela(String Tabela) {
         if (NaoHaCampoVazio(null,Tabela)) {
             try {
-                ModuloConector.conector();
+                Table();
                 String sql = "drop table if exists " + Tabela;
                 Messagem.deletadaTabela(Tabela);
                 if (Messagem.getDeleta() == 0) {
@@ -161,7 +164,7 @@ public class Table extends ModuloConector {
     // para obter o numero de linha eu tenho que sabe se  Tabela existe; Depois saber ser a instrução mysql obter algum resultado
     public static int quantLinha(String tabela, String sql) {
         try {
-            ModuloConector.conector();
+            Table();
             if (!Table.VerificarNaoExistirTabela(tabela)) {
                 pst = conexao.prepareStatement(sql);
                 rs = pst.executeQuery();
@@ -204,7 +207,7 @@ public class Table extends ModuloConector {
      * coluna.
      */
     public static int quantColuna(String tabela, String sql) {
-        ModuloConector.conector();
+        Table();
         try {
             if (Table.VerificarNaoExistirTabela(tabela)) {
                 pst = conexao.prepareStatement(sql);

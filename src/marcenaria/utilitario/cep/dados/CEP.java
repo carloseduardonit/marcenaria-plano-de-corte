@@ -19,7 +19,7 @@ public class CEP {
 
     private static int ID;
     private static String cidade, logradouro, bairro, cep, estado, tipoLogradouro, aUF;
-    private static final String Dado = "teste1";
+    public static final String DADO = "Utilitarios";
     private static String complemento = " qd 44", numero;
     private static Connection conexao;
     private static marcenaria.utilitario.cep.enu.UF uf;
@@ -41,11 +41,11 @@ public class CEP {
      * @since 21/09/19 -criada
      */
     private static void cep() {
-        conexao = ModuloConector.getConecction(Dado);
+        conexao = ModuloConector.getConecction(DADO);
     }
-    public static void CriarCEP(){
+    public static void criarBasedeDadoCEP(){
          String nomeArquivo = "C:\\Users\\Carlos\\Documents\\NetBeansProjects\\Agil\\src\\agil\\dado\\cep.sql";
-         DataBase.importarBackupdataBaseSQL(nomeArquivo);
+         DataBase.importarBackupdataBaseSQL(nomeArquivo,DADO);
     }
 
     // INICIO acessar a tabela de ESTADO.
@@ -149,7 +149,7 @@ public class CEP {
         String UFa = "";
         if (NãoHaCampoVazio(null, Cep, null, 0)) {
             if (UF.eEsteUF(Cep)) {
-                String sql = "select nome from " + Dado + ".uf where uf = ?";
+                String sql = "select nome from " + DADO + ".uf where uf = ?";
                 try {
                     cep();
                     pst = conexao.prepareStatement(sql);

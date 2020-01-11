@@ -309,8 +309,7 @@ public class Peca {
     }
 
     /** <b>Este metodo .</b>
-     * <p>
-     * </p>
+     * 
      *
      * @param quanPeca Setar informação de valor inteiro da quantidade de Peça
      * @param compPeca Setar informação de valor double do Comprimento da Peça

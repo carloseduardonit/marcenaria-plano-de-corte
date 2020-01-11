@@ -89,7 +89,7 @@ public class Table extends ModuloConector {
     /**
      * ok Este Metodo deletar a tabela mo banco de dados
      *
-     * @param Tabela
+     * @param Tabela Seta uma informação de valor String do nome da Tabela.
      */
     public static void deletarTabela(String Tabela) {
         if (NaoHaCampoVazio(null,Tabela)) {

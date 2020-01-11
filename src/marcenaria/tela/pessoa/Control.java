@@ -153,7 +153,6 @@ public class Control {
     }
 
     /**
-     * @param nlogin Setar uma informação de valor JText de novo login
      ** @param login Setar uma informação de valor JText de login
      * @param senha Setar uma informação de valor JText de senha
      * @param conSenha Setar uma informação de valor JText de confimação de

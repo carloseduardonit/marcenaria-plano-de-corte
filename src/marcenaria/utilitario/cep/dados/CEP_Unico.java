@@ -16,7 +16,7 @@ import marcenaria.dado.ModuloConector;
 public class CEP_Unico extends CEP {
 
     private static int Seq;
-    private static String Nome = "", NomeSemAcento = "", CEP = "", UF = "";
+    private static String Nome, NomeSemAcento, CEP, UF;
     private static final String TABELA = CEP_Unico.class.getSimpleName().toLowerCase();
     private static Connection conexao;
     private static ResultSet rs;
@@ -535,10 +535,40 @@ public class CEP_Unico extends CEP {
     }
 
     //Fim do Acesso ao Banco
+    /**
+     *
+     * @param Seq Setar uma informação de valor inteiro sobre a sequencia da
+     * tabela Cep_Unico.
+     * @param Nome Setar uma informação de valor String sobre o nome com acento
+     * da tabela Cep_Unico.
+     * @param NomeSemAcento Setar uma informação de valor String sobre o nome
+     * sem acento da tabela Cep_Unico.
+     * @param CEP Setar uma informação de valor String sobre o nimero do CEP da
+     * tabela Cep_Unico.
+     * @param UF Setar uma informação de valor String sobre a uf(estado) da
+     * tabela Cep_Unico.
+     * @param ou Setar uma informação de valor booleando na instrução sql da
+     * tabela Cep_Unico.
+     */
     private static boolean NaoHACampoVazio(int Seq, String Nome, String NomeSemAcento, String NCEP, String UF) {
         return HACampoVazio(Seq, Nome, NomeSemAcento, NCEP, UF);
     }
 
+    /**
+     *
+     * @param Seq Setar uma informação de valor inteiro sobre a sequencia da
+     * tabela Cep_Unico.
+     * @param Nome Setar uma informação de valor String sobre o nome com acento
+     * da tabela Cep_Unico.
+     * @param NomeSemAcento Setar uma informação de valor String sobre o nome
+     * sem acento da tabela Cep_Unico.
+     * @param CEP Setar uma informação de valor String sobre o nimero do CEP da
+     * tabela Cep_Unico.
+     * @param UF Setar uma informação de valor String sobre a uf(estado) da
+     * tabela Cep_Unico.
+     * @param ou Setar uma informação de valor booleando na instrução sql da
+     * tabela Cep_Unico.
+     */
     private static boolean HACampoVazio(int Seq, String Nome, String NomeSemAcento, String NCEP, String UF) {
         boolean resultado = String.valueOf(Seq).isEmpty() || Nome.isEmpty() || NomeSemAcento.isEmpty() || NCEP.isEmpty() || UF.isEmpty();
         if (resultado) {
@@ -547,6 +577,21 @@ public class CEP_Unico extends CEP {
         return resultado;
     }
 
+    /**
+     *
+     * @param Seq Setar uma informação de valor inteiro sobre a sequencia da
+     * tabela Cep_Unico.
+     * @param Nome Setar uma informação de valor String sobre o nome com acento
+     * da tabela Cep_Unico.
+     * @param NomeSemAcento Setar uma informação de valor String sobre o nome
+     * sem acento da tabela Cep_Unico.
+     * @param CEP Setar uma informação de valor String sobre o nimero do CEP da
+     * tabela Cep_Unico.
+     * @param UF Setar uma informação de valor String sobre a uf(estado) da
+     * tabela Cep_Unico.
+     * @param ou Setar uma informação de valor booleando na instrução sql da
+     * tabela Cep_Unico.
+     */
     private static String[] CampoVaziotoString(int Seq, String Nome, String NomeSemAcento, String NCEP, String UF) {
         String[] campoVazio = new String[5];
         int i = 0;
@@ -683,8 +728,8 @@ public class CEP_Unico extends CEP {
      * Este Metodo e para Retornar uma informação de valor String para obter o
      * nome da tabela Cep_Unico.
      *
-     * @return Retornar uma informação de valor String para obter o
-     * nome da tabela Cep_Unico.
+     * @return Retornar uma informação de valor String para obter o nome da
+     * tabela Cep_Unico.
      */
     public static String getTABELA() {
         return TABELA;

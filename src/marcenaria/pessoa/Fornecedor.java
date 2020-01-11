@@ -13,8 +13,7 @@ import marcenaria.dado.Table;
 import marcenaria.material.Chapa;
 
 /**
- * 16/06/2019
-a
+ * 16/06/2019 a
  *
  * @author Carlos Eduardo dos Santos Figueiredo
  */
@@ -133,7 +132,7 @@ public class Fornecedor extends Pessoa {
     }
 
     /**
-     * TA MONTANDO FALTA TESTA
+     * Este Metodo fara a editação do fornecedor mediante aos parametros
      *
      * @param logFornecedor Setar uma informação do tipo String da Tabela
      * Fornecedor no Login Fornecedor
@@ -190,7 +189,8 @@ public class Fornecedor extends Pessoa {
     }
 
     /**
-     * TA MONTANDO FALTA TESTA
+     * Este Metodo fara a exclução do fornecedor mediante o paramentro
+     * logFornecedor e exbir a mensagem de confimação
      *
      * @param logFornecedor Setar uma informação do tipo String da Tabela
      * Fornecedor no Login Fornecedor
@@ -200,11 +200,13 @@ public class Fornecedor extends Pessoa {
     }
 
     /**
-     * TA MONTANDO FALTA TESTA
+     * Este Metodo fara a exclução do fornecedor mediante o paramentro
+     * logFornecedor e faz a bloqueo da mensagem atravez do parametro Mensagem
      *
      * @param logFornecedor Setar uma informação do tipo String da Tabela
      * Fornecedor no Login Fornecedor
-     * @param Mensagem
+     * @param Mensagem Setar uma informação de valor booleando , se for TRUE:
+     * pode exebir a mensagem; ou ser for FALSE: Não pode exebir a mensagem
      */
     public static void excluirFornecedor(String logFornecedor, boolean Mensagem) {
         if (Fornecedor.existeroFornecedor(logFornecedor)) {
@@ -380,7 +382,8 @@ public class Fornecedor extends Pessoa {
     }
 
     /**
-     * OK Este metodo
+     * OK Este metodo obtem uma informação de valor booleando na tal se for
+     * TRUE: o fornecedor existe ou se for FALSE: o fornecedor não existe.
      *
      * @param logFornecedor Setar uma informação do tipo String da Tabela
      * Fornecedor no Login Fornecedor
@@ -394,6 +397,15 @@ public class Fornecedor extends Pessoa {
         return a;
     }
 
+    /**
+     * Este Metodo Retornar uma informação de valor String o texto do login do
+     * fornecedor que não existe
+     *
+     * @param logFornecedor Setar uma informação do tipo String da Tabela
+     * Fornecedor no Login Fornecedor
+     * @return Retornar uma informação de valor String o texto do login do
+     * fornecedor que não existe
+     */
     public static String NaoExisterFornecedor(String logFornecedor) {
         return "Não existe o fornecedor: " + logFornecedor;
     }

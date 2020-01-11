@@ -84,15 +84,12 @@ public class Pedaco {
     /**
      * <b>Este Metodo adicionar informação na tabela Pedaço no banco.</b>
      *
-     * @param quantPedaco
-     * @param quantPeca Informar um valor double da Comprimento da Pedaço.
+     * @param quantPedaco Informar um valor inteiro de quantidade de Pedaço
      * @param compPedaco Informar um valor double da Comprimento da Pedaço.
      * @param precPedaco Informar um valor double da preço da Pedaço.
      * @param tipoMaterial Informar um valor double da largura da Pedaço.
      * @param largPedaco Informar um valor double da largura da Pedaço.
      * @param espePedaco Informar um valor double da espessura do Pedaço.
-     * @param idChapa
-     * @param idPeca
      */
     public static void adicionarPedaco(int quantPedaco, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial) {
         if (Pedaco.HaCampoVazio(quantPedaco, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial, 0, idPeca)) {
@@ -128,9 +125,7 @@ public class Pedaco {
     /**
      * <b>Este Metodo Editar informação na tabela pedaço no banco.</b>
      *
-     * @param quantPecado
-     * @param idChapa Informar um valor inteiro do Id da Chapa.
-     * @param idPeca Informar um valor inteiro do Id da Peca.
+     * @param quantPecado Informar um valor inteiro de quantidade de Pedaço
      * @param compPedaco Informar um valor double da Comprimento da Pedaço.
      * @param largPedaco Informar um valor double da largura da Pedaço.
      * @param espePedaco Informar um valor double da espessura do Pedaço.
@@ -361,9 +356,9 @@ public class Pedaco {
     }
 
     /**
-     * @param compPedaco
-     * @param largPedaco
-     * @param espePedaco
+     * @param compPedaco Informar um valor double da Comprimento da Pedaço.
+     * @param largPedaco Informar um valor double da largura da Pedaço.
+     * @param espePedaco Informar um valor double da espessura do Pedaço.
      * @param tipoMaterial
      * @return
      */

@@ -23,7 +23,7 @@ public class UF {
     private static String uf, nomeEstado, cep1Digito5, cep2Digito5;
     private static marcenaria.utilitario.cep.enu.UF ufa;
 
-    public static void uf() {
+    private static void uf() {
         conexao = ModuloConector.getConecction("teste1");
     }
 
@@ -92,6 +92,7 @@ public class UF {
     }
 
     /**
+     * Este Metodo obtem o Estado da tabela UF atraves do paramento UF
      * @author Carlos Eduardo dos santos Figueiredo
      * @param UF Setar uma informação de valor String do UF do CEP.
      * @author Carlos Eduardo dos santos Figueiredo

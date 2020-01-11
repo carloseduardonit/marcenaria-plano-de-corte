@@ -143,7 +143,7 @@ public class Endereco extends CEP {
      * Este metodo faz a editacao da tabela Endereço do banco de dados
      * principal.
      *
-     * @param IDEndereco
+     * @param IDEndereco Setar uma informação de valor inteiro do Id do Endereço
      * @param login Setar uma informação de valor String do login da pessoa e/ou
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
@@ -159,12 +159,13 @@ public class Endereco extends CEP {
      * Este metodo faz a editacao da tabela Endereço do banco de dados
      * principal.
      *
-     * @param IDEndereco
+     * @param IDEndereco Setar uma informação de valor inteiro do Id do Endereço
      * @param login Setar uma informação de valor String do login da pessoa e/ou
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP
      * @param Numero Setar uma informação de valor inteiro do número do endereço
-     * @param quantEndereço
+     * @param quantEndereço Setar uma informação de valor inteiro da quantidade
+     * de Endereço
      * @param Complemento Setar uma informação de valor String do complemento de
      * endereço
      *
@@ -247,11 +248,10 @@ public class Endereco extends CEP {
      * @param Numero Setar uma informação de valor inteiro do número do endereço
      * @param Complemento Setar uma informação de valor String do complemento de
      * endereço
-     * @param ou Setar uma informação de valor boolean na instrução sql
-     * <li>
-     * <ul> se o valor for True: incluir OR no sql. </ul>
-     * <ul> se o valor for False: incluir AND no sql. </ul>
-     * </li>
+     * @param ou Setar uma informação de valor boolean na instrução sql se o
+     * valor for True: incluir OR no sql. se o valor for False: incluir AND no
+     * sql.
+     *
      *
      */
     public static void excluirEndereco(String login, String CEP, int Numero, String Complemento, boolean ou) {
@@ -330,11 +330,9 @@ public class Endereco extends CEP {
      * @param Numero Setar uma informação de valor inteiro do número do endereço
      * @param Complemento Setar uma informação de valor String do complemento de
      * endereço
-     * @param ou Setar uma informação de valor boolean na instrução sql
-     * <li>
-     * <ul> se o valor for True: incluir OR no sql. </ul>
-     * <ul> se o valor for False: incluir AND no sql. </ul>
-     * </li>
+     * @param ou Setar uma informação de valor boolean na instrução sql se o
+     * valor for True: incluir OR no sql. se o valor for False: incluir AND no
+     * sql.
      */
     public static void pesquisarEndereco(String login, String CEP, int Numero, String Complemento, boolean ou) {
         if (NaoHaCampoVazio(login, CEP, Numero, Complemento)) {
@@ -441,11 +439,9 @@ public class Endereco extends CEP {
      * @param numero Setar uma informação de valor inteiro do número do endereço
      * @param complemento Setar uma informação de valor String do complemento de
      * endereço
-     * @param ou Setar uma informação de valor boolean na instrução sql
-     * <li>
-     * <ul> se o valor for True: incluir OR no sql. </ul>
-     * <ul> se o valor for False: incluir AND no sql. </ul>
-     * </li>
+     * @param ou Setar uma informação de valor boolean na instrução sql se o
+     * valor for True: incluir OR no sql. se o valor for False: incluir AND no
+     * sql.
      * @return Retornar o Id Endereço da tabela endereço no banco de dados
      * primario.
      */
@@ -513,7 +509,7 @@ public class Endereco extends CEP {
      * @param Complemento Setar uma informação de valor String do complemento de
      * endereço
      *
-     * @return
+     * @return Retornar se nao ha campo Vazio.
      */
     public static boolean NaoHaCampoVazio(String login, String CEP, int Numero, String Complemento) {
         boolean res = !haCampoVazio(login, CEP, Numero, Complemento, true);
@@ -532,7 +528,7 @@ public class Endereco extends CEP {
      * endereço
      * @param mensagem Setar uma informação de valor booleano do complemento de
      * endereço
-     * @return
+     * @return Retornar se ha campo Vazio.
      */
     public static boolean haCampoVazio(String login, String CEP, int Numero, String Complemento, boolean mensagem) {
         boolean res = login.isEmpty() || CEP.isEmpty() || String.valueOf(Numero).isEmpty() || Numero < 0 || Complemento.isEmpty();
@@ -591,9 +587,10 @@ public class Endereco extends CEP {
      * endereço
      * @param IDCliente Setar uma informação de valor inteiro do IDPessoa de
      * endereço
-     * @param IDFornecedor Setar uma informação de valor inteiro do IDFo de
-     * endereço
-     * @param quantEndereco
+     * @param IDFornecedor Setar uma informação de valor inteiro do IDFornecedor
+     * de endereço
+     * @param quantEndereco Setar uma informação de valor inteiro da quantidade
+     * de Endereço
      * @param login Setar uma informação de valor String do login da pessoa e/ou
      * cliente e/ou fornecedor
      * @param CEP Setar uma informação de valor String do CEP

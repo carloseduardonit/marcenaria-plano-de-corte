@@ -36,13 +36,10 @@ public class Pessoa {
     }
 
     /**
-     * OK este metodo faz a 
-     * => Criação do Banco de dados Pesons
-     * => Criação das tabelas Pessoa, Cliente, Fornecedor, 
-     * => Inserção dos usuarios zero na tabela  Pessoa,
-     * => Inserção dos usuarios zero na tabela Cliente,
-     * => Inserção dos usuarios zero na tabela Fornecedor,
-     * atravez do metodo auxiliar
+     * OK este metodo faz a Criação do Banco de dados Pesons Criação das tabelas
+     * Pessoa, Cliente, Fornecedor, Inserção dos usuarios zero na tabela Pessoa,
+     * Inserção dos usuarios zero na tabela Cliente, Inserção dos usuarios zero
+     * na tabela Fornecedor, atravez do metodo auxiliar
      */
     public static void pessoaZero() {
         DataBase.importarBackupdataBaseSQL("C:\\Users\\Carlos\\Documents\\NetBeansProjects\\Marcenaria\\src\\marcenaria\\pessoa\\Persona.sql", "Persons");
@@ -106,7 +103,8 @@ public class Pessoa {
      * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
      * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
      * <b>PJ</b>
-     * @param mensagem
+     * @param mensagem  Setar uma informação de valor booleando , se for TRUE:
+     * pode exebir a mensagem; ou ser for FALSE: Não pode exebir a mensagem
      * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
      * Nome Pessoa
      */
@@ -142,8 +140,6 @@ public class Pessoa {
      * usario
      *
      *
-     * @param nlogPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * novo Login Pessoa
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
      * Login Pessoa
      * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
@@ -166,8 +162,6 @@ public class Pessoa {
      * usario
      *
      *
-     * @param nlogPessoa Setar uma informação do tipo String da Tabela Pessoa no
-     * novo Login Pessoa
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
      * Login Pessoa
      * @param senPessoa Setar uma informação do tipo String da Tabela Pessoa no
@@ -179,7 +173,8 @@ public class Pessoa {
      * <b>PJ</b>
      * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
      * Nome Pessoa
-     * @param mensagem
+     * @param mensagem  Setar uma informação de valor booleando , se for TRUE:
+     * pode exebir a mensagem; ou ser for FALSE: Não pode exebir a mensagem
      *
      */
     public static void editarPessoa(String logPessoa, String senPessoa, String conSenPessoa, String tipoPessoa, String nomePessoa, boolean mensagem) {
@@ -227,7 +222,8 @@ public class Pessoa {
      *
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
      * novo Login Pessoa
-     * @param mensagem
+     * @param mensagem  Setar uma informação de valor booleando , se for TRUE:
+     * pode exebir a mensagem; ou ser for FALSE: Não pode exebir a mensagem
      */
     public static void excluirPessoa(String logPessoa, boolean mensagem) {
         if (existeraPessoa(logPessoa)) {
@@ -418,8 +414,8 @@ public class Pessoa {
 
     /**
      *
-     * @param Tabela
-     * @param sql
+     * @param Tabela Setar uma informação de  valor String 
+     * @param sql Setar uma informação de  valor String 
      * @return
      */
     public static String[] obterlogPessoa(String Tabela, String sql) {
@@ -451,17 +447,9 @@ public class Pessoa {
      * @param TipoPessoa Setar uma informação de valor String do Tipo de Pessoa.
      * @return Retornar Uma informação de valor boolean da verificação de
      * Documento mediante:
-     * <ul>
-     * <li> <b>Valor True</b></li>
-     * <ol>
-     * <li>docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"</li>
-     * <li>ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"</li>
-     * </ol>
-     * <li><b>Valor False</b></li>
-     * <ol>
-     * <li></li>
-     * </ol>
-     * </ul>
+     Valor True: docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"
+     * ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"
+     * Valor False:
      */
     public static Boolean VerificaDocumento(String docPessoa, String TipoPessoa) {
         if ((docPessoa.length() == 11 && TipoPessoa.equalsIgnoreCase("pf"))
@@ -479,17 +467,10 @@ public class Pessoa {
      * Pessoa.
      * @param TipoPessoa Setar uma informação de valor String do Tipo de Pessoa.
      * @return Retornar uma informçaõ de valor String do erro do documento
-     * <ul>
-     * <li> <b>Valor True</b></li>
-     * <ol>
-     * <li>docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"</li>
-     * <li>ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"</li>
-     * </ol>
-     * <li><b>Valor False</b></li>
-     * <ol>
-     * <li></li>
-     * </ol>
-     * </ul>
+     * Valor True: 
+     * docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF";
+     * ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ";
+     * Valor False
      */
     public static String txtVerificaDocumento(String docPessoa, String TipoPessoa) {
         String Mess = "";
@@ -635,8 +616,15 @@ public class Pessoa {
     }
 
     /**
-     * @param logPessoa
-     * @return
+     * Este metodo Retornar uma informação de valor booleando aonde: se for
+     * TRUE: e porque existe a pessoa na tabela Pessoa ou se for FALSE: não ha
+     * registro na tabela Pessoa conforme o parametro
+     *
+     * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
+     * Login Pessoa
+     * @return Retornar uma informação de valor booleando aonde: se for TRUE: e
+     * porque existe a pessoa na tabela Pessoa ou se for FALSE: não ha registro
+     * na tabela Pessoa conforme o parametro
      */
     public static Boolean existeraPessoa(String logPessoa) {
         return obterIdPessoa(logPessoa) > 0;

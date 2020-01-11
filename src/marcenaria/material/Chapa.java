@@ -303,7 +303,9 @@ public class Chapa {
      * materia da Chapa
      * @param fornecedor Setar uma informação de valor String do fornecedor da
      * Chapa
-     * @param ou
+     * @param ou Setar uma informação de valor booleando na instrução Mysql
+     * sendo TRUE: sera  adicionado o termo "OR" 
+     * sendo FALSE: sera Adicionado o termo "AND";
      * @since 01/05/2019
      * @version 1.0
      */
@@ -332,7 +334,7 @@ public class Chapa {
      * Chapa<p>
      * se for <b>TRUE</b> sera inserido <b>OR</b></p><p>
      * se for <b>FALSE</b> sera inserido <b>AND</b></p>
-     * @param messagem
+     * @param messagem Setar uma informação de valor boolean
      * @since 01/05/2019
      * @version 1.0
      *
@@ -479,10 +481,6 @@ public class Chapa {
      * materia da Chapa
      * @param fornecedor Setar uma informação de valor String do fornecedor da
      * Chapa
-     * @param ou Setar uma informação de valor boolean na expressão OU da
-     * Chapa<p>
-     * se for <b>TRUE</b> sera inserido <b>OR</b></p><p>
-     * se for <b>FALSE</b> sera inserido <b>AND</b></p>
      *
      * @since 01/05/2019
      * @version 1.0
@@ -752,7 +750,7 @@ public class Chapa {
      * materia da Chapa
      * @param fornecedor Setar uma informação de valor String do fornecedor da
      * Chapa
-     * @return
+     * @return se não ha campo vazio.
      * @since 01/05/2019
      * @version 1.0
      */
@@ -776,7 +774,7 @@ public class Chapa {
      * materia da Chapa
      * @param fornecedor Setar uma informação de valor String do fornecedor da
      * Chapa
-     * @return
+     * @return se ha campo vazio.
      * @since 01/05/2019
      * @version 1.0
      */
@@ -854,8 +852,11 @@ public class Chapa {
      * materia da Chapa
      * @param fornecedor Setar uma informação de valor String do fornecedor da
      * Chapa
-     * @param ou
-     * @return
+     * @param ou Setar uma informação de valor boolean na expressão OU da
+     * Chapa<p>
+     * se for <b>TRUE</b> sera inserido <b>OR</b></p><p>
+     * se for <b>FALSE</b> sera inserido <b>AND</b></p>
+     * @return obtem o id chapa conforme os paramentros
      */
     public static int obterIdChapa(double compChapa, double largChapa, double espeChapa, String tipoMaterial, String fornecedor, boolean ou) {
         String a, sql;

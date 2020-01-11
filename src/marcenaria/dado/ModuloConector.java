@@ -73,7 +73,7 @@ public class ModuloConector {
     /**
      * Este metodo faz a conexão com o banco de dados
      */
-    public  static void conector() {
+    public static void conector() {
         conexao = getConecction();
     }
 
@@ -94,7 +94,8 @@ public class ModuloConector {
      * variaveis finais
      *
      * @version 1.0
-     * @param Banco
+     * @param Banco Setar uma informação de valor String com o nome banco de
+     * dados
      * @since 01/05/2019
      * @return a conexao conexao com o banco de dado
      */
@@ -107,8 +108,11 @@ public class ModuloConector {
      * variaveis finais
      *
      * @version 1.0
-     * @param Banco
-     * @param Usuario
+     *
+     * @param Banco Setar uma informação de valor String com o nome banco de
+     * dados
+     * @param Usuario Setar uma informação de valor String com o nome do usuario
+     * do Banco
      * @since 01/05/2019
      * @return a conexao conexao com o banco de dado
      */
@@ -121,9 +125,12 @@ public class ModuloConector {
      * variaveis finais
      *
      * @version 1.0
-     * @param Banco
-     * @param Usuario
-     * @param Senha
+     * @param Banco Setar uma informação de valor String com o nome banco de
+     * dados
+     * @param Usuario Setar uma informação de valor String com o nome do usuario
+     * do Banco
+     * @param Senha Setar uma informação de valor String com a senha do banco de
+     * dados
      * @since 01/05/2019
      * @return a conexao conexao com o banco de dado
      */
@@ -154,7 +161,7 @@ public class ModuloConector {
         return conexao;
     }
 
-     /**
+    /**
      * Este metodo faz a conexao com o banco de dados MYSQL utilizado as
      * variaveis finais
      *
@@ -165,14 +172,16 @@ public class ModuloConector {
     public static java.sql.Connection getConecction1() {
         return getConecction1(USER, PASS);
     }
+
     /**
      * Este metodo faz a conexao com o banco de dados MYSQL utilizado as
      * variaveis finais
      *
      * @version 1.0
-     * @param Banco
-     * @param Usuario
-     * @param Senha
+     * @param Usuario Setar uma informação de valor String com o nome do usuario
+     * do Banco
+     * @param Senha Setar uma informação de valor String com a senha do banco de
+     * dados
      * @since 01/05/2019
      * @return a conexao conexao com o banco de dado
      */
@@ -203,23 +212,35 @@ public class ModuloConector {
         return conexao;
     }
 
+    /**
+     * Este Metodo executar uma aplicação atraves do caminho da aplicação pre-
+     * definida.
+     */
     public static void abrirAplicação() {
         String b = "C:\\xampp\\xampp-control.exe";
         abrirAplicação(b);
 
     }
 
-    public static void abrirAplicação(String a) {
+    /**
+     * Este Metodo executar uma aplicação atraves do caminho da aplicação
+     * comforme o parametro
+     *
+     * @param caminhodaAplicação Setar uma informação de valor String do Caminho
+     * da aplicação que deseja ser executado
+     */
+    public static void abrirAplicação(String caminhodaAplicação) {
         try {
             Runtime r;
             r = Runtime.getRuntime();
-            r.exec(a);
+            r.exec(caminhodaAplicação);
         } catch (IOException e) {
             Messagem.chamarTela(e);
         }
     }
 
     /**
+     * Este Metodo faz o fechamento da conexao
      *
      * @version 1.0 Este Metodo faz o fechamento da conexao
      * @since 01/05/2019

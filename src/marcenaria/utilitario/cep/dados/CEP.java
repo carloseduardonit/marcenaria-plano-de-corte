@@ -11,8 +11,8 @@ import marcenaria.dado.*;
 
 /**
  *
- * @author Carlos Eduardo dos santos Figueiredo
- * Este Classe e responsavel pela manipulação da  entidade CEP  confoorme a ao ca
+ * @author Carlos Eduardo dos santos Figueiredo Este Classe e responsavel pela
+ * manipulação da entidade CEP confoorme a ao ca
  * @since 21/09/19 -criada
  */
 public class CEP {
@@ -43,15 +43,15 @@ public class CEP {
     private static void cep() {
         conexao = ModuloConector.getConecction(DADO);
     }
-    public static void criarBasedeDadoCEP(){
-         String nomeArquivo = "C:\\Users\\Carlos\\Documents\\NetBeansProjects\\Agil\\src\\agil\\dado\\cep.sql";
-         DataBase.importarBackupdataBaseSQL(nomeArquivo,DADO);
+
+    public static void criarBasedeDadoCEP() {
+        String nomeArquivo = "C:\\Users\\Carlos\\Documents\\NetBeansProjects\\Agil\\src\\agil\\dado\\cep.sql";
+        DataBase.importarBackupdataBaseSQL(nomeArquivo, DADO);
     }
 
     // INICIO acessar a tabela de ESTADO.
-    
-    /**Testar
-     * Este Metodo Obtem o endereço atraves parametro do cep
+    /**
+     * Testar Este Metodo Obtem o endereço atraves parametro do cep
      *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param Cep Setar uma informação de valor String do cep do CEP.
@@ -62,8 +62,8 @@ public class CEP {
         CEP.ObterEnderecodeCEP(CEP.ObterUF(Cep), Cep);
     }
 
-    /**Testar
-     * Este Metodo Obtem o endereço atraves parametro do cep
+    /**
+     * Testar Este Metodo Obtem o endereço atraves parametro do cep
      *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param UF Setar uma informação de valor String do UF do CEP.
@@ -96,8 +96,8 @@ public class CEP {
         }
     }
 
-    /**testar
-     * Este Metodo obtem uma informação de valor String da UF atraves do
+    /**
+     * testar Este Metodo obtem uma informação de valor String da UF atraves do
      * parametro cep do CEP.
      *
      * @author Carlos Eduardo dos santos Figueiredo
@@ -134,9 +134,9 @@ public class CEP {
         return UF;
     }
 
-    /**Testar
-     * Este Metodo Retornar Obtenção uma informação de valor String do Estado
-     * conforme os parametro cep.
+    /**
+     * Testar Este Metodo Retornar Obtenção uma informação de valor String do
+     * Estado conforme os parametro cep.
      *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param Cep Setar uma informação de valor String do cep do CEP.
@@ -153,7 +153,7 @@ public class CEP {
                 try {
                     cep();
                     pst = conexao.prepareStatement(sql);
-                    pst.setString(1,UF.getaUF());
+                    pst.setString(1, UF.getaUF());
                     rs = pst.executeQuery();
                     if (rs.next()) {
                         UFa = rs.getString(1);
@@ -168,9 +168,9 @@ public class CEP {
         return UFa;
     }
 
-    /**Testar
-     * Este Metodo Retornar uma informação de valor String do endereço conforme
-     * os parametro cep, conplemento e numero.
+    /**
+     * Testar Este Metodo Retornar uma informação de valor String do endereço
+     * conforme os parametro cep, conplemento e numero.
      *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param cep Setar uma informação de valor String do cep do CEP.
@@ -187,9 +187,9 @@ public class CEP {
         return EnderecoToString(uf, cep, complemento, numero);
     }
 
-    /**Testar
-     * Este Metodo Retornar uma informação de valor String do endereço conforme
-     * os parametro UF, cep, conplemento e numero.
+    /**
+     * Testar Este Metodo Retornar uma informação de valor String do endereço
+     * conforme os parametro UF, cep, conplemento e numero.
      *
      * @author Carlos Eduardo dos santos Figueiredo
      * @param UF Setar uma informação de valor String do UF do CEP.
@@ -260,11 +260,8 @@ public class CEP {
     }
 
     /**
-     * OK Este Metodo retorna um valor boolean se Não ha Campos Vazios:
-     * <li>
-     * <ul><b>TRUE: </b>se não tiver Campos Vazios</ul>
-     * <ul><b>FALSE: </b>se tiver Campos Vazios</ul>
-     * </li>
+     * OK Este Metodo retorna um valor boolean se Não ha Campos Vazios: TRUE: se
+     * não tiver Campos Vazios FALSE: se tiver Campos Vazios
      *
      * @param UF Setar uma informação de valor String do UF do CEP.
      * @param cep Setar uma informação de valor String do cep do CEP.
@@ -272,10 +269,7 @@ public class CEP {
      * CEP.
      * @param numero Setar uma informação de valor inteiro do numero do CEP.
      * @return Retornar uma informação de valor boolean se não tem campo vazio
-     * <li>
-     * <ul><b>TRUE: </b>se tiver Campos Vazios</ul>
-     * <ul><b>FALSE: </b>se não tiver Campos Vazios</ul>
-     * </li>
+     * TRUE: se tiver Campos Vazios FALSE: se não tiver Campos Vazios
      */
     public static boolean HaCampoVazio(String UF, String cep, String complemento, int numero) {
         if (UF == null) {
@@ -292,12 +286,10 @@ public class CEP {
     }
 
     /**
-     * OK Este Metodo retorna um valor boolean se Não ha Campos Vazios:
-     * <li>
-     * <ul><b>TRUE: </b>se não tiver Campos Vazios</ul>
-     * <ul><b>FALSE: </b>se tiver Campos Vazios e mostra o uma tela se
-     * informação com os campos vazios.</ul>
-     * </li>
+     * OK Este Metodo retorna um valor boolean se Não ha Campos Vazios: TRUE: se
+     * não tiver Campos Vazios FALSE: se tiver Campos Vazios e mostra o uma tela
+     * se informação com os campos vazios.
+     *
      *
      * @param UF Setar uma informação de valor String do UF do CEP.
      * @param cep Setar uma informação de valor String do cep do CEP.
@@ -305,10 +297,7 @@ public class CEP {
      * CEP.
      * @param numero Setar uma informação de valor inteiro do numero do CEP.
      * @return Retornar uma informação de valor boolean se não tem campo vazio
-     * <li>
-     * <ul><b>TRUE: </b>se não tiver Campos Vazios</ul>
-     * <ul><b>FALSE: </b>se tiver Campos Vazios</ul>
-     * </li>
+     * TRUE: se não tiver Campos Vazios FALSE: se tiver Campos Vazios
      */
     public static boolean NãoHaCampoVazio(String UF, String cep, String complemento, int numero) {
         boolean resp = HaCampoVazio(UF, cep, complemento, numero);
@@ -317,9 +306,8 @@ public class CEP {
         }
         return !resp;
     }
-   
-    // inicio da SETS E GETS
 
+    // inicio da SETS E GETS
     /**
      * Este metodo Retornar uma informação de valor inteiro do ID do CEP.
      *

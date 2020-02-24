@@ -5,17 +5,17 @@
  */
 package marcenaria.material;
 
+import dados.*;
+import informacao.Messagem;
 import java.sql.*;
-import marcenaria.Const.Messagem;
-import marcenaria.dado.ModuloConector;
-import marcenaria.dado.Table;
+
 
 /**
  *
  * @author Carlos Eduardo dos Santos Figueiredo
  *
  */
-public class Pedaco {
+public class Pedaco extends Material {
 
     /**
      * Variavel inteiro
@@ -29,7 +29,7 @@ public class Pedaco {
      * Variavel data
      */
     private static Date incData;
-    private static String sys = "System";
+    private static final String sys = "System";
     private static final String TABELA = Pedaco.class.getSimpleName();
     private static Connection conexao;
     private static ResultSet rs;
@@ -48,10 +48,10 @@ public class Pedaco {
      * <b> Este Metodo faz a criação da tabela Pedaço no banco.</b>
      */
     public static void criadoPedaco() {
-        if (Table.VerificarNaoExistirTabela(Chapa.getTABELA())) {
+        if (Chapa.NaoExisteTabelaChapa()) {
             Chapa.criadaChapa();
         }
-       
+
         String sql = "create table if not exists " + Pedaco.getTABELA()
                 + "(id" + Pedaco.getTABELA() + " int primary key auto_increment,"
                 + "quantidade int default 0,"
@@ -61,7 +61,7 @@ public class Pedaco {
                 + "preco double(10,2) not null, "
                 + "tipoMaterial varchar(30) not null,"
                 + "id" + Chapa.getTABELA() + " int default '0',"
-                +"id"+Peca.getTABELA()+" int default '0',"
+                + "id" + Peca.getTABELA() + " int default '0',"
                 + "incData timestamp,"
                 + "foreign key (id" + Chapa.getTABELA() + ") references " + Chapa.getTABELA() + " (id" + Chapa.getTABELA() + "), "
                 + "foreign key (id" + Peca.getTABELA() + ") references " + Peca.getTABELA() + " (id" + Peca.getTABELA() + "))";
@@ -93,7 +93,7 @@ public class Pedaco {
      */
     public static void adicionarPedaco(int quantPedaco, double compPedaco, double largPedaco, double espePedaco, double precPedaco, String tipoMaterial) {
         if (Pedaco.HaCampoVazio(quantPedaco, compPedaco, largPedaco, espePedaco, precPedaco, tipoMaterial, 0, idPeca)) {
-            
+
             int idChapa = Chapa.obterIdChapa(compPedaco, largPedaco, espePedaco, tipoMaterial, sys, false);
             if (idChapa > 0) {
                 try {
@@ -149,6 +149,14 @@ public class Pedaco {
         } finally {
             ModuloConector.fecharConexao(conexao, rs, rsmd, pst, stmt);
         }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static boolean NaoExisterTabelaPedaco() {
+        return Table.verificarNaoExistirTabela(banco, TABELA);
     }
 
     /**

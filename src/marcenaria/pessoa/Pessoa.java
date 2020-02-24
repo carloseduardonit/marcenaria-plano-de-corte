@@ -1,10 +1,10 @@
 package marcenaria.pessoa;
 
+import dados.*;
+import informacao.Messagem;
 import java.awt.HeadlessException;
 import java.sql.*;
 import javax.swing.JOptionPane;
-import marcenaria.Const.Messagem;
-import marcenaria.dado.*;
 
 /**
  * 16/06/2019
@@ -61,10 +61,10 @@ public class Pessoa {
      *
      */
     public static void deletarPessoa() {
-        if (!Table.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
+        if (!Fornecedor.NaoExisteTabelaFornecedor()) {
             Fornecedor.deletarFornecedor();
         }
-        if (!Table.VerificarNaoExistirTabela(Cliente.getTABELA())) {
+        if (!Cliente.NaoExisterTabelaCliente()) {
             Cliente.deletarCliente();
         }
         Table.deletarTabela(Pessoa.getTABELA());
@@ -103,7 +103,7 @@ public class Pessoa {
      * @param tipoPessoa Setar uma informação do tipo String da Tabela Pessoa no
      * tipo de Pessoa, sendo que so podera utilizar <b>PF</b> ou
      * <b>PJ</b>
-     * @param mensagem  Setar uma informação de valor booleando , se for TRUE:
+     * @param mensagem Setar uma informação de valor booleando , se for TRUE:
      * pode exebir a mensagem; ou ser for FALSE: Não pode exebir a mensagem
      * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
      * Nome Pessoa
@@ -173,7 +173,7 @@ public class Pessoa {
      * <b>PJ</b>
      * @param nomePessoa Setar uma informação do tipo String da Tabela Pessoa no
      * Nome Pessoa
-     * @param mensagem  Setar uma informação de valor booleando , se for TRUE:
+     * @param mensagem Setar uma informação de valor booleando , se for TRUE:
      * pode exebir a mensagem; ou ser for FALSE: Não pode exebir a mensagem
      *
      */
@@ -205,6 +205,10 @@ public class Pessoa {
         }
     }
 
+    public static boolean NaoExisterTabelaPessoa() {
+        return Table.verificarNaoExistirTabela(banco, TABELA);
+    }
+
     /**
      * Fazendo as correções FAZER Este metodo faz a exclução da informação na
      * Tabela
@@ -222,7 +226,7 @@ public class Pessoa {
      *
      * @param logPessoa Setar uma informação do tipo String da Tabela Pessoa no
      * novo Login Pessoa
-     * @param mensagem  Setar uma informação de valor booleando , se for TRUE:
+     * @param mensagem Setar uma informação de valor booleando , se for TRUE:
      * pode exebir a mensagem; ou ser for FALSE: Não pode exebir a mensagem
      */
     public static void excluirPessoa(String logPessoa, boolean mensagem) {
@@ -414,8 +418,8 @@ public class Pessoa {
 
     /**
      *
-     * @param Tabela Setar uma informação de  valor String 
-     * @param sql Setar uma informação de  valor String 
+     * @param Tabela Setar uma informação de valor String
+     * @param sql Setar uma informação de valor String
      * @return
      */
     public static String[] obterlogPessoa(String Tabela, String sql) {
@@ -446,10 +450,9 @@ public class Pessoa {
      * Pessoa.
      * @param TipoPessoa Setar uma informação de valor String do Tipo de Pessoa.
      * @return Retornar Uma informação de valor boolean da verificação de
-     * Documento mediante:
-     Valor True: docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"
-     * ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"
-     * Valor False:
+     * Documento mediante: Valor True: docPessoa for iqual a 11 digito E
+     * TipoPessoa for iqual "PF" ou docPessoa for iqual a 14 digito E TipoPessoa
+     * for iqual "PJ" Valor False:
      */
     public static Boolean VerificaDocumento(String docPessoa, String TipoPessoa) {
         if ((docPessoa.length() == 11 && TipoPessoa.equalsIgnoreCase("pf"))
@@ -466,11 +469,9 @@ public class Pessoa {
      * @param docPessoa Setar uma informação de valor String do documento da
      * Pessoa.
      * @param TipoPessoa Setar uma informação de valor String do Tipo de Pessoa.
-     * @return Retornar uma informçaõ de valor String do erro do documento
-     * Valor True: 
-     * docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF";
-     * ou docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ";
-     * Valor False
+     * @return Retornar uma informçaõ de valor String do erro do documento Valor
+     * True: docPessoa for iqual a 11 digito E TipoPessoa for iqual "PF"; ou
+     * docPessoa for iqual a 14 digito E TipoPessoa for iqual "PJ"; Valor False
      */
     public static String txtVerificaDocumento(String docPessoa, String TipoPessoa) {
         String Mess = "";

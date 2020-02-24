@@ -5,14 +5,14 @@
  */
 package marcenaria.pessoa.utilitario;
 
+import dados.*;
+import endereco.banco.CEP;
+import informacao.Messagem;
 import java.sql.*;
 import javax.swing.JOptionPane;
-import marcenaria.Const.Messagem;
-import marcenaria.dado.*;
 import marcenaria.pessoa.Cliente;
 import marcenaria.pessoa.Fornecedor;
 import marcenaria.pessoa.Pessoa;
-import marcenaria.utilitario.cep.dados.CEP;
 
 /**
  *
@@ -34,7 +34,7 @@ public class Endereco extends CEP {
     private static Statement stmt;
 
     private static void usuarioZeroenderecoZero() {
-        if (Table.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
+        if (Pessoa.NaoExisterTabelaPessoa()) {
             Pessoa.pessoaZero();
         }
         DataBase.importarBackupdataBaseSQL("C:\\Users\\Carlos\\Documents\\NetBeansProjects\\Marcenaria\\src\\marcenaria\\pessoa\\utilitario\\EnderecoZero.sql", Pessoa.banco);
@@ -54,10 +54,10 @@ public class Endereco extends CEP {
      * tabela Endereço no banco de dado principal
      */
     public static void criarEndereco() {
-        if (Table.VerificarNaoExistirTabela(Cliente.getTABELA())) {
+        if (Cliente.NaoExisterTabelaCliente()) {
             Cliente.criarCliente();
         }
-        if (Table.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
+        if (Fornecedor.NaoExisteTabelaFornecedor()) {
             Fornecedor.criarFornecedor();
         }
         String sql = "create table if not exists " + getTABELA() + " ("

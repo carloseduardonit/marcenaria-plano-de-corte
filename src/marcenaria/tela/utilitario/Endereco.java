@@ -5,8 +5,9 @@
  */
 package marcenaria.tela.utilitario;
 
+
+import endereco.banco.*;
 import javax.swing.JTextField;
-import marcenaria.utilitario.cep.dados.CEP;
 
 /**
  *

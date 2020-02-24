@@ -5,18 +5,12 @@
  */
 package marcenaria.tela.pessoa;
 
-import java.awt.Color;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import marcenaria.Const.Messagem;
+import java.awt.*;
+import javax.swing.*;
+import informacao.Messagem;
 import marcenaria.Marcenaria;
-import marcenaria.material.Chapa;
-import marcenaria.material.Peca;
-import marcenaria.material.Pedaco;
-import marcenaria.pessoa.Cliente;
-import marcenaria.pessoa.Fornecedor;
+import marcenaria.material.*;
+import marcenaria.pessoa.*;
 
 /**
  *

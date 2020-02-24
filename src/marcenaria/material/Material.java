@@ -5,10 +5,10 @@
  */
 package marcenaria.material;
 
+import dados.ModuloConector;
+import informacao.Messagem;
 import java.sql.*;
 import javax.swing.JOptionPane;
-import marcenaria.Const.Messagem;
-import marcenaria.dado.ModuloConector;
 import marcenaria.pessoa.Fornecedor;
 import marcenaria.pessoa.Pessoa;
 
@@ -19,17 +19,17 @@ import marcenaria.pessoa.Pessoa;
  */
 public class Material {
 
-    static Connection conexao;
-    static ResultSet rs;
-    static ResultSetMetaData rsmd;
-    static PreparedStatement pst;
-    static Statement stmt;
+    private static Connection conexao;
+    private static ResultSet rs;
+    private static ResultSetMetaData rsmd;
+    private static PreparedStatement pst;
+    private static Statement stmt;
 
     private static final String TABELA = Material.class.getSimpleName();
     private static String tipoMaterial;
     private static int quantMaterial, idMaterial;
     private static double comprMaterial, largMarterial, espesMaterial, precMaterial;
-
+public static String banco ="Material";
     /**
      * Este Metodo faz a conexão do banco de dados.
      *

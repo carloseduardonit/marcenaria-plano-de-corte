@@ -5,10 +5,9 @@
  */
 package marcenaria.pessoa.cliente;
 
+import dados.*;
+import informacao.Messagem;
 import java.sql.*;
-import marcenaria.Const.Messagem;
-import marcenaria.dado.ModuloConector;
-import marcenaria.dado.Table;
 import marcenaria.material.Peca;
 import marcenaria.pessoa.Cliente;
 
@@ -46,7 +45,7 @@ public class Projeto {
      * varchar(20)," + "descricao"+getTABELA()+ " varchar(20),"]
      */
     public static void criarProjeto() {
-        if (Table.VerificarNaoExistirTabela(Cliente.getTABELA())) {
+        if (Cliente.NaoExisterTabelaCliente()) {
             Cliente.criarCliente();
         }
         String sql = "create table if not exists " + Projeto.getTABELA()
@@ -68,7 +67,7 @@ public class Projeto {
      * @version 1.0
      */
     public static void deletarProjeto() {
-        if (!Table.VerificarNaoExistirTabela(Peca.getTABELA())) {
+        if (!Peca.NaoExisterTabelaPeca()){
             Peca.deletadaPeca();
         }
         Table.deletarTabela(Projeto.getTABELA());
@@ -149,6 +148,13 @@ public class Projeto {
         }
     }
 
+    /**
+     *
+     * @return
+     */
+    public static boolean NaoExisterTabelaProjeto(){
+    return Table.verificarNaoExistirTabela(null, TABELA);
+}
     /**
      * Este metodo faz a exclução da tabela de nome Projeto
      *
@@ -239,6 +245,15 @@ public class Projeto {
     }
 //Fim da Manipulação da Tabela do Banco de dados.
 
+    /**
+     *
+     * @param ou
+     * @param tipo
+     * @param idProjeto
+     * @param idCliente
+     * @param precoProjeto
+     * @return
+     */
     public static String sqlString(boolean ou, int tipo, int idProjeto, int idCliente, double precoProjeto) {
         String sql = "", a;
         if (ou) {

@@ -6,14 +6,13 @@
 package marcenaria.material;
 // importação 
 
+import dados.*;
+import informacao.Messagem;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javax.swing.JOptionPane;
-import marcenaria.Const.Messagem;
-import marcenaria.dado.ModuloConector;
-import marcenaria.dado.Table;
 import marcenaria.pessoa.Fornecedor;
 
 /**
@@ -24,7 +23,7 @@ import marcenaria.pessoa.Fornecedor;
  * @version 1.0
  * @author Carlos Eduardo dos Santos Figueiredo
  */
-public class Chapa {
+public class Chapa extends Material{
 
     /**
      * Variaveis do tipo double para largura , comprimento, espessura, preço da
@@ -80,7 +79,7 @@ public class Chapa {
      * @version 1.1 - utilizava o metodo auxiliar ModuloConector.criarTabela
      */
     public static void criadaChapa() {
-        if (Table.VerificarNaoExistirTabela(Fornecedor.getTABELA())) {
+        if (Fornecedor.NaoExisteTabelaFornecedor()) {
             Fornecedor.criarFornecedor();
             // faz a criação da tabela Fornecedor por causa foreign key(Chave Estrageira) idFornecedor
         }
@@ -92,9 +91,8 @@ public class Chapa {
                 + "espessura double(4,2),"
                 + "preco double (10,2), "
                 + "tipoMaterial varchar(30), "
-                
                 + "id" + Fornecedor.getTABELA() + " int not null default 0,"
-                + "foreign key(id" + Fornecedor.getTABELA() + ") references " + Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
+                + "foreign key(id" + Fornecedor.getTABELA() + ") references " + Fornecedor.banco+"."+Fornecedor.getTABELA() + " (id" + Fornecedor.getTABELA() + "))";
         Table.criarTabela(sql, Chapa.getTABELA());
     }
 
@@ -107,11 +105,11 @@ public class Chapa {
      * @version 1.0
      */
     public static void deletadaChapa() {
-        if (!Table.VerificarNaoExistirTabela(Peca.getTABELA())) {
+        if (!Peca.NaoExisterTabelaPeca()) {
             Peca.deletadaPeca();
             //este metodo precisa se excluido devido precisa da Foreign key(chave Estrageira) idChapa da Tabela Chapa
         }
-        if (!Table.VerificarNaoExistirTabela(Pedaco.getTABELA())) {
+        if (!Pedaco.NaoExisterTabelaPedaco()) {
             Pedaco.deletaPedaco();
             //este metodo precisa se excluido devido precisa da Foreign key(chave Estrageira) idChapa da Tabela Chapa
         }
@@ -304,8 +302,8 @@ public class Chapa {
      * @param fornecedor Setar uma informação de valor String do fornecedor da
      * Chapa
      * @param ou Setar uma informação de valor booleando na instrução Mysql
-     * sendo TRUE: sera  adicionado o termo "OR" 
-     * sendo FALSE: sera Adicionado o termo "AND";
+     * sendo TRUE: sera adicionado o termo "OR" sendo FALSE: sera Adicionado o
+     * termo "AND";
      * @since 01/05/2019
      * @version 1.0
      */
@@ -441,6 +439,10 @@ public class Chapa {
         }
     }
 
+    public static boolean NaoExisteTabelaChapa() {
+        return Table.verificarNaoExistirTabela(banco, TABELA);
+    }
+
     /**
      * este Metodo faz a Inserção ou atualização na tabela Chapa conforme os
      * parametros
@@ -465,7 +467,8 @@ public class Chapa {
             adicionarChapa(quantChapa, compChapa, largChapa, espeChapa, 0, tipoMaterial, fornecedor);
         }
     }
- /**
+
+    /**
      * Este Metodo realiza uma pesquisa na tabela Chapa do banco de dados
      * conforme os parametros
      *
@@ -485,9 +488,10 @@ public class Chapa {
      * @since 01/05/2019
      * @version 1.0
      */
-    public static void pesquisarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor){
+    public static void pesquisarChapa(int quantChapa, double compChapa, double largChapa, double espeChapa, double precChapa, String tipoMaterial, String fornecedor) {
         pesquisarChapa(quantChapa, compChapa, largChapa, espeChapa, precChapa, tipoMaterial, fornecedor, true);
     }
+
     /**
      * Este Metodo realiza uma pesquisa na tabela Chapa do banco de dados
      * conforme os parametros

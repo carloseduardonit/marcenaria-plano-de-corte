@@ -5,9 +5,9 @@
  */
 package marcenaria.material;
 
+import dados.*;
 import java.sql.*;
 import javax.swing.JOptionPane;
-import marcenaria.dado.ModuloConector;
 
 /**
  *

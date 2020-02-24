@@ -6,8 +6,6 @@
 package marcenaria.tela.pessoa;
 
 import marcenaria.Marcenaria;
-import marcenaria.dado.ModuloConector;
-import marcenaria.dado.Table;
 import marcenaria.pessoa.Fornecedor;
 import marcenaria.pessoa.Layout;
 
@@ -22,7 +20,7 @@ Marcenaria m = new Marcenaria();
      * Creates new form TelaFornecedor
      */
     public TelaFornecedor() {
-        if(Table.VerificarNaoExistirTabela(Fornecedor.getTABELA())){
+        if(Fornecedor.NaoExisteTabelaFornecedor()){
             Fornecedor.criarFornecedor();
         }
         

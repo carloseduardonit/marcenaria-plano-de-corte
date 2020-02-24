@@ -5,7 +5,6 @@
  */
 package marcenaria.tela.material;
 
-import marcenaria.dado.Table;
 import marcenaria.material.Chapa;
 import marcenaria.pessoa.Layout;
 import marcenaria.tela.pessoa.Control;
@@ -21,7 +20,7 @@ public class TelaChapa extends javax.swing.JInternalFrame {
      * Creates new form Chapa
      */
     public TelaChapa() {
-       if(Table.VerificarNaoExistirTabela(Chapa.getTABELA())){
+       if(Chapa.NaoExisteTabelaChapa()){
            Chapa.criadaChapa();
        }
         initComponents();

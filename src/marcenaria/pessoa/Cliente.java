@@ -5,11 +5,10 @@
  */
 package marcenaria.pessoa;
 
+import dados.*;
+import informacao.Messagem;
 import java.sql.*;
 import javax.swing.JOptionPane;
-import marcenaria.Const.Messagem;
-import marcenaria.dado.ModuloConector;
-import marcenaria.dado.Table;
 import marcenaria.pessoa.cliente.Projeto;
 
 /**
@@ -40,7 +39,7 @@ public class Cliente extends Pessoa {
                 + "docum varchar(14) not null unique, " + "foreign key (login) references "
                 + Pessoa.getTABELA().toLowerCase() + "(login)," + "foreign key (id" + Pessoa.getTABELA()
                 + ") references " + Pessoa.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + "))";
-        if (Table.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
+        if (Pessoa.NaoExisterTabelaPessoa()) {
             Pessoa.criarPessoa();
         }
         Table.criarTabela(sql, Cliente.getTABELA());
@@ -50,7 +49,7 @@ public class Cliente extends Pessoa {
      * ok Este Metodo deletar a tabela Cliente.
      */
     public static void deletarCliente() {
-        if (!Table.VerificarNaoExistirTabela(Projeto.getTABELA())) {
+        if (!Projeto.NaoExisterTabelaProjeto()) {
             Projeto.deletarProjeto();
         }
         Table.deletarTabela(Cliente.getTABELA());
@@ -178,6 +177,10 @@ public class Cliente extends Pessoa {
         } else {
             Messagem.chamarTela(Cliente.getTABELA() + " " + logCliente + " Não existe !!!");
         }
+    }
+
+    public static boolean NaoExisterTabelaCliente() {
+        return Table.verificarNaoExistirTabela(banco, TABELA);
     }
 
     /**
@@ -342,9 +345,9 @@ public class Cliente extends Pessoa {
         return Pessoa.obterIdPessoa(Cliente.getTABELA(), logCliente);
     }
 
-    /**Precisa ser Testado.
-     *  Este Metodo Retornar o id do Cliente da Tabela Cliente atraves do
-     * Login.
+    /**
+     * Precisa ser Testado. Este Metodo Retornar o id do Cliente da Tabela
+     * Cliente atraves do Login.
      *
      * @param logCliente Setar uma informação do tipo String da Tabela Cliente
      * no Login Cliente
@@ -456,6 +459,6 @@ public class Cliente extends Pessoa {
     public static void setDocum(String docum) {
         Cliente.docum = docum;
     }
-        // Fim do Sets e Gets
+    // Fim do Sets e Gets
 
 }

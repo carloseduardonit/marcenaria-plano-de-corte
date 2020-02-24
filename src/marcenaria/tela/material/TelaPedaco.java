@@ -6,7 +6,6 @@
 package marcenaria.tela.material;
 
 import java.sql.*;
-import marcenaria.dado.Table;
 import marcenaria.material.Pedaco;
 import marcenaria.tela.pessoa.Control;
 
@@ -15,14 +14,14 @@ import marcenaria.tela.pessoa.Control;
  * @author Carlos Eduardo dos santos Fiqueiredo
  */
 public class TelaPedaco extends javax.swing.JInternalFrame {
-static ResultSet rs;
-static ResultSetMetaData rsmd;
-static Array ar;
+private static ResultSet rs;
+private static ResultSetMetaData rsmd;
+private static Array ar;
     /**
      * Creates new form TelaPedaco
      */
     public TelaPedaco() {
-        if(Table.VerificarNaoExistirTabela(Pedaco.getTABELA())){
+        if(Pedaco.NaoExisterTabelaPedaco()){
             Pedaco.criadoPedaco();
         }
         initComponents();

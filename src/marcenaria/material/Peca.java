@@ -5,10 +5,9 @@
  */
 package marcenaria.material;
 
+import dados.*;
+import informacao.Messagem;
 import java.sql.*;
-import marcenaria.Const.Messagem;
-import marcenaria.dado.ModuloConector;
-import marcenaria.dado.Table;
 import marcenaria.pessoa.Fornecedor;
 import marcenaria.pessoa.cliente.Projeto;
 
@@ -18,8 +17,7 @@ import marcenaria.pessoa.cliente.Projeto;
  * @version 1.0
  * @author Carlos Eduardo dos Santos Figueiredo
  */
-public class Peca {
-    
+public class Peca extends Material {
 
     /**
      *
@@ -54,10 +52,10 @@ public class Peca {
      *
      */
     public static void criadaPeca() {
-        if (Table.VerificarNaoExistirTabela(Chapa.getTABELA())) {
+        if (Chapa.NaoExisteTabelaChapa()) {
             Chapa.criadaChapa();
         }
-        if (Table.VerificarNaoExistirTabela(Projeto.getTABELA())) {
+        if (Projeto.NaoExisterTabelaProjeto()) {
             Projeto.criarProjeto();
         }
         String sql = "create table if not exists " + Peca.getTABELA()
@@ -76,6 +74,13 @@ public class Peca {
     }
 
     /**
+     *
+     */
+    public static void existerTabelaPeca() {
+
+    }
+
+    /**
      * <b>Este metodo faz Deletação da Tabela Peca.</b>
      * <p>
      * Este metodo utilizar um metodo da classe Material como Metodo auxiliar o
@@ -83,7 +88,7 @@ public class Peca {
      *
      */
     public static void deletadaPeca() {
-        if (!Table.VerificarNaoExistirTabela(Pedaco.getTABELA())) {
+        if (!Pedaco.NaoExisterTabelaPedaco()) {
             Pedaco.deletaPedaco();
         }
         Table.deletarTabela(Peca.getTABELA());
@@ -185,6 +190,14 @@ public class Peca {
     }
 
     /**
+     *
+     * @return
+     */
+    public static boolean NaoExisterTabelaPeca() {
+        return Table.verificarNaoExistirTabela(banco, TABELA);
+    }
+
+    /**
      * <b>Este metodo faz a Exclução na tabela Peça.</b><p>
      * Utilizar um metodo da classe Material como Metodo auxiliar o metodo
      * excluirMaterial(String Tabela, String tipoMaterial, int quantidade,
@@ -261,6 +274,12 @@ public class Peca {
         }
     }
 
+    /**
+     *
+     * @param tipoMaterial
+     * @param espessura
+     * @return
+     */
     public static int obterIdPeca(String tipoMaterial, double espessura) {
         return Material.obterIdMaterial(Peca.getTABELA(), tipoMaterial, espessura);
     }
@@ -309,7 +328,7 @@ public class Peca {
     }
 
     /** <b>Este metodo .</b>
-     * 
+     *
      *
      * @param quanPeca Setar informação de valor inteiro da quantidade de Peça
      * @param compPeca Setar informação de valor double do Comprimento da Peça
@@ -408,6 +427,9 @@ public class Peca {
 
     }
 
+    /**
+     *
+     */
     public static void QuantPeca() {
 
     }

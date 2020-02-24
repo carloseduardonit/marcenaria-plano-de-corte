@@ -5,11 +5,10 @@
  */
 package marcenaria.pessoa;
 
+import dados.*;
+import informacao.Messagem;
 import java.sql.*;
 import javax.swing.JOptionPane;
-import marcenaria.Const.Messagem;
-import marcenaria.dado.ModuloConector;
-import marcenaria.dado.Table;
 import marcenaria.material.Chapa;
 
 /**
@@ -44,7 +43,7 @@ public class Fornecedor extends Pessoa {
                 + "docum varchar(14) not null unique, " + "foreign key (login) references "
                 + Pessoa.getTABELA().toLowerCase() + "(login)," + "foreign key (id" + Pessoa.getTABELA()
                 + ") references " + Pessoa.getTABELA().toLowerCase() + "(id" + Pessoa.getTABELA() + "))";
-        if (Table.VerificarNaoExistirTabela(Pessoa.getTABELA())) {
+        if (Pessoa.NaoExisterTabelaPessoa()) {
             Pessoa.criarPessoa();
         }
         Table.criarTabela(sql, Fornecedor.getTABELA());
@@ -54,7 +53,7 @@ public class Fornecedor extends Pessoa {
      * ok Este metodo faz a exclução da informação na Tabela
      */
     public static void deletarFornecedor() {
-        if (!Table.VerificarNaoExistirTabela(Chapa.getTABELA())) {
+        if (!Chapa.NaoExisteTabelaChapa()) {
             Chapa.deletadaChapa();
             deletarFornecedor();
         }
@@ -186,6 +185,14 @@ public class Fornecedor extends Pessoa {
         } else {
             Messagem.chamarTela(Fornecedor.getTABELA() + " " + logFornecedor + " Não existe !!!");
         }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static boolean NaoExisteTabelaFornecedor() {
+        return Table.verificarNaoExistirTabela(banco, TABELA);
     }
 
     /**
